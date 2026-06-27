@@ -21,28 +21,67 @@
     # ─────────────────────────────────────────────────────────────────────────────
     # DOCKER
     # ─────────────────────────────────────────────────────────────────────────────
-    # rootless: disabled here (default). Consult documentation for more info.
-    # To Enable: virtualisation.docker.rootless.enable = true;
     virtualisation.docker = {
       enable = true;
       enableOnBoot = true; # start the Docker daemon at boot.
+      storageDriver = "btrfs"; # CypherOS leverages btrfs filesystem.
 
       # daemon.settings: docker daemon JSON config (equivalent to /etc/docker/daemon.json).
-      # Sane defaults — tune as needed.
+      # The docker daemon settings are pretty extensive
+      # see also: https://github.com/NixOS/nixpkgs/issues/68349
       daemon.settings = {
+        experimental = true;
+
         # journald integrates with `journalctl -u docker`; preferred over json-file on NixOS.
-        "log-driver" = "journald";
+        # NOTE: If you prefer a JSON file instead:
+        # log-driver = "json-file";
+        # log-opts.max-size = "10m";
+        # log-opts.max-file = "10";
+        log-driver = "journald";
+
+        # metrics-addr = "0.0.0.0:9323";
+        # fixed-cidr-v6 = "fd00::/80";
+        # ipv6 = true;
+        # iptables = true;
+        # ip6tables = false;
+        registry-mirrors = [ "https://mirror.gcr.io" ];
+        dns = [
+          "1.1.1.1"
+          "8.8.8.8"
+        ];
+        # If you want to turn off the userland-proxy - designed for Windows.
+        userland-proxy = false;
+
+        # By default, the Docker daemon will store images, containers, and build context
+        # on the root filesystem. To change the location that Docker stores its data,
+        # configure a new data-root for the daemon by setting the data-root property
+        data-root = "/home/cypher-whisperer/DATA/FILES/DE_FILES/SHARED/APPS/Docker/Docker_data";
 
         # Prune dangling images automatically. Not a daemon setting — do this
         # with a systemd timer or `docker system prune` manually.
+
+        # default-address-pools = {
+        #   base = "172.30.0.0/16";
+        #   size = 24;
+        # };
+      };
+
+      # Running Docker rootless (better security, especially at beginner and intermediate level):
+      # This can be a way out of adding user to the docker group.
+      # I.e, The docker group membership is effectively equivalent to being root!
+      rootless = {
+        enable = true;
+        setSocketVariable = true;
       };
     };
 
-    # add user (e.g cypher-whisperer) to run commands without sudo.
-    users.users.cypher-whisperer.extraGroups = [
-      "docker"
-      "podman"
-    ];
+    # add user to run commands without sudo (disabled; I am going for rootless docker for security).
+    # the same can be achieved with:
+    #   users.extraGroups.docker.members = [ "username-with-access-to-socket" ];
+    # users.users.cypher-whisperer.extraGroups = [
+    #   "docker"
+    #   "podman"
+    # ];
 
     # ─────────────────────────────────────────────────────────────────────────────
     # PODMAN
