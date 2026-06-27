@@ -78,7 +78,9 @@
       cypher-os.devops.iac.terraform.enable = lib.mkDefault true;
       cypher-os.devops.secrets.enable = lib.mkDefault true;
       cypher-os.devops.secrets.vault.enable = lib.mkDefault true;
-      cypher-os.devops.n8n.enable = lib.mkDefault true;
+
+      #cypher-os.devops.n8n.enable = lib.mkDefault true;
+
       # ─────────────────────────────────────────────────────────────────────────────
       # VIRTUALISATION HELPERS TOGGLE
       # ─────────────────────────────────────────────────────────────────────────────

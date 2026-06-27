@@ -11,10 +11,11 @@
     ./databases.nix
     ./iac.nix
     ./secrets.nix
-    ./n8n-contained.nix
     ./cloud.nix
     ./observability.nix
     ./networking.nix
     ./cicd.nix
+
+    #./n8n-contained.nix
   ];
 }

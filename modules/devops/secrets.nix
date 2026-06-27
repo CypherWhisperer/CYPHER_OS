@@ -9,7 +9,7 @@
 
 {
   imports = [
-    ./vault-contained.nix
+    #./vault-contained.nix
     ./vault.nix
   ];
 
