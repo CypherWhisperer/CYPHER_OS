@@ -35,7 +35,17 @@
 
       # ── Communication ────────────────────────────────────────────────────────
       discord
-      whatsapp-electron # Electron wrapper around Whatsapp
+      # Electron wrapper around Whatsapp: UI a bit off offset a bit down, due to electron headerbar
+      # whatsapp-electron
+
+      # WhatsApp for Mac: failed due to target - darwin
+      # whatsapp-for-mac
+
+      # WhatsApp for Linux: Refused build due t0 lack of maintenance
+      # whatsapp-for-linux
+
+      # Karere: Native GTK4 WhatsApp client. There is an issue with Plasma 6 not rendereing the Login QR code
+      karere
       whatsapp-chat-exporter # WhatsApp database parser
       signal-desktop
       telegram-desktop
