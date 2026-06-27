@@ -69,19 +69,19 @@
       # Running Docker rootless (better security, especially at beginner and intermediate level):
       # This can be a way out of adding user to the docker group.
       # I.e, The docker group membership is effectively equivalent to being root!
-      rootless = {
-        enable = true;
-        setSocketVariable = true;
-      };
+      # rootless = {
+      #   enable = true;
+      #   setSocketVariable = true;
+      # };
     };
 
     # add user to run commands without sudo (disabled; I am going for rootless docker for security).
     # the same can be achieved with:
     #   users.extraGroups.docker.members = [ "username-with-access-to-socket" ];
-    # users.users.cypher-whisperer.extraGroups = [
-    #   "docker"
-    #   "podman"
-    # ];
+    users.users.cypher-whisperer.extraGroups = [
+      "docker"
+      "podman"
+    ];
 
     # ─────────────────────────────────────────────────────────────────────────────
     # PODMAN
