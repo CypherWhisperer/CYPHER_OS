@@ -72,6 +72,7 @@
     ../../modules/apps/productivity/affine-system.nix
     ../../modules/apps/browser/tor-system.nix
     ../../modules/apps/browser/brave-system.nix
+    ../../modules/apps/dev/php-system.nix
   ];
 
   cypher-os.profile.desktop.enable = true;

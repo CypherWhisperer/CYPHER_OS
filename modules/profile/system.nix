@@ -67,6 +67,9 @@
       cypher-os.apps.browser.tor.enable = lib.mkDefault true;
       cypher-os.apps.browser.brave.enable = lib.mkDefault true;
 
+      cypher-os.apps.dev.enable = lib.mkDefault true;
+      cypher-os.apps.dev.php.enable = lib.mkDefault true;
+
       # ─────────────────────────────────────────────────────────────────────────────
       # DEVOPS INFRASTRUCTURE
       # ─────────────────────────────────────────────────────────────────────────────
