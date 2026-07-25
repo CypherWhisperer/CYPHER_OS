@@ -118,6 +118,7 @@
       cypher-os.apps.productivity.zathura.enable = lib.mkDefault true;
       cypher-os.apps.productivity.libreOffice.enable = lib.mkDefault true;
       cypher-os.apps.productivity.obs.enable = lib.mkDefault true;
+      cypher-os.apps.productivity.d2.enable = lib.mkDefault true;
 
       cypher-os.apps.mail.enable = lib.mkDefault true;
       cypher-os.apps.mail.thunderbird.enable = lib.mkDefault true;
@@ -145,6 +146,9 @@
       cypher-os.apps.cli.enable = lib.mkDefault true;
       cypher-os.apps.editor.enable = lib.mkDefault true;
       cypher-os.apps.dev.enable = lib.mkDefault true;
+
+      cypher-os.apps.productivity.enable = lib.mkDefault true;
+      cypher-os.apps.productivity.d2.enable = lib.mkDefault true;
     })
   ];
 }

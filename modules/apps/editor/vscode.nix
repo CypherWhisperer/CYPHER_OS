@@ -1,4 +1,4 @@
-# modules/apps/vscode.nix
+# modules/apps/editor/vscode.nix
 #
 # Home Manager module for VSCode and its forks (Cursor, Antigravity).
 #
@@ -464,6 +464,16 @@ let
       "editor.formatOnSave" = true;
       "editor.tabSize" = 4;
     };
+
+    # ──────────────────────────────────────────────────────────────────────────────
+    # D2
+    # ──────────────────────────────────────────────────────────────────────────────
+    "d2.layout" = config.cypher-os.apps.productivity.d2.layoutEngine;
+    "d2.theme" = config.cypher-os.apps.productivity.d2.themeId;
+    "d2.darkTheme" = config.cypher-os.apps.productivity.d2.darkThemeId;
+    "d2.pad" = config.cypher-os.apps.productivity.d2.pad;
+    # "D2.checkForInstallAtStart" defaults to true and just verifies the CLI
+    # is reachable on activation — harmless to leave at default.
 
     # ── Extension: Better Comments ───────────────────────────────────────────
     "better-comments.tags" = [
@@ -978,6 +988,9 @@ in
               # DevLog config files, Laravel's .env, Symfony's .env.local, and any
               # key=value environment file in any project.
               vscMkt.mikestead.dotenv
+
+              # ────── D2 Diagramming ─────────────────────────────────────────────────────────
+              vscMkt.terrastruct.d2
             ];
         };
         # ── Shared Settings Deployment ──────────────────────────────────────────────

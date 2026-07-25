@@ -235,6 +235,16 @@ let
     stylesHash = "sha256-NNq6X4QF/nehZymrFYosSvXBk008n+N2/Yw59bxrryw=";
   };
 
+  pluginD2 = mkPlugin {
+    pname = "obsidian-d2";
+    version = "1.1.4";
+    owner = "terrastruct";
+    repo = "d2-obsidian";
+    mainJsHash = "sha256-lYD4oxlGYk0+DaQO9zidd7Aey8oBTyrJ2lPf/OxzY80=";
+    manifestHash = "sha256-P9rRA18GNmoVEabILnhASOlhWKkJPWB0BASWNWmRhzg=";
+    stylesHash = "sha256-j+WA+FnGzyrW+81gC9ObWfkJCWzogRWNDFjRfB+zYYU=";
+  };
+
   # ── Theme packages ───────────────────────────────────────────────────────────
   # Letting catppuccin/nix take control over theming as it should
   #
@@ -580,6 +590,25 @@ in
                   "trigger_on_file_creation" = false;
                   "auto_jump_to_cursor" = true;
                   "templates_folder" = "TEMPLATES"; # adjust to your vault layout
+                };
+              }
+
+              {
+                pkg = pluginD2;
+                settings = {
+                  "layoutEngine" = config.cypher-os.apps.productivity.d2.layoutEngine;
+                  "themeID" = config.cypher-os.apps.productivity.d2.themeId;
+                  "pad" = config.cypher-os.apps.productivity.d2.pad;
+                  "sketch" = config.cypher-os.apps.productivity.d2.sketch;
+                  "containerHeight" = 800; # px cap before the render scrolls; tune to taste
+                  "debounce" = 500; # ms after last keystroke before re-render (plugin min: 100)
+
+                  # "path" left unset deliberately: Obsidian on NixOS/Home Manager inherits
+                  # $PATH from the session, and home.sessionVariables in
+                  # `modules/apps/productivity/d2/hm.nix` already puts `d2` on it — so the plugin's
+                  # own PATH probing (it checks common install locations + $PATH) finds it without help.
+                  # Only set this if Obsidian is sandboxed/launched with a stripped PATH
+                  # (e.g. a .desktop entry that doesn't source our shell env).
                 };
               }
 

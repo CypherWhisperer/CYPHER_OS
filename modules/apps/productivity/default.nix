@@ -12,5 +12,6 @@
     ./zathura.nix
     ./libreoffice.nix
     ./obs.nix
+    ./d2-hm.nix
   ];
 }
