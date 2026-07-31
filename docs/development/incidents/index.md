@@ -8,9 +8,9 @@ Records of significant failures, unexpected behavior, or production-impacting ev
 
 | Incident                                                                                      | Date       | Severity | Summary                                                                                            |
 | --------------------------------------------------------------------------------------------- | ---------- | -------- | -------------------------------------------------------------------------------------------------- |
-| [INC-2026-04-15-001](./INC_2026_04_15_001.md)                                                 | 2026-04-15 | High     | OOM build crash — `nixos-rebuild switch` on `nixos-unstable`                                       |
-| [INC_2026_06_06_001](./INC_2026_06_06_001_build_failure_blocks_system_rebuild.md)             | 2026-06-06 | High     | `python3.13-pipx-1.8.0` failed its own test suite during the Nix build, preventing system rebuild. |
-| [INC_2026_06_12_001](./INC_2026_06_12_001_obsidian_EACCESS_crash_on_symlinked_git_repository) | 2026-06-12 | Medium   | Symlinking CypherOS repository to obsidian resulted into an Obsidian EACCESS crash.                |
+| [INC-2026-04-15-001](INC_2026_04_15_001.md)                                                 | 2026-04-15 | High     | OOM build crash — `nixos-rebuild switch` on `nixos-unstable`                                       |
+| [INC_2026_06_06_001](INC_2026_06_06_001_build_failure_blocks_system_rebuild.md)             | 2026-06-06 | High     | `python3.13-pipx-1.8.0` failed its own test suite during the Nix build, preventing system rebuild. |
+| [INC_2026_06_12_001](INC_2026_06_12_001_obsidian_EACCESS_crash_on_symlinked_git_repository.md) | 2026-06-12 | Medium   | Symlinking CypherOS repository to obsidian resulted into an Obsidian EACCESS crash.                |
 
 ---
 

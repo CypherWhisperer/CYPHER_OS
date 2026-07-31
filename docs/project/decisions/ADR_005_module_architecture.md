@@ -3,13 +3,13 @@
 **Date:** 2026-04-16
 **Status:** Accepted
 **Deciders:** CypherWhisperer
-**Related:** [ADR-001 — Namespace Design](./ADR_001_cypher-os_namespace_design.md), [ADR-002 — GNOME Module Isolation](./ADR_002_gnome_module_isolation.md) _(ADR-002 is the concrete first application of this convention. This ADR formalizes it as the system-wide rule.)_
+**Related:** [ADR-001 — Namespace Design](ADR_001_cypher-os_namespace_design.md), [ADR-002 — GNOME Module Isolation](ADR_002_gnome_module_isolation.md) _(ADR-002 is the concrete first application of this convention. This ADR formalizes it as the system-wide rule.)_
 
 ---
 
 ## Context
 
-The GNOME module isolation work ([ADR-002](./ADR_002_gnome_module_isolation.md)) surfaced a problem that was not specific to GNOME — _it was systemic._ NixOS modules and Home Manager modules share the same option namespace (`cypher-os.*`) but run in **separate evaluation contexts**. A module that declares options and sets system-level config (`environment.systemPackages`, `services.*`) in the same file causes HM to choke when it encounters NixOS-only attributes. A module that declares options and sets HM-level config (_`home.*`, `dconf.*`, `gtk.*`_) in the same file causes NixOS to choke on HM-only attributes.
+The GNOME module isolation work ([ADR-002](ADR_002_gnome_module_isolation.md)) surfaced a problem that was not specific to GNOME — _it was systemic._ NixOS modules and Home Manager modules share the same option namespace (`cypher-os.*`) but run in **separate evaluation contexts**. A module that declares options and sets system-level config (`environment.systemPackages`, `services.*`) in the same file causes HM to choke when it encounters NixOS-only attributes. A module that declares options and sets HM-level config (_`home.*`, `dconf.*`, `gtk.*`_) in the same file causes NixOS to choke on HM-only attributes.
 
 The GNOME split resolved this for one module group. But as the namespace grows — _`devops`, `virtualisation`, `gaming`, `dm`, `de/plasma`, `de/hyprland`_ — the same problem recurs in every module group. The solution had to be a **convention**, not a one-off fix.
 

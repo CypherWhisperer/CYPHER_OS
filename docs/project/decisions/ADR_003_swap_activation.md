@@ -85,7 +85,7 @@ A dedicated swap partition is simpler (_no BTRFS CoW caveat, no `chattr +C` requ
 **Positive:**
 
 - NixOS activates swap at boot. The machine now has 10GB of disk swap as a fallback behind ZRAM.
-- Combined with ZRAM ([ADR-004](./ADR_004_zram_setup.md)), OOM scenarios now have two layers of cushion before the kernel fires the OOM killer.
+- Combined with ZRAM ([ADR-004](ADR_004_zram_setup.md)), OOM scenarios now have two layers of cushion before the kernel fires the OOM killer.
 
 **Negative / Trade-offs:**
 

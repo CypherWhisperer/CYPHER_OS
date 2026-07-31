@@ -3,13 +3,13 @@
 **Date:** 2026-04-15
 **Status:** Accepted
 **Deciders:** CypherWhisperer
-**Related:** [INC-2026-04-15-001](../../development/incidents/INC_2026_04_15_001.md), [ADR-003 — Swap Activation](./ADR_003_swap_activation.md)
+**Related:** [INC-2026-04-15-001](../../development/incidents/INC_2026_04_15_001.md), [ADR-003 — Swap Activation](ADR_003_swap_activation.md)
 
 ---
 
 ## Context
 
-With the disk swapfile now activated ([ADR-003](./ADR_003_swap_activation.md)), the machine had a fallback for memory pressure. But disk swap is slow — _writing pages to the SSD under pressure is orders of magnitude slower than keeping them in RAM._ On a machine running GNOME (_~2GB baseline_) and performing memory-hungry Nix builds, the goal was to absorb as much pressure as possible in RAM before the kernel reaches for the disk at all.
+With the disk swapfile now activated ([ADR-003](ADR_003_swap_activation.md)), the machine had a fallback for memory pressure. But disk swap is slow — _writing pages to the SSD under pressure is orders of magnitude slower than keeping them in RAM._ On a machine running GNOME (_~2GB baseline_) and performing memory-hungry Nix builds, the goal was to absorb as much pressure as possible in RAM before the kernel reaches for the disk at all.
 
 ZRAM is the standard answer to this problem. NixOS has first-class support via the `zramSwap` option. The configuration decision is which algorithm and how much RAM to allocate.
 

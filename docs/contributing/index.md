@@ -8,13 +8,13 @@ Conventions, workflow, and standards for working on the CypherOS repository. The
 
 | Document                                                               | Covers                                                            |
 | ---------------------------------------------------------------------- | ----------------------------------------------------------------- |
-| [`conventions/documentation.md`](./conventions/documentation.md)       | How documentation is structured, where things go, what goes where |
-| [`conventions/naming.md`](./conventions/naming.md)                     | File naming, option naming, commit message format                 |
+| [`conventions/documentation.md`](conventions/documentation.md)       | How documentation is structured, where things go, what goes where |
+| [`conventions/naming.md`](conventions/naming.md)                     | File naming, option naming, commit message format                 |
 | [`conventions/git-workflow.md`](./conventions/git-workflow.md)         | Branch strategy, commit conventions, PR flow                      |
 | [`conventions/session-workflow.md`](./conventions/session-workflow.md) | How a development session should start and end                    |
-| [`conventions/diagrams.md`](./conventions/diagrams.md)                 | Diagramming standards — Mermaid, when to use which diagram type   |
-| [`conventions/templates.md`](./conventions/templates.md)               | When and how to use each template                                 |
-| [`conventions/index.md`](./conventions/index.md)                       | Conventions index                                                 |
+| [`conventions/diagrams.md`](conventions/diagrams.md)                 | Diagramming standards — Mermaid, when to use which diagram type   |
+| [`conventions/templates.md`](conventions/templates.md)               | When and how to use each template                                 |
+| [`conventions/index.md`](conventions/index.md)                       | Conventions index                                                 |
 
 ---
 

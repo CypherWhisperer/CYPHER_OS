@@ -4,7 +4,7 @@
 **Status:** Accepted
 **Deciders:** CypherWhisperer
 **Related:**
-- [ADR-002 — GNOME Module Isolation](./ADR_002_gnome_module_isolation.md) _(established the `gnome/hm.nix` structure this ADR partially refactors)_
+- [ADR-002 — GNOME Module Isolation](ADR_002_gnome_module_isolation.md) _(established the `gnome/hm.nix` structure this ADR partially refactors)_
 - [INC_2026_06_06_001](../../development/incidents/INC_2026_06_06_001.md) _(session during which this decision was made)_
 
 ---

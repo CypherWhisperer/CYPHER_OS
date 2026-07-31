@@ -26,7 +26,7 @@ docs/
 
 | Resource                 | Path                                                  |
 | ------------------------ | ----------------------------------------------------- |
-| Architecture Overview    | [docs/project/overview.md](./project/overview.md)     |
+| Architecture Overview    | [docs/project/overview.md](project/overview.md)     |
 | Technology Stack         | [docs/project/tech-stack.md](./project/tech-stack.md) |
 | Decision Records         | [docs/project/decisions/](./project/decisions/)       |
 | Development Journal      | [docs/development/journal/](./development/journal/)   |
