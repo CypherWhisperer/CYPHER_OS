@@ -236,7 +236,7 @@ let
   };
 
   pluginD2 = mkPlugin {
-    pname = "obsidian-d2";
+    pname = "d2-obsidian";
     version = "1.1.4";
     owner = "terrastruct";
     repo = "d2-obsidian";
