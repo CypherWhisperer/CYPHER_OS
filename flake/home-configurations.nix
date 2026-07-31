@@ -12,14 +12,14 @@
 {
   # ── Standalone Home Manager Configurations ────────────────────────────────
   # homeConfigurations are for non-NixOS hosts (Arch, Debian, Fedora, OpenSuse).
-  # Applied with: home-manager switch --flake .#cypher-whisperer@<host>
+  # Applied with: home-manager switch --flake .#cypher_whisperer@<host>
 
   # On these hosts, the OS manages the system level. Home Manager manages
   # only the user environment (packages, dotfiles, dconf settings, etc).
 
   # The cypher-nixos entry here is a convenience — allows running HM standalone
 
-  "cypher-whisperer@cypher-nixos" = inputs.home-manager.lib.homeManagerConfiguration {
+  "cypher_whisperer@cypher-nixos" = inputs.home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
 
     # The standalone Home Manager configurations also need self
@@ -42,7 +42,7 @@
       # MORE ON THE ABOVE
       # inputs.catppuccin.homeModules.catppuccin must be imported here explicitly,
       # mirroring the import in the NixOS-integrated path (flake.nix nixosConfigurations
-      # block, under home-manager.users.cypher-whisperer.imports).
+      # block, under home-manager.users.cypher_whisperer.imports).
       #
       # Why this is necessary:
       # The catppuccin flake input is declared at the top of this flake and passed
@@ -81,11 +81,11 @@
       # This was a finding as a result of diagnosing devenv+direnv setup for the
       # XAMPP NixOS alternative setup. The following commands are what triggered the
       # error leading to the resolution:
-      # `nix eval .#homeConfigurations."cypher-whisperer@cypher-nixos".config.programs.direnv.enable 2>&1`
-      # `nix eval .#homeConfigurations."cypher-whisperer@cypher-nixos".config.programs.direnv.nix-direnv.enable 2>&1`
+      # `nix eval .#homeConfigurations."cypher_whisperer@cypher-nixos".config.programs.direnv.enable 2>&1`
+      # `nix eval .#homeConfigurations."cypher_whisperer@cypher-nixos".config.programs.direnv.nix-direnv.enable 2>&1`
 
       {
-        home.username = "cypher-whisperer";
+        home.username = "cypher_whisperer";
         home.homeDirectory = "/home/cypher-whisperer";
         cypher-os.profile.desktop.enable = true;
       }
@@ -93,12 +93,12 @@
   };
 
   # Future hosts — uncomment and add host-specific home.nix progressively:
-  # "cypher-whisperer@arch" = inputs.home-manager.lib.homeManagerConfiguration {
+  # "cypher_whisperer@arch" = inputs.home-manager.lib.homeManagerConfiguration {
   #   inherit pkgs;
   #   extraSpecialArgs = { inherit inputs; self = inputs.self; };
   #   modules = [
   #     ../hosts/arch/home.nix
-  #     { home.username = "cypher-whisperer"; home.homeDirectory = "/home/cypher-whisperer"; }
+  #     { home.username = "cypher_whisperer"; home.homeDirectory = "/home/cypher-whisperer"; }
   #   ];
   # };
 }

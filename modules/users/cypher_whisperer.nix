@@ -4,7 +4,7 @@
   # ─────────────────────────────────────────────────────────────────────────────
   # USER ACCOUNT
   # ─────────────────────────────────────────────────────────────────────────────
-  # This is the canonical user declaration for cypher-whisperer on NixOS.
+  # This is the canonical user declaration for cypher_whisperer on NixOS.
   # The uid = 1000 is the universal truth across the CypherOS fleet — every OS
   # recognises this user by UID number, not by username string. File ownership
   # on shared BTRFS subvolumes resolves correctly because UID 1000 is consistent.
@@ -14,7 +14,7 @@
   #
   # extraGroups: the groups that give this user elevated access to hardware
   # and services. Each group is explained inline.
-  users.users.cypher-whisperer = {
+  users.users.cypher_whisperer = {
     isNormalUser = true;
     uid = 1000;
     description = "Cypher Whisperer";
@@ -52,12 +52,12 @@
   system.activationScripts.userAvatar = {
     text = ''
           install -Dm644 ${../../modules/de/assets/images/default-gnome-avatar.jpg} \
-            /var/lib/AccountsService/icons/cypher-whisperer
+            /var/lib/AccountsService/icons/cypher_whisperer
           # AccountsService also needs a config file pointing at the icon
           mkdir -p /var/lib/AccountsService/users
-          cat > /var/lib/AccountsService/users/cypher-whisperer <<EOF
+          cat > /var/lib/AccountsService/users/cypher_whisperer <<EOF
       [User]
-      Icon=/var/lib/AccountsService/icons/cypher-whisperer
+      Icon=/var/lib/AccountsService/icons/cypher_whisperer
       EOF
     '';
   };

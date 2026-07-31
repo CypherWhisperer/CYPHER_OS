@@ -122,7 +122,7 @@
     #
     # IMPORTANT: group membership only takes effect after a full re-login or
     # reboot. See the POST-SWITCH IMPERATIVE STEPS note above.
-    users.users.cypher-whisperer = {
+    users.users.cypher_whisperer = {
       extraGroups = [
         "dialout"
         "uucp"

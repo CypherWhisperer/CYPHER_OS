@@ -25,7 +25,7 @@
 #
 # TO APPLY:
 #   sudo nixos-rebuild switch --flake .#nixos-gnome
-#   home-manager switch --flake .#cypher-whisperer@nixos-gnome
+#   home-manager switch --flake .#cypher_whisperer@nixos-gnome
 
 {
   pkgs,
@@ -60,7 +60,7 @@
     ../../modules/profile/system.nix
 
     ../../modules/arduino/system.nix
-    ../../modules/users/cypher-whisperer.nix
+    ../../modules/users/cypher_whisperer.nix
     ../../modules/shell/system.nix
     ../../modules/gaming/steam-system.nix
     ../../modules/devops/system.nix
@@ -89,11 +89,11 @@
       "flakes"
     ];
 
-    # trusted-users allows cypher-whisperer to run nix as a trusted user —
+    # trusted-users allows cypher_whisperer to run nix as a trusted user —
     # necessary for `home-manager switch` to work with the multi-user daemon.
     trusted-users = [
       "root"
-      "cypher-whisperer"
+      "cypher_whisperer"
     ];
 
     # ── Build resource ceiling ────────────────────────────────────────────────

@@ -66,7 +66,7 @@
     #virtualisation.docker.enable = true;
     #virtualisation.podman.enable = true;
 
-    # Add cypher-whisperer to the docker group so `docker` CLI works without sudo.
+    # Add cypher_whisperer to the docker group so `docker` CLI works without sudo.
     # WARNING: membership in the docker group is effectively equivalent to root
     # access — anyone in this group can mount the host filesystem into a container.
     # On a single-user machine this is acceptable. On a multi-user machine, use
@@ -74,7 +74,7 @@
     # =========================================================================
     # Also handled by ./containers.nix
     #
-    # users.users.cypher-whisperer.extraGroups = [ "docker" ];
+    # users.users.cypher_whisperer.extraGroups = [ "docker" ];
 
     # =========================================================================
     # Persistent data directory

@@ -278,7 +278,7 @@ let
     # The path below is set dynamically — replace with the actual store path
     # or set it to the flutter binary location after first switch:
     #   `which flutter | xargs dirname | xargs dirname`
-    #  e.g /etc/profiles/per-user/cypher-whisperer
+    #  e.g /etc/profiles/per-user/cypher_whisperer
     # Alternatively leave unset and let the extension auto-detect.
     # "dart.flutterSdkPath" = "/path/to/flutter";  # set after first switch
     "dart.debugExternalPackageLibraries" = false;

@@ -2,6 +2,6 @@
 
 {
   imports = [
-    ./cypher-whisperer.nix
+    ./cypher_whisperer.nix
   ];
 }

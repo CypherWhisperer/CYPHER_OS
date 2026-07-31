@@ -1,6 +1,6 @@
 # modules/home/default.nix
 #
-# Home Manager evaluation root for cypher-whisperer.
+# Home Manager evaluation root for cypher_whisperer.
 #
 # RESPONSIBILITIES:
 #   1. Unconditionally import every module that declares cypher-os.* options —

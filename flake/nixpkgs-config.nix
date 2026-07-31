@@ -6,7 +6,7 @@
 # this is what makes pkgs.claude-desktop (and other overlays) resolve
 # identically in both:
 #  `nixos-rebuild switch --flake .#cypher-nixos`
-#  `home-manager switch --flake .#cypher-whisperer@cypher-nixos`.
+#  `home-manager switch --flake .#cypher_whisperer@cypher-nixos`.
 #
 # Add a new overlay ONCE, here. Never duplicate an overlay list again.
 

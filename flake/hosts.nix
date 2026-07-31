@@ -71,9 +71,9 @@
           self = inputs.self;
         };
 
-        # The actual Home Manager configuration for cypher-whisperer.
+        # The actual Home Manager configuration for cypher_whisperer.
         # This imports modules/home/default.nix.
-        home-manager.users.cypher-whisperer =
+        home-manager.users.cypher_whisperer =
           {
             config,
             pkgs,
@@ -88,7 +88,7 @@
             ];
 
             # Identity — must match users.users
-            home.username = "cypher-whisperer";
+            home.username = "cypher_whisperer";
             home.homeDirectory = "/home/cypher-whisperer";
 
             # Activate the desktop profile; This cascades all app/DE/DM defaults.
@@ -104,6 +104,39 @@
         # This tells HM to rename any conflicting existing files to .hm-bak
         # instead of refusing to proceed.
         home-manager.backupFileExtension = "hm-bak";
+
+        # home-manager.backupCommand = "${pkgs.trash-cli}/bin/trash";
+        # Alternative to backupFileExtension: instead of renaming conflicting
+        # files to `<file>.hm-bak` in place, runs this command on each one.
+        # Mutually exclusive in practice with backupFileExtension — pick one.
+        #
+        # Worth considering given our prev issue with ~/.config/gtk-4.0/assets:
+        # trash-cli moves the file to a real trash can instead of leaving a
+        # `.hm-bak` sibling that can itself go stale and cause the clobber loop
+        # that's just been fixed.
+        # Trade-off: one more package pulled in, and "undo" means digging through
+        # trash instead of finding a `.hm-bak` right next to the original.
+
+        # home-manager.verbose = true;
+        # Prints more detail during activation (each activation script's internal
+        # steps, not just the top-level "Activating X").
+        # Useful temporarily while debugging something — noisy for daily use.
+        # Left off by default, flip on when needed.
+
+        # home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];
+        # Modules injected into EVERY user under home-manager.users.*
+        # automatically — no need to list them per-user.
+        #
+        # Directly relevant to the "import catppuccin in every HM evaluation context separately"
+        # pattern documented in flake/home-configurations.nix: this option
+        # removes that duplication, but only within the NixOS-module path
+        # (it has no effect on standalone homeConfigurations, since sharedModules
+        # is itself a home-manager.* NixOS option, not a
+        # home-manager.lib.homeManagerConfiguration one).
+        #
+        # Worth adopting once more users are added under home-manager.users —
+        # with only cypher_whisperer today, it saves zero duplication right now,
+        # so it's a "when you need it" option rather than an immediate win.
       }
     ];
   };
