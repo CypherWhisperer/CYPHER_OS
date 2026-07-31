@@ -394,12 +394,6 @@
         "tree" = "_tree_wrapper";
         "et" = "eza --tree --icons";
 
-        # ── Nix / Home Manager ────────────────────────────────────────────────
-        # Shortcuts for the commands you'll type most during CypherOS work.
-        "hms" = "home-manager switch --flake $HOME/CYPHER_OS";
-        "nrs" = "sudo nixos-rebuild switch --flake $HOME/CYPHER_OS";
-        "nfu" = "nix flake update --flake $HOME/CYPHER_OS";
-
         # ── Git ───────────────────────────────────────────────────────────────
         # OMZ git plugin provides the heavy aliases (gst, gco, gp, gl, etc.)
         # These are the ones not covered by OMZ or that override it.
@@ -420,15 +414,27 @@
         "bravefix" =
           "rm -f ~/.config/BraveSoftware/Brave-Browser/SingletonLock ~/.config/BraveSoftware/Brave-Browser/SingletonSocket";
 
-        # ── NixOS Rebuild aliases ─────────────────────────────────────────────
+        # ── Nix / Home Manager ────────────────────────────────────────────────
+        # Shortcuts for the commands typed most during CypherOS work.
+        # Mirrors `home-manager.backupFileExtension = "hm-bak"` set for the
+        # NixOS-integrated path in flake/hosts.nix. Standalone HM has no
+        # equivalent Nix-level option — this flag is the only way to get
+        # matching backup behavior when running HM independently.
+        "hms" =
+          "clear && home-manager switch -b hm-bk --flake $HOME/CYPHER_OS#cypher_whisperer@cypher-nixos";
+
+        "nfu" = "clear && nix flake update --flake $HOME/CYPHER_OS";
+        "nrs" =
+          "clear && sudo nixos-rebuild switch --install-bootloader --flake $HOME/CYPHER_OS#cypher-nixos --impure";
         # Safe rebuild — always reinstalls bootloader
-        rebuild = "sudo nixos-rebuild boot --install-bootloader --flake ~/CYPHER_OS#cypher-nixos --impure";
-
-        # Quick switch for running system (doesn't affect bootloader for next boot)
-        rebuild-switch = "sudo nixos-rebuild switch --flake ~/CYPHER_OS#cypher-nixos --impure";
-
+        "nrbt" =
+          "clear && sudo nixos-rebuild boot --install-bootloader --flake $HOME/CYPHER_OS#cypher-nixos --impure";
         # Build only — for testing evaluation without committing
-        rebuild-dry = "nixos-rebuild build --flake ~/CYPHER_OS#cypher-nixos --impure";
+        "nrbd" = "clear && nixos-rebuild build --flake $HOME/CYPHER_OS#cypher-nixos --impure";
+
+        # ──────────────────── Personal Tooling  ───────────────────────────────
+        "design" =
+          "node /home/cypher-whisperer/DATA/FILES/PROJECTS/PRIVATE/DEV_SCRIPTS/js_ts/js/design_tokens/bin/design.js";
 
         # ── Arduino / IoT ─────────────────────────────────────────────────────
         # The shellAliases attrset is a single attrset value assigned to shellAliases =.
