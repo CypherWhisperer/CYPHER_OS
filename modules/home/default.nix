@@ -21,7 +21,10 @@
   # Every module that declares a cypher-os.* option must appear here.
   # This is unconditional — imports are not guarded by mkIf.
   # The modules themselves use mkIf internally to decide what to install.
-  imports = [ ../../modules ];
+  imports = [
+    ../../modules
+    ./gc-hm.nix
+  ];
   # ─────────────────────────────────────────────────────────────────────────────
   # HOME MANAGER STATE VERSION
   # ─────────────────────────────────────────────────────────────────────────────
