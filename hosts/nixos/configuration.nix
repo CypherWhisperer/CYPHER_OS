@@ -73,6 +73,7 @@
     ../../modules/apps/browser/tor-system.nix
     ../../modules/apps/browser/brave-system.nix
     ../../modules/apps/dev/php-system.nix
+    ../../modules/home/gc-system.nix
   ];
 
   cypher-os.profile.desktop.enable = true;
