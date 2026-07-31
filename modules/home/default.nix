@@ -25,8 +25,7 @@
   # ─────────────────────────────────────────────────────────────────────────────
   # HOME MANAGER STATE VERSION
   # ─────────────────────────────────────────────────────────────────────────────
-  # Set once, never change. This tells HM which release its config schema
-  # was written against
-  # It gates HM migration logic, not which packages you receive.
+  # Set once, never change. This tells HM which release its config schema was
+  # written against. It gates HM migration logic, not which packages you receive.
   home.stateVersion = "24.11";
 }

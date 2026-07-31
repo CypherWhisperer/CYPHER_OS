@@ -78,37 +78,6 @@
   cypher-os.profile.desktop.enable = true;
 
   # ─────────────────────────────────────────────────────────────────────────────
-  # UNFREE PACKAGES (SYSTEM LEVEL)
-  # ─────────────────────────────────────────────────────────────────────────────
-  # This allows unfree packages at the system configuration level.
-  # Home Manager's gnome.nix has its own allowUnfree for user-level packages.
-  # Both are needed — they operate in different package scopes.
-  nixpkgs.config.allowUnfree = true;
-
-  # ─────────────────────────────────────────────────────────────────────────────
-  # CLAUDE DESKTOP
-  # ─────────────────────────────────────────────────────────────────────────────
-  # Register the claude-desktop overlay at the system level.
-  # This patches pkgs so that pkgs.claude-desktop exists everywhere —
-  # in system config AND in Home Manager modules that receive the same pkgs.
-  nixpkgs.overlays = [
-    inputs.claude-desktop.overlays.default
-    inputs.nix-vscode-extensions.overlays.default
-  ];
-
-  # ─────────────────────────────────────────────────────────────────────────────
-  # ALLOWED UNTRUSTED PACKAGES
-  # ─────────────────────────────────────────────────────────────────────────────
-  nixpkgs.config.permittedInsecurePackages = [
-    "ventoy-1.1.12"
-    # Logseq pins electron_39 (39.8.10), which nixpkgs has marked EOL/insecure.
-    # Upstream hasn't cut a release bumping the Electron pin yet.
-    # Tracked at nixpkgs#528213. Revisit when Logseq releases a new version.
-    # Electron override attempts (34, 36, 37, 38) all failed — removed/insecure.
-    "electron-39.8.10"
-  ];
-
-  # ─────────────────────────────────────────────────────────────────────────────
   # NIX SETTINGS
   # ─────────────────────────────────────────────────────────────────────────────
   # experimental-features: flakes and nix-command are not yet stable API in Nix,
