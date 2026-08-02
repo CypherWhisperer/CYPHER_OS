@@ -63,6 +63,7 @@
       cypher-os.apps.productivity.enable = lib.mkDefault true;
       cypher-os.apps.productivity.penpot.enable = lib.mkDefault true;
       cypher-os.apps.productivity.affine.enable = lib.mkDefault true;
+      cypher-os.apps.productivity.rustdesk.server.enable = lib.mkDefault false;
 
       cypher-os.apps.browser.tor.enable = lib.mkDefault true;
       cypher-os.apps.browser.brave.enable = lib.mkDefault true;

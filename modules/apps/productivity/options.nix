@@ -72,7 +72,7 @@
         description = "Render diagrams as if hand-drawn.";
       };
 
-      # Respecting our "show the full configuration surface" preference,
+      # With "show the full configuration surface" preference,
       # The section below is commented out rather than left out entirely.
 
       # These are real d2 CLI flags that
@@ -88,6 +88,50 @@
       #   default = false;
       #   description = "Center the diagram in the rendered viewport.";
       # };
+    };
+
+    anydesk = {
+      enable = lib.mkEnableOption "AnyDesk remote desktop client";
+    };
+
+    rustdesk = {
+      enable = lib.mkEnableOption "RustDesk remote desktop client";
+
+      server = {
+        enable = lib.mkEnableOption ''
+          self-hosted RustDesk signaling/relay server (hbbs/hbbr) on this host.
+          Independent of the client — the client works against the public
+          RustDesk relay with this left disabled.
+        '';
+
+        openFirewall = lib.mkOption {
+          type = lib.types.bool;
+          default = true;
+          description = "Open the hbbs/hbbr ports (21115-21119) in the firewall.";
+        };
+
+        relayHosts = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          example = [ "cypher-server.example.tld" ];
+          description = ''
+            IP(s)/DNS name(s) hbbs advertises to clients as the relay (hbbr)
+            location. Required for hbbs to point clients at the right hbbr.
+          '';
+        };
+
+        signalExtraArgs = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          description = "Extra CLI flags passed through to hbbs.";
+        };
+
+        relayExtraArgs = lib.mkOption {
+          type = lib.types.listOf lib.types.str;
+          default = [ ];
+          description = "Extra CLI flags passed through to hbbr.";
+        };
+      };
     };
   };
 }

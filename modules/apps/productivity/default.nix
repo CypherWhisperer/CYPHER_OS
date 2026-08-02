@@ -13,5 +13,7 @@
     ./libreoffice.nix
     ./obs.nix
     ./d2-hm.nix
+    ./anydesk-hm.nix
+    ./rustdesk-hm.nix
   ];
 }

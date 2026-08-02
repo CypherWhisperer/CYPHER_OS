@@ -11,4 +11,4 @@ Ready-to-use templates for every document type in the CypherOS documentation sys
 | Journal Entry | [`journal/YYYY_MM_DD_entry.md`](journal_template.md)                         | Documenting a development session                                      |
 | RFC           | [`rfc/RFC_000_template.md`](rfc_template.md)                                 | Proposing a decision before making it                                  |
 | Runbook       | [`runbook/runbook_template.md`](runbook_template.md)                         | Writing a step-by-step operational guide                               |
-| Module README | [`module/README.md`](module_template.md)                                               | Documenting a module group                                             |
+| Module README | [`module/README.md`](source_file_template.md)                                               | Documenting a module group                                             |

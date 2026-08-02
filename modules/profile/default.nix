@@ -119,6 +119,8 @@
       cypher-os.apps.productivity.libreOffice.enable = lib.mkDefault true;
       cypher-os.apps.productivity.obs.enable = lib.mkDefault true;
       cypher-os.apps.productivity.d2.enable = lib.mkDefault true;
+      cypher-os.apps.productivity.anydesk.enable = lib.mkDefault true;
+      cypher-os.apps.productivity.rustdesk.enable = lib.mkDefault true;
 
       cypher-os.apps.mail.enable = lib.mkDefault true;
       cypher-os.apps.mail.thunderbird.enable = lib.mkDefault true;
