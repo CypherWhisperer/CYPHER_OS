@@ -23,7 +23,10 @@
   # The modules themselves use mkIf internally to decide what to install.
   imports = [
     ../../modules
-    ./gc-hm.nix
+    # Currently hitting an error:
+    # (error: error parsing derivation '/nix/store/nzhz804z407sw3zi40ls5h71jdsgcpgm-home-manager-auto-expire.service.drv': file is empty (possible filesystem corruption))
+    # Commenting this to check if the problem in code-related or workflow
+    # ./gc-hm.nix
   ];
   # ─────────────────────────────────────────────────────────────────────────────
   # HOME MANAGER STATE VERSION

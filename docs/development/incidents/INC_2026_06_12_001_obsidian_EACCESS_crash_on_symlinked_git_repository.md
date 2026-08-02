@@ -79,7 +79,7 @@ rm ~/DATA/FILES/PROJECTS/PRIVATE/PERSONAL/MY_OBSIDIAN_NOTES/THE_CHAMBER_OF_SECRE
 | Type    | Reference                                                                                                                               | Description                                                                      |
 | ------- | --------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------- |
 | Config  | `modules/apps/productivity/obsidian.nix`                                                                                                | Added `userIgnoreFilters` to `defaultSettings.app`                               |
-| Doc     | [`obsidian.md`](../../modules/apps/productivity/obsidian.md)                                                                       | Updated `app` settings table; added design decision and known limitation entries |
+| Doc     | [`obsidian.md`](../../source_docs/modules/apps/productivity/obsidian.md)                                                                       | Updated `app` settings table; added design decision and known limitation entries |
 | Journal | [`2026_06_12_obsidian_symlink_integration...`](../journal/2026_06_12_obsidian_symlink_integration_and_file_watcher_crash_resolution.md) | Session journal entry                                                            |
 
 ---
