@@ -19,6 +19,7 @@
     inputs.nix-vscode-extensions.overlays.default
     inputs.nur.overlays.default
     inputs.claude-desktop.overlays.default
+    (import ./overlays/anydesk.nix)
   ];
 
   config = {
