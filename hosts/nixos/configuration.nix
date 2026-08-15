@@ -128,7 +128,7 @@
       "https://nix-community.cachix.org" # Community packages — nix-community CI
       # Garnix — builds nixpkgs aggressively,
       # great coverage on nixos-unstable commits
-      "https://cache.garnix.io"
+      #"https://cache.garnix.io" # DROPPED SINCE garnix.io stopped the service
       "https://nixpkgs-terraform.cachix.org" # Pre-built terraform BSL binaries
     ];
 
@@ -153,7 +153,7 @@
       "nix-community.cachix.org-1:mB9FSh9qf2dCimDSUo8Zy7bkq5CX+/rkCWyvRCYg3Fs="
 
       # Garnix public key — from https://garnix.io/docs/caching
-      "cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
+      #"cache.garnix.io:CTFPyKSLcx5RMJKfLo5EEPUObbA78b0YQ2DTCJXqr9g="
 
       "nixpkgs-terraform.cachix.org-1:GYPxe7A0BDFmQ0N3UBPwNtSBffFGhS0TkpJFnVBp2JA="
     ];
