@@ -8,7 +8,7 @@
     ./options.nix
     ./containers.nix
     ./kubernetes.nix
-    ./databases.nix
+    ./dbmss.nix
     ./iac.nix
     ./secrets.nix
     ./cloud.nix

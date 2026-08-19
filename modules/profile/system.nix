@@ -77,7 +77,7 @@
       cypher-os.devops.enable = lib.mkDefault true;
       cypher-os.devops.containers.enable = lib.mkDefault true;
       cypher-os.devops.kubernetes.enable = lib.mkDefault true;
-      cypher-os.devops.databases.enable = lib.mkDefault true;
+      cypher-os.devops.dbmss.enable = lib.mkDefault true;
       cypher-os.devops.iac.enable = lib.mkDefault true;
       cypher-os.devops.iac.terraform.enable = lib.mkDefault true;
       cypher-os.devops.secrets.enable = lib.mkDefault true;
@@ -109,7 +109,7 @@
       cypher-os.devops.enable = lib.mkDefault true;
       cypher-os.devops.containers.enable = lib.mkDefault true;
       cypher-os.devops.kubernetes.enable = lib.mkDefault true;
-      cypher-os.devops.databases.enable = lib.mkDefault true;
+      cypher-os.devops.dbmss.enable = lib.mkDefault true;
       cypher-os.devops.iac.enable = lib.mkDefault true;
       cypher-os.devops.iac.terraform.enable = lib.mkDefault true;
       cypher-os.devops.secrets.enable = lib.mkDefault true;
