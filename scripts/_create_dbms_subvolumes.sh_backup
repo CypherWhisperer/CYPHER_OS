@@ -1,0 +1,59 @@
+#!/usr/bin/env bash
+# WARN: THIS WAS A ONE TIME RESTROFIT.
+
+# add the DBMS subvolumes to an ALREADY-INSTALLED CypherOS,
+# with no ISO boot and no hardware-configuration.nix regeneration.
+#
+# Run this once, from the live running system, as root. After it finishes,
+# modules/devops/dbmss.nix's `fileSystems` entries take over mounting them on every boot —
+# this script never needs to run again.
+set -euo pipefail
+
+if [[ $EUID -ne 0 ]]; then
+  echo "Run as root." >&2
+  exit 1
+fi
+
+# Adjust to match actual partition — same device your other btrfs
+# subvolumes (@home, @nix-store, @swap) already live on.
+BTRFS_PART="${1:-/dev/sda1}"
+TMP_TOPLEVEL="/mnt/cypheros-toplevel"
+
+DBMS_NAMES=(postgres mariadb valkey meilisearch mongo neo4j)
+
+echo "== Target partition: $BTRFS_PART =="
+echo "This will mount the Btrfs top-level (subvolid=5) at $TMP_TOPLEVEL,"
+echo "create ${#DBMS_NAMES[@]} new subvolumes as siblings of your existing"
+echo "@home/@nix-store/@swap, then unmount. Existing subvolumes are untouched."
+read -rp "Continue? [y/N] " confirm
+[[ "$confirm" == "y" || "$confirm" == "Y" ]] || {
+  echo "Aborted."
+  exit 1
+}
+
+mkdir -p "$TMP_TOPLEVEL"
+
+echo "== Mounting Btrfs top-level =="
+mount -o subvolid=5 "$BTRFS_PART" "$TMP_TOPLEVEL"
+
+echo "== Sanity check: confirm existing subvolumes are visible as siblings =="
+btrfs subvolume list "$TMP_TOPLEVEL" || true
+
+for name in "${DBMS_NAMES[@]}"; do
+  target="$TMP_TOPLEVEL/@dbms_${name}"
+  if [[ -d "$target" ]]; then
+    echo "-- @dbms_${name} already exists, skipping"
+  else
+    echo "-- creating @dbms_${name}"
+    btrfs subvolume create "$target"
+  fi
+done
+
+echo "== Unmounting top-level =="
+umount "$TMP_TOPLEVEL"
+rmdir "$TMP_TOPLEVEL"
+
+echo "== Done =="
+echo "Next: modules/devops/dbmss.nix's 'fileSystems' entries handle the rest"
+echo "WARNING: Ownership/permissions on each mountpoint are handled by"
+echo "systemd.tmpfiles.rules during rebuild — do not chown these by hand."
