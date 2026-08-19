@@ -7,7 +7,7 @@
 **Module:** `flake/hosts.nix` *(Home Manager NixOS-module integration)* 
 **Trigger:** Reactive 
 **Estimated time:** ~10 minutes
-**Session Document:** [HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION](../../../../SESSIONS/_SESSION_DOCUMENTS/HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION.md)
+**Session Document:** [2026_07_31_HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION](../../../../SESSIONS/_SESSION_DOCUMENTS/2026_07_31_HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION.md)
 
 ---
 

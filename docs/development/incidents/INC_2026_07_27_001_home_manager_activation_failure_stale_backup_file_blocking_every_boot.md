@@ -60,7 +60,7 @@ Separately, on the standalone path, cleared a dangling symlink at `~/.config/gtk
 
 During the same diagnostic pass, a related divergence was found and fixed: `nixosConfigurations` and `homeConfigurations` were building two independent `pkgs` instances with different overlay lists, which separately caused a `pkgs.claude-desktop` "attribute missing" evaluation error on the standalone path only.
 
-#### MORE DETAILS ON [HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION](../../../../SESSIONS/_SESSION_DOCUMENTS/HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION.md)
+#### MORE DETAILS ON [2026_07_31_HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION](../../../../SESSIONS/_SESSION_DOCUMENTS/2026_07_31_HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION.md)
 
 ### Changes Made
 

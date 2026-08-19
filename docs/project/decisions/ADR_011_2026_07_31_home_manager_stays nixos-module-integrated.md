@@ -46,7 +46,7 @@ Rejected:
 
 Same technical shape as the current decision, but with `home-manager switch` treated as primary and `nixos-rebuild` reserved for system-only changes.
 
-Rejected as unnecessary — no evidence during the [session](../../../../SESSIONS/_SESSION_DOCUMENTS/HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION.md) that the combined default workflow was itself a problem; the friction was entirely attributable to the boot-failure bug.
+Rejected as unnecessary — no evidence during the [session](../../../../SESSIONS/_SESSION_DOCUMENTS/2026_07_31_HOME_MANAGER_ERROR_FIX_&_D2_RESOLUTION.md) that the combined default workflow was itself a problem; the friction was entirely attributable to the boot-failure bug.
 
 ## Consequences
 

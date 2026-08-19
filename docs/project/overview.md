@@ -42,50 +42,54 @@ A single physical machine where multiple operating systems co-exist as bootable 
 The system is composed of five pillars, each owning a distinct layer of concerns. They are designed to be as independent as possible — a decision in P1 does not force a specific choice in P4.
 
 ```mermaid
+
 flowchart TB
     subgraph P1["P1 — Filesystem & Partition Layer"]
-        DISK["Single SSD\nGPT: 2 partitions"]
-        ESP["p1 — FAT32 EFI\n512MB / 1GB\nshared ESP"]
-        BTRFS["p2 — BTRFS\nremainder"]
+        DISK["Single SSD<br>GPT: 2 partitions"]
+        ESP["p1 — FAT32 EFI<br>512MB / 1GB<br>shared ESP"]
+        BTRFS["p2 — BTRFS<br>remainder"]
         DISK --> ESP
         DISK --> BTRFS
     end
 
     subgraph SUBVOLS["BTRFS Subvolumes"]
-        ROOTS["OS Roots\n@arch-root\n@debian-root\n@fedora-root\n@nixos-root"]
-        SHARED["Shared Subvolumes\n@home → /home\n@nix-store → /nix\n@identity → /var/lib/extrausers"]
-        UTIL["Utility\n@snapshots\n@swap"]
+        ROOTS["OS Roots<br>@arch-root<br>@debian-root<br>@fedora-root<br>@nixos-root"]
+        SHARED["Shared Subvolumes<br>@home → /home<br>@nix-store → /nix<br>@identity → /var/lib/extrausers"]
+        DBMS["NixOS Service Data<br>@dbms_postgres<br>@dbms_mariadb<br>@dbms_valkey<br>@dbms_meilisearch<br>@dbms_mongo<br>@dbms_neo4j<br>(NixOS-only, currently not cross-OS shared)"]
+        UTIL["Utility<br>@snapshots<br>@swap"]
         BTRFS --> ROOTS
         BTRFS --> SHARED
         BTRFS --> UTIL
+        BTRFS --> DBMS
     end
 
     subgraph P2["P2 — Identity Layer"]
-        EXTRAUSERS["libnss-extrausers\n(Arch, Debian, Fedora)"]
-        NIXDECL["uid = 1000 declaration\n(NixOS configuration.nix)"]
-        VIPW["vipw\n(FreeBSD)"]
+        EXTRAUSERS["libnss-extrausers<br>(Arch, Debian, Fedora)"]
+        NIXDECL["uid = 1000 declaration<br>(NixOS configuration.nix)"]
+        VIPW["vipw<br>(FreeBSD)"]
         SHARED --> EXTRAUSERS
         SHARED --> NIXDECL
         SHARED --> VIPW
     end
 
     subgraph P3["P3 — Home & XDG Layer"]
-        HOME["/home/cypher-whisperer\n@home subvolume"]
-        XDG["XDG Profile Separation\n.config/profiles/gnome\n.config/profiles/plasma\n.config/profiles/hyprland"]
+        HOME["/home/cypher-whisperer<br>@home subvolume"]
+        XDG["XDG Profile Separation<br>.config/profiles/gnome<br>.config/profiles/plasma<br>.config/profiles/hyprland"]
         HOME --> XDG
     end
 
     subgraph P4["P4 — Software Layer"]
-        NIX["Nix Daemon\nmulti-user"]
-        HM["Home Manager\nDEs, apps, dotfiles, fonts"]
-        NIXOS["NixOS\nfull system config"]
+        NIX["Nix Daemon<br>multi-user"]
+        HM["Home Manager<br>DEs, apps, dotfiles, fonts"]
+        NIXOS["NixOS<br>full system config"]
         NIX --> HM
         NIX --> NIXOS
+        DBMS --> NIXOS
     end
 
     subgraph P5["P5 — Declarative Layer"]
-        FLAKE["CypherOS flake.nix\nsingle source of truth"]
-        LOCK["flake.lock\nreproducibility pin"]
+        FLAKE["CypherOS flake.nix<br>single source of truth"]
+        LOCK["flake.lock<br>reproducibility pin"]
         FLAKE --> LOCK
     end
 
@@ -103,6 +107,7 @@ flowchart TB
 The partition table is deliberately minimal — exactly two partitions. All structural complexity lives inside the BTRFS layer as subvolumes, not as partitions. This is the key property that makes adding a new OS additive rather than disruptive: a new OS is a new subvolume, not a repartition.
 
 ```mermaid
+
 block-beta
     columns 3
 
@@ -111,31 +116,39 @@ block-beta
     end
 
     block:p1:1
-        efi["p1 — FAT32\nEFI System Partition\n512MB–1GB\nshared by all OSs\nsystemd-boot"]
+        efi["p1 — FAT32<br>EFI System Partition<br>512MB–1GB<br>shared by all OSs<br>systemd-boot"]
     end
 
     block:p2:2
-        btrfs["p2 — BTRFS\nAll subvolumes\nNo pre-defined sizes\nShared pool"]
+        btrfs["p2 — BTRFS<br>All subvolumes<br>No pre-defined sizes<br>Shared pool"]
     end
 ```
 
 **Subvolume layout:**
 
 ```mermaid
+
 flowchart LR
-    BTRFS["BTRFS\np2"]
+    BTRFS["BTRFS<br>p2"]
 
-    BTRFS --> arch["@arch-root\n→ / (Arch)"]
-    BTRFS --> debian["@debian-root\n→ / (Debian)"]
-    BTRFS --> fedora["@fedora-root\n→ / (Fedora)"]
-    BTRFS --> nixos["@nixos-root\n→ / (NixOS)"]
+    BTRFS --> arch["@arch-root<br>→ / (Arch)"]
+    BTRFS --> debian["@debian-root<br>→ / (Debian)"]
+    BTRFS --> fedora["@fedora-root<br>→ / (Fedora)"]
+    BTRFS --> nixos["@nixos-root<br>→ / (NixOS)"]
 
-    BTRFS --> home["@home\n→ /home\nSHARED — all Linux OSs"]
-    BTRFS --> nix["@nix-store\n→ /nix\nSHARED — CoW disabled"]
-    BTRFS --> identity["@identity\n→ /var/lib/extrausers\nSHARED — read-only"]
+    BTRFS --> home["@home<br>→ /home<br>SHARED — all Linux OSs"]
+    BTRFS --> nix["@nix-store<br>→ /nix<br>SHARED — CoW disabled"]
+    BTRFS --> identity["@identity<br>→ /var/lib/extrausers<br>SHARED — read-only"]
 
-    BTRFS --> snap["@snapshots\n→ /.snapshots"]
-    BTRFS --> swap["@swap\n→ /swap\nCoW disabled"]
+    BTRFS --> snap["@snapshots<br>→ /.snapshots"]
+    BTRFS --> swap["@swap<br>→ /swap<br>CoW disabled"]
+    
+    BTRFS --> dbms_pg["@dbms_postgres<br>→ /dbms/postgres<br>Currently NixOS-only"]
+    BTRFS --> dbms_maria["@dbms_mariadb<br>→ /dbms/mariadb<br>Currently NixOS-only"]
+    BTRFS --> dbms_valkey["@dbms_valkey<br>→ /dbms/valkey<br>Currently NixOS-only"]
+    BTRFS --> dbms_meili["@dbms_meilisearch<br>→ /dbms/meilisearch<br>Currently NixOS-only, dormant"]
+    BTRFS --> dbms_mongo["@dbms_mongo<br>→ /dbms/mongo<br>Currently NixOS-only, dormant"]
+    BTRFS --> dbms_neo4j["@dbms_neo4j<br>→ /dbms/neo4j<br>Currently NixOS-only, dormant"]
 ```
 
 **Key constraints:**
@@ -144,14 +157,16 @@ flowchart LR
 - `@swap` — CoW disabled via `chattr +C`. A hard BTRFS requirement for swapfiles. The kernel refuses to activate swap on a CoW-enabled file.
 - `@freebsd-root` — FreeBSD cannot natively mount BTRFS. Separate UFS/ZFS partition or best-effort compatibility layer. Resolved in Phase 10.
 - Subvolumes share the BTRFS pool freely. No pre-defined sizes. No repartitioning to add an OS.
+  
+- `@dbms_*` subvolumes — always mounted as **top-level siblings** of `@nixos-root`/`@home`/`@nix-store`/`@swap`, never nested inside another mounted subvolume. Nesting caused a real incident (see [INC_2026_04_10_001](../development/incidents/INC_2026_04_10_001_@data_subvolume_silently_unmounted_after_rebuild_(nested_subvolume_mount_ordering).md) — `@data` subvolume incident and [ADR_017](decisions/ADR_017_2026_08_18_dbms_subvolume_architecture.md)): systemd does not reliably guarantee mount ordering for a subvolume mounted inside an already-mounted one.
 
 **Swap strategy:**
 
 ```mermaid
 flowchart TD
     RAM["RAM (free)"]
-    ZRAM["/dev/zram0\nZRAM — compressed RAM\nfast, high priority\nper-OS, kernel-level"]
-    SWAPFILE["/swap/swapfile\n@swap subvolume\ndisk-backed, slow\nlast resort"]
+    ZRAM["/dev/zram0<br>ZRAM — compressed RAM<br>fast, high priority<br>per-OS, kernel-level"]
+    SWAPFILE["/swap/swapfile<br>@swap subvolume<br>disk-backed, slow<br>last resort"]
 
     RAM -->|"memory pressure"| ZRAM
     ZRAM -->|"ZRAM full"| SWAPFILE
@@ -167,13 +182,13 @@ The load-bearing piece of the identity layer is UID consistency. File ownership 
 
 ```mermaid
 flowchart TB
-    IDENT["@identity subvolume\n/identity/passwd\n/identity/shadow\n/identity/group"]
+    IDENT["@identity subvolume<br>/identity/passwd<br>/identity/shadow<br>/identity/group"]
 
-    IDENT -->|"bind-mount → /var/lib/extrausers\nnsswitch: extrausers after files"| ARCH["Arch Linux\nlibnss-extrausers"]
-    IDENT -->|"bind-mount → /var/lib/extrausers\nnsswitch: extrausers after files"| DEBIAN["Debian\nlibnss-extrausers"]
-    IDENT -->|"bind-mount → /var/lib/extrausers\nnsswitch: extrausers after files"| FEDORA["Fedora\nlibnss-extrausers"]
-    IDENT -->|"uid = 1000 declared\nin configuration.nix"| NIXOS["NixOS\nnative declaration"]
-    IDENT -->|"manual vipw entry\nUID must match"| FREEBSD["FreeBSD\nvipw"]
+    IDENT -->|"bind-mount → /var/lib/extrausers<br>nsswitch: extrausers after files"| ARCH["Arch Linux<br>libnss-extrausers"]
+    IDENT -->|"bind-mount → /var/lib/extrausers<br>nsswitch: extrausers after files"| DEBIAN["Debian<br>libnss-extrausers"]
+    IDENT -->|"bind-mount → /var/lib/extrausers<br>nsswitch: extrausers after files"| FEDORA["Fedora<br>libnss-extrausers"]
+    IDENT -->|"uid = 1000 declared<br>in configuration.nix"| NIXOS["NixOS<br>native declaration"]
+    IDENT -->|"manual vipw entry<br>UID must match"| FREEBSD["FreeBSD<br>vipw"]
 ```
 
 **Canonical identity record:**
@@ -223,17 +238,17 @@ Each launcher script is registered as a `.desktop` session entry with the displa
 
 ```mermaid
 flowchart TD
-    HOME["/home/cypher-whisperer\n@home subvolume"]
+    HOME["/home/cypher-whisperer<br>@home subvolume"]
 
-    HOME --> SHARED["Shared — not profiled\n~/.ssh/\n~/.gnupg/\n~/.gitconfig\nshell rc files\nfonts"]
+    HOME --> SHARED["Shared — not profiled<br>~/.ssh/<br>~/.gnupg/<br>~/.gitconfig<br>shell rc files<br>fonts"]
 
     HOME --> PROFILES[".config/profiles/"]
-    PROFILES --> GNOME[".config/profiles/gnome/\n.local/share/profiles/gnome/\n.cache/profiles/gnome/"]
-    PROFILES --> PLASMA[".config/profiles/plasma/\n.local/share/profiles/plasma/\n.cache/profiles/plasma/"]
-    PROFILES --> HYPR[".config/profiles/hyprland/\n.local/share/profiles/hyprland/\n.cache/profiles/hyprland/"]
+    PROFILES --> GNOME[".config/profiles/gnome/<br>.local/share/profiles/gnome/<br>.cache/profiles/gnome/"]
+    PROFILES --> PLASMA[".config/profiles/plasma/<br>.local/share/profiles/plasma/<br>.cache/profiles/plasma/"]
+    PROFILES --> HYPR[".config/profiles/hyprland/<br>.local/share/profiles/hyprland/<br>.cache/profiles/hyprland/"]
 ```
 
-Intentionally not profiled (shared across all DE sessions): SSH keys, GPG keys, git config, shell rc files, fonts. Anything that does not cause DE conflicts stays generalized.
+Intentionally not profiled *(shared across all DE sessions):* SSH keys, GPG keys, git config, shell rc files, fonts. Anything that does not cause DE conflicts stays generalized.
 
 ---
 
@@ -265,7 +280,7 @@ flowchart TB
     end
 
     subgraph NIXOS_EXCEPTION["NixOS (exception)"]
-        NIXOS_ALL["Nix owns both columns\nFull system declaration"]
+        NIXOS_ALL["Nix owns both columns<br>Full system declaration"]
     end
 ```
 
@@ -282,16 +297,17 @@ The `CypherOS` repository is the single source of truth. A fresh OS install plus
 **`flake.nix` structure:**
 
 ```mermaid
+
 flowchart TD
-    FLAKE["flake.nix\nEntry point"]
+    FLAKE["flake.nix<br>Entry point"]
 
-    FLAKE --> NIXOS_HOST["nixosConfigurations\ncypher-nixos\nhosts/nixos/configuration.nix"]
-    FLAKE --> HM_CONFIGS["homeConfigurations\ncypher-whisperer@arch\ncypher-whisperer@debian\ncypher-whisperer@fedora"]
+    FLAKE --> NIXOS_HOST["nixosConfigurations<br>cypher-nixos<br>hosts/nixos/configuration.nix"]
+    FLAKE --> HM_CONFIGS["homeConfigurations<br>cypher-whisperer@arch<br>cypher-whisperer@debian<br>cypher-whisperer@fedora"]
 
-    NIXOS_HOST --> HM_MODULE["home-manager.users.cypher-whisperer\n→ modules/home/default.nix"]
-    NIXOS_HOST --> SYSTEM_MODULES["system modules\n→ modules/de/gnome/system.nix\n→ modules/dm/gdm/system.nix\n→ modules/devops/system.nix\n→ ..."]
+    NIXOS_HOST --> HM_MODULE["home-manager.users.cypher-whisperer<br>→ modules/home/default.nix"]
+    NIXOS_HOST --> SYSTEM_MODULES["system modules<br>→ modules/de/gnome/system.nix<br>→ modules/dm/gdm/system.nix<br>→ modules/devops/system.nix<br>→ ..."]
 
-    HM_MODULE --> HM_ROOT["modules/home/default.nix\nHM root — imports all modules\nhome.stateVersion"]
+    HM_MODULE --> HM_ROOT["modules/home/default.nix<br>HM root — imports all modules<br>home.stateVersion"]
 ```
 
 ---
@@ -301,19 +317,20 @@ flowchart TD
 All configuration options live under the `cypher-os` attribute tree. Every option you declare is a question CypherOS asks the host config: _"do you want this?"_
 
 ```mermaid
+
 flowchart LR
     ROOT["cypher-os"]
 
-    ROOT --> PROFILE["profile\n├── desktop.enable\n└── server.enable"]
-    ROOT --> SHELL["shell\n├── enable\n├── zsh.enable\n├── fish.enable\n└── nushell.enable"]
+    ROOT --> PROFILE["profile<br>├── desktop.enable<br>└── server.enable"]
+    ROOT --> SHELL["shell<br>├── enable<br>├── zsh.enable<br>├── fish.enable<br>└── nushell.enable"]
     ROOT --> FONTS["extra-fonts.enable"]
     ROOT --> XDG["xdg-config.enable"]
-    ROOT --> DE["de\n├── gnome\n│   ├── enable\n│   └── variant\n├── plasma\n│   ├── enable\n│   └── variant\n└── hyprland\n    ├── enable\n    └── variant"]
-    ROOT --> DM["dm\n├── gdm.enable\n└── sddm.enable"]
-    ROOT --> APPS["apps\n├── enable (kill switch)\n├── browser\n├── terminal\n├── editor\n├── productivity\n├── dev\n└── cli"]
-    ROOT --> GAMING["gaming\n├── enable\n├── steam.enable\n└── minecraft.enable"]
-    ROOT --> DEVOPS["devops\n├── enable\n├── containers.enable\n├── kubernetes.enable\n├── databases.enable\n├── iac\n└── secrets"]
-    ROOT --> VIRT["virtualisation\n└── helpers.enable"]
+    ROOT --> DE["de<br>├── gnome<br>│   ├── enable<br>│   └── variant<br>├── plasma<br>│   ├── enable<br>│   └── variant<br>└── hyprland<br>    ├── enable<br>    └── variant"]
+    ROOT --> DM["dm<br>├── gdm.enable<br>└── sddm.enable"]
+    ROOT --> APPS["apps<br>├── enable (kill switch)<br>├── browser<br>├── terminal<br>├── editor<br>├── productivity<br>├── dev<br>└── cli"]
+    ROOT --> GAMING["gaming<br>├── enable<br>├── steam.enable<br>└── minecraft.enable"]
+    ROOT --> DEVOPS["devops<br>├── enable<br>├── containers.enable<br>├── kubernetes.enable<br>├── databases.enable<br>├── iac<br>└── secrets"]
+    ROOT --> VIRT["virtualisation<br>└── helpers.enable"]
 ```
 
 **Profile cascade:**
@@ -333,11 +350,11 @@ flowchart TD
     DESKTOP -->|"mkDefault true"| GDM_EN["cypher-os.dm.gdm.enable"]
     DESKTOP -->|"mkDefault true"| APPS_EN["cypher-os.apps.enable"]
 
-    GNOME_EN --> GNOME_MOD["gnome/system.nix\nservices.desktopManager.gnome.enable"]
-    GDM_EN --> GDM_MOD["gdm/system.nix\nservices.displayManager.gdm.enable"]
-    APPS_EN --> APP_MODS["apps/**/hm.nix\nhome.packages, programs.*"]
+    GNOME_EN --> GNOME_MOD["gnome/system.nix<br>services.desktopManager.gnome.enable"]
+    GDM_EN --> GDM_MOD["gdm/system.nix<br>services.displayManager.gdm.enable"]
+    APPS_EN --> APP_MODS["apps/**/hm.nix<br>home.packages, programs.*"]
 
-    OVERRIDE["host override:\ncypher-os.dm.gdm.enable = false\ncypher-os.dm.sddm.enable = true"]
+    OVERRIDE["host override:<br>cypher-os.dm.gdm.enable = false<br>cypher-os.dm.sddm.enable = true"]
     OVERRIDE -->|"explicit assignment beats mkDefault"| GDM_EN
 ```
 
@@ -350,6 +367,7 @@ For the full module architecture specification, see [ADR-005 — Module Architec
 How the five pillars connect at runtime when booted into any Linux OS on the machine:
 
 ```mermaid
+
 flowchart TB
     subgraph DISK["Physical Disk — BTRFS"]
         subgraph OS_ROOTS["OS Root Subvolumes"]
@@ -359,19 +377,19 @@ flowchart TB
             NIXOS["@nixos-root"]
         end
         subgraph SHARED_VOLS["Shared Subvolumes"]
-            HOME_VOL["@home\n→ /home"]
-            NIX_VOL["@nix-store\n→ /nix"]
-            ID_VOL["@identity\n→ /var/lib/extrausers"]
+            HOME_VOL["@home<br>→ /home"]
+            NIX_VOL["@nix-store<br>→ /nix"]
+            ID_VOL["@identity<br>→ /var/lib/extrausers"]
         end
     end
 
     OS_ROOTS -->|"fstab mounts"| SHARED_VOLS
 
-    ID_VOL -->|"nsswitch extrausers"| IDENTITY["Identity\ncypher-whisperer UID 1000\nrecognised on every OS"]
-    NIX_VOL -->|"Nix daemon\nmulti-user"| SOFTWARE["Software Layer\nNix + Home Manager\nDEs, apps, dotfiles"]
-    HOME_VOL -->|"XDG profile\nlauncher scripts"| HOME_LAYER["Home & XDG\none home directory\nper-DE config namespace"]
+    ID_VOL -->|"nsswitch extrausers"| IDENTITY["Identity<br>cypher-whisperer UID 1000<br>recognised on every OS"]
+    NIX_VOL -->|"Nix daemon<br>multi-user"| SOFTWARE["Software Layer<br>Nix + Home Manager<br>DEs, apps, dotfiles"]
+    HOME_VOL -->|"XDG profile<br>launcher scripts"| HOME_LAYER["Home & XDG<br>one home directory<br>per-DE config namespace"]
 
-    SOFTWARE -->|"flake apply"| FLAKE_SRC["CypherOS\nflake.nix\ngit repo"]
+    SOFTWARE -->|"flake apply"| FLAKE_SRC["CypherOS<br>flake.nix<br>git repo"]
 ```
 
 ---
@@ -384,11 +402,12 @@ flowchart TB
 
 ## Open Questions & Known Trade-offs
 
-|#|Question|Status|
-|---|---|---|
-|OQ1|Nix daemon mode — single-user vs multi-user on non-NixOS|✅ Decided: multi-user on all OSs|
-|OQ2|FreeBSD `@home` access — BTRFS incompatible|⊙ Phase 10 — likely exFAT/ext4 shared partition|
-|OQ3|FreeBSD password hash format — yescrypt vs SHA-512|⊙ Phase 10 — sync script needed|
-|OQ4|GNOME Keyring / KWallet isolation under XDG profiling|⊙ Verify Phase 7|
-|OQ5|BTRFS CoW + Nix hardlinks|✅ `chattr +C` on `@nix-store` before Nix install|
-|OQ6|Shared ESP + systemd-boot vs per-OS EFI|⊙ Decided Phase 0 — shared ESP + systemd-boot|
+| #   | Question                                                                                                                                         | Status                                                                       |
+| --- | ------------------------------------------------------------------------------------------------------------------------------------------------ | ---------------------------------------------------------------------------- |
+| OQ1 | Nix daemon mode — single-user vs multi-user on non-NixOS                                                                                         | ✅ Decided: multi-user on all OSs                                             |
+| OQ2 | FreeBSD `@home` access — BTRFS incompatible                                                                                                      | ⊙ Phase 10 — likely exFAT/ext4 shared partition                              |
+| OQ3 | FreeBSD password hash format — yescrypt vs SHA-512                                                                                               | ⊙ Phase 10 — sync script needed                                              |
+| OQ4 | GNOME Keyring / KWallet isolation under XDG profiling                                                                                            | ⊙ Verify Phase 7                                                             |
+| OQ5 | BTRFS CoW + Nix hardlinks                                                                                                                        | ✅ `chattr +C` on `@nix-store` before Nix install                             |
+| OQ6 | Shared ESP + systemd-boot vs per-OS EFI                                                                                                          | ⊙ Decided Phase 0 — shared ESP + systemd-boot                                |
+| OQ7 | Should `@dbms_*` subvolumes become cross-OS shared *(like `@home`)* via fstab entries on Arch/Debian/Fedora too, or stay NixOS-only permanently? | ⚠️ Undecided — *currently NixOS-only by default, not a deliberate exclusion* |
