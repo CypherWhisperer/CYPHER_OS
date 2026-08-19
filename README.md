@@ -1,5 +1,7 @@
 # CypherOS
 
+## NOTE: STILL UNDER DEVELOPMENT!
+
 A unified multi-OS system on a single machine — _multiple operating systems sharing one identity, one home directory, one software layer, and one declarative configuration_. Booting a different OS is not starting over; it is changing perspective.
 
 	This repository is the single source of truth for the entire system. It is a Nix Flake managed via [Home Manager](https://github.com/nix-community/home-manager), targeting NixOS as the canonical reference OS and extending to Arch, Debian, Fedora, and FreeBSD via the same user-space configuration.
