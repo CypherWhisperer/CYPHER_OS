@@ -84,7 +84,7 @@ let
   '';
 in
 {
-  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.databases.enable) {
+  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.dbmss.enable) {
 
     # setting up users and groups.
     users.groups.${backupGroup} = { };
@@ -141,7 +141,7 @@ in
       # run pg_upgrade on version bump.
       package = pkgs.postgresql_18;
       dataDir = "/dbms/postgres";
-      enableTCPIP = false; # socket-only; flip only if a project needs remote/container access
+      enableTCPIP = false; # socket-only; flip if remote/container access needed.
 
       # authentication: pg_hba.conf rules. Controls who can connect, from where,
       # and with what auth method:
@@ -159,10 +159,19 @@ in
 
       extensions =
         ps: with ps; [
-          pgvector
           postgis
           timescaledb
           timescaledb_toolkit
+
+          # ────────────────────────────────────────────────────────────────────────
+          # pgvector: PostgreSQL extension for vector similarity search. Required for
+          # AI/ML workloads (embeddings, RAG pipelines) that store vectors alongside
+          # relational data. Installed as a package — must be enabled per-database:
+          #   CREATE EXTENSION vector;
+          # See: https://github.com/pgvector/pgvector
+          # ────────────────────────────────────────────────────────────────────────
+          pgvector
+
           # Extras: Observer performance, and need and decisively evaluate.
           age
           anonymizer
@@ -224,7 +233,7 @@ in
       ensureUsers = [
         {
           name = "cypher_dev";
-          # ensureDBOwnership: makes cypher_dev the owner of the cypher_dev database.
+          # ensureDBOwnership: makes cypher_dev owner of the cypher_dev database.
           ensureDBOwnership = true;
         }
       ];
@@ -267,7 +276,7 @@ in
       wantedBy = [ "timers.target" ];
       timerConfig = {
         OnCalendar = "daily";
-        Persistent = true; # catches up on next boot if the machine was off at the scheduled time
+        Persistent = true; # catches up on next boot if machine was off at scheduled time
       };
     };
 
@@ -393,10 +402,10 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     # Valkey (via the redis module) — cache, kept ephemeral.
     # ──────────────────────────────────────────────────────────────────────────
-    services.redis.package = pkgs.valkey; # the entire Redis->Valkey migration, one line
+    services.redis.package = pkgs.valkey; # the entire Redis->Valkey migration.
     services.redis.servers."" = {
       enable = true;
-      save = [ ]; # disable RDB — nothing here is worth persisting given ephemeral-cache usage
+      save = [ ]; # disable RDB; nothing here worth persisting (ephemeral-cache use)
       appendOnly = false;
     };
 
@@ -434,17 +443,9 @@ in
       timescaledb-tune
       postgrest
       postgres-language-server
-      # ────────────────────────────────────────────────────────────────────────
-      # pgvector: PostgreSQL extension for vector similarity search. Required for
-      # AI/ML workloads (embeddings, RAG pipelines) that store vectors alongside
-      # relational data. Installed as a package — must be enabled per-database:
-      #   CREATE EXTENSION vector;
-      # See: https://github.com/pgvector/pgvector
-      # ────────────────────────────────────────────────────────────────────────
-      # pgvector # Currently (2026-05-29) missing from nixpkgs; install manually if needed:
 
       # ── MongoDB CLI tools ───────────────────────────────────────────────────
-      mongodb-tools # mongodump, mongorestore, mongoexport, mongoimport, mongostat
+      mongodb-tools # mongo{dump,restore,export,import,stat}
       mongodb-atlas-cli # manage Atlas cloud clusters from the terminal
       mongodb-ce
       mongodb-cli
@@ -457,13 +458,14 @@ in
 
       # ── MySQL/MariaDB tooling ───────────────────────────────────────────────
       # ── Optional: CLI ergonomics ────────────────────────────────────────────
-      # mycli gives autocompletion + syntax highlighting in the mysql
-      # shell — a nice-to-have, not required for anything above to work.
       mariadb_114 # provides the `mysql/mariadb` CLI client itself
-      # mycli
       mysql-shell
       mysqltuner
       mysql2pgsql # MySQL dump to Postgres-loadable files.
+      # mycli gives autocompletion + syntax highlighting in the mysql
+      # shell — a nice-to-have, not required for anything above to work tho.
+      # ──────────────────────────────────────────────────────────────────────────
+      # mycli
 
       # ── SQLite ──────────────────────────────────────────────────────────────
       sqlite # file-based DB; no daemon
@@ -481,8 +483,8 @@ in
       usql # single CLI for PostgreSQL, MySQL, SQLite, and more
 
       # ── GUI clients ───────────────────────────────────────────────────────────
-      dbgate # universal open-source DB GUI; PostgreSQL, MySQL, SQLite, MongoDB, Redis
-      mongodb-compass # official MongoDB GUI; use for deep MongoDB work (explain plans, aggregations)
+      dbgate # universal DB GUI; PostgreSQL, MySQL, SQLite, MongoDB, Redis
+      mongodb-compass # official MongoDB GUI; for deep MongoDB work (explain plans, aggregations)
 
       # ── EXCLUDED ──────────────────────────────────────────────────────────────
 
