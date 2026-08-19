@@ -161,7 +161,24 @@ in
         ps: with ps; [
           postgis
           timescaledb
-          timescaledb_toolkit
+
+          # ────────────────────────────────────────────────────────────────────────
+          # error: Refusing to evaluate package 'timescaledb_toolkit-1.21.0' in
+          #  /nix/store/3a2vdn5i7vd2wl654xs8nb52jf1v6cbh-source/pkgs/servers/sql/postgresql/ext/timescaledb_toolkit.nix:40 because it has problems:
+          #   - broken: This package is broken.
+          #   See also https://nixos.org/manual/nixpkgs/unstable#sec-problems
+          #   To allow evaluation regardless, use:
+          #   - Nixpkgs import: import nixpkgs { config = <below code>; }
+          #   - NixOS: nixpkgs.config = <below code>;
+          #   - nix-* commands: Put below code in ~/.config/nixpkgs/config.nix
+          #
+          #   {
+          #     problems.handlers = {
+          #       timescaledb_toolkit.broken = "warn"; # or "ignore"
+          #     };
+          #   }
+          # ────────────────────────────────────────────────────────────────────────
+          #timescaledb_toolkit
 
           # ────────────────────────────────────────────────────────────────────────
           # pgvector: PostgreSQL extension for vector similarity search. Required for
@@ -173,19 +190,26 @@ in
           pgvector
 
           # Extras: Observer performance, and need and decisively evaluate.
+
+          # ────────────────────────────────────────────────────────────────────────
+          # same Error as timescaledb_toolkit above; see that block for how to override.
+          # ────────────────────────────────────────────────────────────────────────
+          # citus
+          # lantern
+          # pg_auto_failover
+          # pg_ed25519
+          # pgaudit
+          # sqlite_fdw
+
           age
           anonymizer
           apache_datasketches
-          citus
           ip4r
-          lantern
-          pg_auto_failover
           pg_background
           pg_bigm
           pg_cron
-          pg_csz
-          pg_duck
-          pg_ed25519
+          pg_csv
+          pg_duckdb
           pg_graphql
           pg_partman
           pg_repack
@@ -196,7 +220,6 @@ in
           pg_textsearch
           pg_topn
           pg_uuidv7
-          pgaudit
           pgrouting
           pgsodium
           pgsql-http
@@ -206,7 +229,6 @@ in
           pointcloud
           repmgr
           rum
-          sqlite_fdw
           system_stats
           tsja
           vectorchord
@@ -232,7 +254,7 @@ in
       ensureDatabases = [ "cypher_test" ];
       ensureUsers = [
         {
-          name = "cypher_dev";
+          name = "cypher_test";
           # ensureDBOwnership: makes cypher_dev owner of the cypher_dev database.
           ensureDBOwnership = true;
         }
