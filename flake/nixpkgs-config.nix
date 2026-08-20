@@ -32,6 +32,7 @@
       # Tracked at nixpkgs#528213. Revisit when Logseq releases a new version.
       # Electron override attempts (34, 36, 37, 38) all failed — removed/insecure.
       "electron-39.8.10"
+      "nodejs-slim-20.20.2"
     ];
   };
 }
