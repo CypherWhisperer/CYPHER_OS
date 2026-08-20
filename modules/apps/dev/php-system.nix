@@ -1,7 +1,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# modules/apps/dev/php.nix
+# modules/apps/dev/php-system.nix
 #
-# PHP Development Environment — CypherOS
+# CyherOS PHP Development Environment.
 # ──────────────────────────────────────────────────────────────────────────────
 #
 # WHAT THIS MODULE PROVIDES
@@ -30,7 +30,7 @@
 #  PHPStan's type system doesn't model. Both tools install cleanly without
 #  conflict; only PHPStan is wired into editor LSP chains.
 #
-# RELATED SESSIONS / FUTURE WORK
+# NOTE: RELATED SESSIONS / FUTURE WORK
 # ──────────────────────────────────────────────────────────────────────────────
 #  CypherIDE (Neovim): a dedicated session will wire Phpactor (installed here
 #  system-wide), nvim-dap-php, conform.nvim → php-cs-fixer, and nvim-lint →
@@ -60,7 +60,7 @@ in
       # PHP Runtime
       # ──────────────────────────────────────────────────────────────────────────────
       # cfg.package resolves to the phpEnv buildEnv defined in the let block
-      # above (PHP 8.3 + Xdebug + common extensions). It is exposed as an
+      # in options.nix (PHP 8.3 + Xdebug + common extensions). It is exposed as an
       # option so it can be overridden per-host without editing this file.
       cfg.package
 
@@ -104,7 +104,7 @@ in
       # §PHPSTAN-LEVEL
       # Level 0 = lax (only obvious errors). Level max = strictest.
       # CypherOS default: level 5 (substantial coverage without overwhelming
-      # noise on actively-developed projects like DevLog).
+      # noise on actively-developed projects).
       #
       # Levels at a glance:
       #   0  — basic type checks, undefined variables
@@ -296,13 +296,13 @@ in
     # single-user desktop profile.
     # ──────────────────────────────────────────────────────────────────────────────
     environment.shellInit = lib.mkIf cfg.withComposerGlobalPath ''
-      # Composer global bin — added by modules/apps/dev/php.nix
+      # Composer global bin — added by modules/apps/dev/php-system.nix
       export COMPOSER_HOME="$HOME/.config/composer"
       export PATH="$HOME/.config/composer/vendor/bin:$PATH"
     '';
 
     # ──────────────────────────────────────────────────────────────────────────────
-    # Notes that affect other modules / sessions
+    # Notes affecting other modules / sessions
     # ──────────────────────────────────────────────────────────────────────────────
     #
     # §-NEOVIM-DECISIONS — for the CypherIDE PHP tooling session:

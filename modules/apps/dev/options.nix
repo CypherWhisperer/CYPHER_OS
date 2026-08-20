@@ -26,7 +26,6 @@ let
   # To pin a specific version, swap the base:
   #   pkgs.php82  → PHP 8.2 (active LTS)
   #   pkgs.php83  → PHP 8.3 (current stable)
-  #   pkgs.php84  → PHP 8.4 (when available in your nixpkgs pin)
   #
   # §-DEVSHELL-NOTE — PER-PROJECT VERSION PINNING
   # ──────────────────────────────────────────────────────────────────────────────
@@ -34,20 +33,15 @@ let
   # language servers, and tooling (Phpactor, PHPStan, PHP-CS-Fixer) resolve
   # against. It is intentionally version-agnostic at the system level.
   #
-  # For per-project pinning (e.g. DevLog needs 8.2, a future Laravel project
-  # needs 8.3), the proper Nix idiom is a per-project devShell (flake.nix) or
-  # devenv.nix that declares its own phpEnv with the pinned version. This keeps
-  # the system-wide installation clean while each project can declare its own
-  # exact runtime contract.
+  # For per-project pinning, the proper Nix idiom is a per-project devShell
+  #  (flake.nix  or devenv.nix) that declares its own phpEnv with the pinned
+  # version. This keeps the system-wide installation clean while each project can
+  # declare its own exact runtime contract.
   #
-  # DevLog currently uses devenv.nix + direnv for its per-project environment.
-  # That setup works and should not be disturbed. This system-wide PHP is the
-  # fallback for contexts outside devenv (editors outside the devenv shell,
-  # global CLI tools, Phpactor LSP resolution, etc.).
+  # This system-wide PHP is the fallback for contexts outside per-project envs
+  # (e.g, editors outside the devenv shell, global CLI tools,
+  #  Phpactor LSP resolution, etc.).
   #
-  # When you are ready to implement per-project PHP version isolation cleanly
-  # in flake.nix devShells, revisit this comment and cross-reference with the
-  # devenv.nix approach already established in DevLog.
   # ──────────────────────────────────────────────────────────────────────────────
   phpEnv = pkgs.php.buildEnv {
     extensions = (
@@ -55,9 +49,9 @@ let
       enabled
       ++ (with all; [
 
-        # --- Core: always needed for any non-trivial PHP project ---
+        # ──────── Core: always needed for any non-trivial PHP project ───────────
         pdo # PDO base interface; required by pdo_mysql, pdo_sqlite, etc.
-        pdo_mysql # MySQL/MariaDB via PDO — DevLog's primary DB driver
+        pdo_mysql # MySQL/MariaDB via PDO.
         pdo_sqlite # SQLite via PDO — lightweight testing without a full DB server
         mbstring # Multibyte string functions; required by PSR libs and frameworks
         intl # Internationalization — required by Symfony and i18n-aware code
@@ -65,40 +59,40 @@ let
         opcache # Bytecode cache — mandatory in any non-trivial PHP project
         curl # HTTP client; Laravel/Symfony HTTP facades depend on it
 
-        # --- Debugging ---
+        # ──────── Debugging ──────────────────────────────────────────────────────
         # §XDEBUG-NOTE: see extraConfig below for the full constraint documentation.
         xdebug
 
-        # --- Data formats ---
-        # xml           # XML parsing; required by some Composer packages and SOAP
-        # simplexml     # Simplified XML; often pulled in by xml-heavy libraries
-        # dom           # DOM manipulation; needed by PHPUnit HTML coverage output
-        # xmlreader     # Streaming XML reader — large document processing
-        # xmlwriter     # Streaming XML writer
-        # xsl           # XSLT transformations
+        # ──────── Data formats ───────────────────────────────────────────────────
+        xml # XML parsing; required by some Composer packages and SOAP
+        simplexml # Simplified XML; often pulled in by xml-heavy libraries
+        dom # DOM manipulation; needed by PHPUnit HTML coverage output
+        xmlreader # Streaming XML reader — large document processing
+        xmlwriter # Streaming XML writer
+        xsl # XSLT transformations
 
-        # --- PostgreSQL (future: if a project uses Postgres instead of MySQL) ---
-        # pdo_pgsql     # PostgreSQL via PDO
-        # pgsql         # PostgreSQL native functions
+        # ──────── PostgreSQL (future: if a project uses Postgres instead of MySQL) ─
+        pdo_pgsql # PostgreSQL via PDO
+        pgsql # PostgreSQL native functions
 
-        # --- Image processing ---
+        # ──────── Image processing ────────────────────────────────────────────────
         # gd            # GD library — basic image manipulation
-        # imagick       # ImageMagick binding — more capable than GD; pick one if needed
+        imagick # ImageMagick binding — more capable than GD
 
-        # --- Math / crypto ---
-        # bcmath        # Arbitrary-precision math; required by Laravel and payment SDKs
-        # sodium        # libsodium crypto; Laravel uses this for encryption by default
+        # ──────── Math / crypto ─────────────────────────────────────────────────
+        bcmath # Arbitrary-precision math; required by Laravel and payment SDKs
+        sodium # libsodium crypto; Laravel uses this for encryption by default
 
-        # --- Caching / message queues (future: Laravel cache, jobs, events) ---
+        # ──────── Caching / message queues (future: Laravel cache, jobs, events) ─
         # redis         # Redis extension — needed when switching to Redis cache/queue
         # memcached     # Memcached alternative — prefer Redis for new projects
 
-        # --- Other contrib extensions ---
-        # mongodb       # MongoDB driver — only if you use a Mongo-backed project
-        # yaml          # YAML parsing — useful for Symfony config and test fixtures
-        # apcu          # Shared memory cache — useful as a local session/cache backend
+        # ──────── Other contrib extensions ──────────────────────────────────────
+        mongodb # MongoDB driver — only if you use a Mongo-backed project
+        yaml # YAML parsing — useful for Symfony config and test fixtures
+        apcu # Shared memory cache — useful as a local session/cache backend
 
-        # --- Code coverage (CI/CD use case) ---
+        # ──────── Code coverage (CI/CD use case) ─────────────────────────────────
         # pcov          # Fast code-coverage driver
         #               # ⚠ CONFLICT: xdebug and pcov cannot be loaded simultaneously.
         #               #   For CI coverage runs, build a separate phpEnv WITHOUT xdebug
