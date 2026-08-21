@@ -30,6 +30,8 @@ Each ADR is a permanent record. Once accepted, an ADR is not deleted — it may 
 | [ADR_018](ADR_018_2026_08_18_provisioning_dormant_dbms_subvolumes_ahead_of_need.md)              | 2026_08_18 | Accepted | Provision Dormant DBMS btrf subvolumes ahead of their use.                                                                         |
 | [ADR_019](ADR_019_2026_08_18_on-demand_dbms_service_lifecycle.md)                                | 2026_08_18 | Accepted | DBMSs don't run on boot but are started up on-demand *(and temporarily and momentarily during periodic  automated backups.)*       |
 | [ADR_020](ADR_020_2026_08_18_dbms_backup_strategy.md)                                            | 2026_08_18 | Accepted | Backup Strategy: automated DBMS-native dumps + BTRFS snapshots *(currently manual.)*                                               |
+| [ADR_021](ADR_021_2026_08_21_nix_managed_go_tooling_shared_across_editors.md)                    | 2026_08_21 | Accepted | Nix Manages tooling and IDEs simply leverage from that, rather than each diverging with it's own management.                       |
+| [ADR_022](ADR_022_2026_08_21_lsp_settings_flat_key_convention)                                   | 2026_08_21 | Accepted | LSP settings' configuration use a flat-key *(over dotted)* as a ***convention.**                                                   |
 
 ---
 
