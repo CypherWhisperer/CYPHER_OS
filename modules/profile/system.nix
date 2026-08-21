@@ -69,7 +69,9 @@
       cypher-os.apps.browser.brave.enable = lib.mkDefault true;
 
       cypher-os.apps.dev.enable = lib.mkDefault true;
-      cypher-os.apps.dev.php.enable = lib.mkDefault true;
+      cypher-os.apps.dev.languages.enable = lib.mkDefault true;
+      cypher-os.apps.dev.languages.go.enable = lib.mkDefault true;
+      cypher-os.apps.dev.languages.php.enable = lib.mkDefault true;
 
       # ─────────────────────────────────────────────────────────────────────────────
       # DEVOPS INFRASTRUCTURE

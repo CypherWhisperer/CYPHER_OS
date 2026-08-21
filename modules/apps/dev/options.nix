@@ -1,6 +1,8 @@
 { lib, pkgs, ... }:
 
 let
+  inherit (lib) mkOption mkEnableOption types;
+
   # ──────────────────────────────────────────────────────────────────────────────
   # §-PHPENV — PHP Runtime Build
   # ──────────────────────────────────────────────────────────────────────────────
@@ -179,72 +181,177 @@ in
 
 {
   options.cypher-os.apps.dev = {
-    enable = lib.mkEnableOption "CypherOS development environment";
-    git.enable = lib.mkEnableOption "Git Version Control System";
-    ssh.enable = lib.mkEnableOption "Enable SSH client configuration";
-    devenv.enable = lib.mkEnableOption "Enable devenv + direnv project shell tooling";
-    php = {
-      enable = lib.mkEnableOption "PHP development environment (runtime, tooling, Composer PATH)";
+    enable = mkEnableOption "CypherOS development environment";
+    git.enable = mkEnableOption "Git Version Control System";
+    ssh.enable = mkEnableOption "Enable SSH client configuration";
+    devenv.enable = mkEnableOption "Enable devenv + direnv project shell tooling";
 
-      package = lib.mkOption {
-        type = lib.types.package;
-        default = phpEnv;
-        description = ''
-          The PHP runtime to install system-wide. Defaults to the buildEnv
-          defined in this module (current stable + Xdebug + common extensions).
+    languages = {
+      enable = mkEnableOption "Enable language-specific dev tooling (PHP, Go, Rust, etc.)";
 
-          Override to swap to a version-pinned or extension-customised build
-          without editing this file:
+      php = {
+        enable = mkEnableOption "PHP development environment (runtime, tooling, Composer PATH)";
 
-            cypher-os.apps.dev.php.package = pkgs.php82.buildEnv {
-              extensions = ({ enabled, all }: enabled ++ (with all; [ xdebug pdo_mysql ]));
-              extraConfig = "memory_limit = 256M";
-            };
+        package = mkOption {
+          type = types.package;
+          default = phpEnv;
+          description = ''
+            The PHP runtime to install system-wide. Defaults to the buildEnv
+            defined in this module (current stable + Xdebug + common extensions).
 
-          Note: if you override this, also update Phpactor's resolving PHP path
-          so the language server stays in sync with the runtime you're using.
-        '';
+            Override to swap to a version-pinned or extension-customised build
+            without editing this file:
+
+              cypher-os.apps.dev.php.package = pkgs.php82.buildEnv {
+                extensions = ({ enabled, all }: enabled ++ (with all; [ xdebug pdo_mysql ]));
+                extraConfig = "memory_limit = 256M";
+              };
+
+            Note: if you override this, also update Phpactor's resolving PHP path
+            so the language server stays in sync with the runtime you're using.
+          '';
+        };
+
+        withComposerGlobalPath = mkOption {
+          type = types.bool;
+          default = true;
+          description = ''
+            §COMPOSER-PATH-CONVENTION
+            ────────────────────────────────────────────────────────────────────────
+            Whether to add the Composer global bin directory to PATH and set
+            COMPOSER_HOME to the XDG-standard location.
+
+            Composer installs globally required packages (laravel/installer,
+            phpunit, psalm, etc.) under:
+
+              $COMPOSER_HOME/vendor/bin
+              → ~/.config/composer/vendor/bin  (with COMPOSER_HOME set below)
+
+            Without this on PATH, globally-installed tools are unreachable
+            without full path invocation. With it, `laravel new`, `phpunit`,
+            `psalm`, etc. work as bare commands from any terminal.
+
+            WHY COMPOSER_HOME IS SET EXPLICITLY:
+            Without the env var, Composer may default to ~/.composer (non-XDG)
+            on some systems. Setting it explicitly to ~/.config/composer keeps
+            Composer's global state under the XDG_CONFIG_HOME tree alongside
+            all other CypherOS user config.
+
+            SET TO false FOR:
+            • CI containers or build environments that import this module but
+              should not inherit user PATH mutations.
+            • Hermetic devShells where you want zero ambient global tools.
+          '';
+        };
+
+        # ──────────────────────────────────────────────────────────────────────────────
+        # Future option ideas (not yet implemented):
+        # ──────────────────────────────────────────────────────────────────────────────
+        # phpStanLevel = lib.mkOption { type = lib.types.int; default = 5; ... };
+        # withSymfonyCli = lib.mkOption { type = lib.types.bool; default = true; ... };
+        # withPsysh = lib.mkOption { type = lib.types.bool; default = true; ... };
+        # ──────────────────────────────────────────────────────────────────────────────
       };
 
-      withComposerGlobalPath = lib.mkOption {
-        type = lib.types.bool;
-        default = true;
-        description = ''
-          §COMPOSER-PATH-CONVENTION
-          ────────────────────────────────────────────────────────────────────────
-          Whether to add the Composer global bin directory to PATH and set
-          COMPOSER_HOME to the XDG-standard location.
+      go = {
+        enable = mkEnableOption "Go language support (toolchain, dev tools, editor integration)";
 
-          Composer installs globally required packages (laravel/installer,
-          phpunit, psalm, etc.) under:
+        # ── Toolchain selection ─────────────────────────────────────────────
+        # nixpkgs ships the default `go` alongside version-pinned toolchains
+        # (go_1_23, go_1_24, ...) and a rolling go_latest.
+        #
+        # Pinned toolchains and their matching buildGo<NN>Module builders are
+        # removed from nixpkgs the moment that Go minor version reaches EOL —
+        # nixpkgs only ever carries the last two minors.
+        #
+        # go_latest/buildGoLatestModule get newer minors faster but are subject
+        # to nixpkgs' internal usage policy for that attribute.
+        # ────────────────────────────────────────────────────────────────────
+        package = mkOption {
+          type = types.package;
+          description = ''
+            The Go toolchain package to expose on PATH via `programs.go.package`.
+            Pass e.g. `pkgs.go_1_24` to pin a specific minor, `pkgs.go_latest`
+            for the rolling latest, or leave at the nixpkgs default `pkgs.go`.
+          '';
+        };
 
-            $COMPOSER_HOME/vendor/bin
-            → ~/.config/composer/vendor/bin  (with COMPOSER_HOME set below)
+        # ── GOPATH / environment surface ────────────────────────────────────
+        # This mirrors home-manager's `programs.go.env`, which is a freeform
+        # submodule (any GOxxx key is accepted) with two typed conveniences:
+        # GOPATH and GOPRIVATE.
+        #
+        # Everything else (GOPROXY, GOSUMDB, GOFLAGS, GONOSUMDB, GONOPROXY,
+        # GOTOOLCHAIN, CGO_ENABLED, GOOS, GOARCH, ...) is configurable but
+        # untyped — see `go env -h` / `go help environment` for the full
+        # variable list, since nixpkgs does not enumerate it.
+        # ────────────────────────────────────────────────────────────────────
+        goPath = mkOption {
+          type = types.str;
+          default = "go";
+          description = ''
+            GOPATH directory, relative to $HOME. Rarely needs to be non-default
+            under Go modules mode — GOPATH now mostly just anchors the module
+            cache (pkg/mod) and `go install` binaries (GOPATH/bin).
+          '';
+        };
 
-          Without this on PATH, globally-installed tools are unreachable
-          without full path invocation. With it, `laravel new`, `phpunit`,
-          `psalm`, etc. work as bare commands from any terminal.
+        goPrivate = mkOption {
+          type = types.listOf types.str;
+          default = [ ];
+          example = [ "github.com/CypherWhisperer/*" ];
+          description = ''
+            Module path globs the `go` command should treat as private —
+            bypasses GOPROXY and GOSUMDB for matching paths. Relevant the
+            moment a Pentara-internal or private CypherOS module is imported
+            from a private repo.
+          '';
+        };
 
-          WHY COMPOSER_HOME IS SET EXPLICITLY:
-          Without the env var, Composer may default to ~/.composer (non-XDG)
-          on some systems. Setting it explicitly to ~/.config/composer keeps
-          Composer's global state under the XDG_CONFIG_HOME tree alongside
-          all other CypherOS user config.
+        extraEnv = mkOption {
+          type = types.attrsOf types.str;
+          default = { };
+          example = {
+            GOFLAGS = "-trimpath";
+            GOSUMDB = "sum.golang.org";
+          };
+          description = ''
+            Passthrough for any other `go env -w`-style variable not covered
+            by a dedicated option above. Merged into `programs.go.env`.
+          '';
+        };
 
-          SET TO false FOR:
-          • CI containers or build environments that import this module but
-            should not inherit user PATH mutations.
-          • Hermetic devShells where you want zero ambient global tools.
-        '';
+        # ── Dev tooling ─────────────────────────────────────────────────────
+        # These are NOT part of the `go` toolchain itself — they're the
+        # ecosystem tools that gopls, the VSCode extension, and the Neovim
+        # config all shell out to. Declared once here, consumed by both
+        # editors so the same binary versions back both DE configs.
+        # ────────────────────────────────────────────────────────────────────
+        extraTools = mkOption {
+          type = types.listOf types.package;
+          default = [ ];
+          description = ''
+            Additional Go tooling to install into the user profile. Populated
+            from `system.nix`/`hm.nix` with the standard set (gopls, delve,
+            golangci-lint, gofumpt, gotools, ...) — override here to trim or
+            extend it per-host.
+          '';
+        };
+
+        telemetry = mkOption {
+          type = types.enum [
+            "off"
+            "local"
+            "on"
+          ];
+          default = "off";
+          description = ''
+            Go toolchain telemetry mode (`go telemetry`, Go 1.23+). "local"
+            collects counters on disk without uploading. "on" additionally uploads to
+            telemetry.go.dev weekly. "off" disables telemetry entirely.
+          '';
+        };
       };
-
-      # ──────────────────────────────────────────────────────────────────────────────
-      # Future option ideas (not yet implemented):
-      # ──────────────────────────────────────────────────────────────────────────────
-      # phpStanLevel = lib.mkOption { type = lib.types.int; default = 5; ... };
-      # withSymfonyCli = lib.mkOption { type = lib.types.bool; default = true; ... };
-      # withPsysh = lib.mkOption { type = lib.types.bool; default = true; ... };
-      # ──────────────────────────────────────────────────────────────────────────────
     };
   };
 }
