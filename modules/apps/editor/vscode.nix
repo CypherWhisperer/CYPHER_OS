@@ -970,7 +970,6 @@ in
               # govulncheck on PATH via home.packages.
               # ──────────────────────────────────────────────────────────────────────
               golang.go
-              ms-vscode.vscode-json # quality-of-life
 
             ]
             ++ [
