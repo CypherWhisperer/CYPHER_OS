@@ -403,3 +403,13 @@ Conditionally importing entire module files based on profile at the `flake.nix` 
 
 - `default.nix` files are Home Manager territory. `system.nix` files are NixOS territory. This maps cleanly to the `nixos-rebuild switch` (NixOS path) and `home-manager switch` (HM path) commands.
 - The four invariants must hold everywhere without exception. Any deviation — options declared outside `options.nix`, system config inside `default.nix` — breaks evaluation in ways that produce confusing error messages. The invariants are defensive.
+
+---
+
+## Amendment — 2026-08-22
+
+The claim under "The NixOS Root" that `hosts/nixos/configuration.nix` "imports `system.nix` files directly... never imports `default.nix` of module groups" no longer holds.
+
+A `src/system/default.nix` aggregator now mirrors the HM-side `modules/home/default.nix` aggregator exactly — `configuration.nix` imports only hardware config, `profile.nix`, and this one aggregator.
+
+Every other invariant in this ADR (three-file split, options declared once, the kill-switch guard pattern) is unchanged. See [ADR-023](ADR_023_2026_08_22_cypher_os_namespace_and_profile_redesign.md) and the companion [tree/changes doc](../cypher_os_restructure_tree_changes.md) for the full rationale.

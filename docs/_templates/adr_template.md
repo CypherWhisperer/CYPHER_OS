@@ -7,6 +7,9 @@
 <!-- If superseded: **Supersedes:** ADR_NNN -->
 <!-- If superseding: **Superseded by:** ADR_NNN -->
 
+<!-- If this ADR has been amended, list each amendment's date here: -->
+<!-- **Amended:** YYYY-MM-DD, YYYY-MM-DD -->
+
 ---
 
 ## Context
@@ -84,4 +87,13 @@ _TODO: What it is and why it was rejected._
 <!--
 NOTES: Remove this section in finalized ADRs.
 Use this space for rough thinking, open questions, or links to discussion.
+-->
+---
+
+<!--
+## Amendment — YYYY-MM-DD
+
+Only present if this ADR has been amended after acceptance. State what
+changed and why. Do not edit Decision/Reasoning/Alternatives/Consequences
+above — see templates.md for the amendment/supersession distinction.
 -->

@@ -32,6 +32,8 @@ Each ADR is a permanent record. Once accepted, an ADR is not deleted — it may 
 | [ADR_020](ADR_020_2026_08_18_dbms_backup_strategy.md)                                            | 2026_08_18 | Accepted | Backup Strategy: automated DBMS-native dumps + BTRFS snapshots *(currently manual.)*                                               |
 | [ADR_021](ADR_021_2026_08_21_nix_managed_go_tooling_shared_across_editors.md)                    | 2026_08_21 | Accepted | Nix Manages tooling and IDEs simply leverage from that, rather than each diverging with it's own management.                       |
 | [ADR_022](ADR_022_2026_08_21_lsp_settings_flat_key_convention)                                   | 2026_08_21 | Accepted | LSP settings' configuration use a flat-key *(over dotted)* as a ***convention.**                                                   |
+| [ADR_023](ADR_023_2026_08_22_cypher-os_namespace_and_profile_redesign.md)                        | 2026_08_22 | Accepted | Redesigning the Namespace tree and Profile management.                                                                             |
+| [ADR_024](ADR_024_2026_08_22_cross-context_single_source_of_truth_via_osConfig.md)               | 2026_08_22 | Accepted | The mechanism for a single source of truth for cross context scenarios; `osConfig`                                                 |
 
 ---
 

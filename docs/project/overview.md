@@ -240,7 +240,7 @@ Each launcher script is registered as a `.desktop` session entry with the displa
 flowchart TD
     HOME["/home/cypher-whisperer<br>@home subvolume"]
 
-    HOME --> SHARED["Shared — not profiled<br>~/.ssh/<br>~/.gnupg/<br>~/.gitconfig<br>shell rc files<br>fonts"]
+    HOME --> SHARED["Shared — not profiled<br> ~/.ssh <br> ~/.gnupg <br> ~/.gitconfig <br> shell rc files<br>fonts"]
 
     HOME --> PROFILES[".config/profiles/"]
     PROFILES --> GNOME[".config/profiles/gnome/<br>.local/share/profiles/gnome/<br>.cache/profiles/gnome/"]
