@@ -13,15 +13,39 @@ let
   # versioned, and reproducible across rebuilds.
   #
   # The `enabled` argument contains the extensions already compiled into the
-  # base PHP binary (openssl, json, mbstring core subset, etc.). The pattern:
+  # base PHP binary (openssl, json, mbstring core subset, etc.).
+  # ────────────────────────────────────────────────────────────────────────
+  # Already packaged in nixpkgs' pkgs.php:
   #
-  #   enabled ++ (with all; [ ... ])
+  #  1. nix build --no-link --print-out-paths '.#nixosConfigurations.cypher-nixos.pkgs.php'
+  #  2. [the-path]/bin/php -m
+  # ────────────────────────────────────────────────────────────────────────
   #
-  # means: keep all defaults, then ADD the listed extras. To REMOVE a default
-  # extension (rare, security hardening use-case):
+  # ──────── Core: always needed for any non-trivial PHP project ───────────
+  # pdo         # PDO base interface; required by pdo_mysql, pdo_sqlite, etc.
+  # pdo_mysql   # MySQL/MariaDB via PDO.
+  # pdo_sqlite  # SQLite via PDO — lightweight testing without a full DB server
+  # mbstring    # Multibyte string functions; required by PSR libs and frameworks
+  # intl        # Internationalization — required by Symfony and i18n-aware code
+  # zip         # Composer needs this to extract packages
+  # opcache     # Bytecode cache — mandatory in any non-trivial PHP project
+  # curl        # HTTP client; Laravel/Symfony HTTP facades depend on it
   #
-  #   (lib.filter (e: e.extensionName != "simplexml") enabled) ++ (with all; [ ... ])
+  # ──────── Data formats ───────────────────────────────────────────────────
+  # xml         # XML parsing; required by some Composer packages and SOAP
+  # simplexml   # Simplified XML; often pulled in by xml-heavy libraries
+  # dom         # DOM manipulation; needed by PHPUnit HTML coverage output
+  # xmlreader   # Streaming XML reader — large document processing
+  # xmlwriter   # Streaming XML writer
   #
+  # ──────── PostgreSQL (future: if a project uses Postgres instead of MySQL) ─
+  # pdo_pgsql   # PostgreSQL via PDO
+  # pgsql       # PostgreSQL native functions
+  #
+  # ──────── Math / crypto ─────────────────────────────────────────────────
+  # bcmath      # Arbitrary-precision math; required by Laravel and payment SDKs
+  # sodium      # libsodium crypto; Laravel uses this for encryption by default
+  # ────────────────────────────────────────────────────────────────────────
   # VERSION PINNING
   # ──────────────────────────────────────────────────────────────────────────────
   # pkgs.php → latest stable in nixpkgs (PHP 8.3 as of nixos-unstable mid-2026).
@@ -48,42 +72,25 @@ let
   phpEnv = pkgs.php.buildEnv {
     extensions = (
       { enabled, all }:
+
+      # enabled ++ (with all; [ ... ])
+      # means: keep all defaults, then ADD the listed extras.
+      #
+      # To REMOVE a default  extension (rare, security hardening use-case):
+      # (lib.filter (e: e.extensionName != "simplexml") enabled) ++ (with all; [ ... ])
       enabled
       ++ (with all; [
-
-        # ──────── Core: always needed for any non-trivial PHP project ───────────
-        pdo # PDO base interface; required by pdo_mysql, pdo_sqlite, etc.
-        pdo_mysql # MySQL/MariaDB via PDO.
-        pdo_sqlite # SQLite via PDO — lightweight testing without a full DB server
-        mbstring # Multibyte string functions; required by PSR libs and frameworks
-        intl # Internationalization — required by Symfony and i18n-aware code
-        zip # Composer needs this to extract packages
-        opcache # Bytecode cache — mandatory in any non-trivial PHP project
-        curl # HTTP client; Laravel/Symfony HTTP facades depend on it
 
         # ──────── Debugging ──────────────────────────────────────────────────────
         # §XDEBUG-NOTE: see extraConfig below for the full constraint documentation.
         xdebug
 
         # ──────── Data formats ───────────────────────────────────────────────────
-        xml # XML parsing; required by some Composer packages and SOAP
-        simplexml # Simplified XML; often pulled in by xml-heavy libraries
-        dom # DOM manipulation; needed by PHPUnit HTML coverage output
-        xmlreader # Streaming XML reader — large document processing
-        xmlwriter # Streaming XML writer
         xsl # XSLT transformations
 
-        # ──────── PostgreSQL (future: if a project uses Postgres instead of MySQL) ─
-        pdo_pgsql # PostgreSQL via PDO
-        pgsql # PostgreSQL native functions
-
         # ──────── Image processing ────────────────────────────────────────────────
-        # gd            # GD library — basic image manipulation
+        # gd    # GD library — basic image manipulation
         imagick # ImageMagick binding — more capable than GD
-
-        # ──────── Math / crypto ─────────────────────────────────────────────────
-        bcmath # Arbitrary-precision math; required by Laravel and payment SDKs
-        sodium # libsodium crypto; Laravel uses this for encryption by default
 
         # ──────── Caching / message queues (future: Laravel cache, jobs, events) ─
         # redis         # Redis extension — needed when switching to Redis cache/queue
