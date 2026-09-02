@@ -1,5 +1,5 @@
 # ─────────────────────────────────────────────────────────────────────────────
-# hosts/cypher-nixos/boot.nix
+# src/system/boot/default.nix
 # ─────────────────────────────────────────────────────────────────────────────
 # Owns everything boot-related for the cypher-nixos host:
 #

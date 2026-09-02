@@ -55,7 +55,8 @@
     # kernel modules, and hardware quirks. It can belong in the repo alongside
     # the config that depends on it. Keeping everything self contained.
     ./hardware-configuration.nix
-    ./boot.nix
+    ../../src/system
+    # ../../src/profile
 
     ../../modules/profile/system.nix
 
