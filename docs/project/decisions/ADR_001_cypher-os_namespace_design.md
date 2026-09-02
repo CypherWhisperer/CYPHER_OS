@@ -4,6 +4,9 @@
 **Status:** Accepted
 **Deciders:** CypherWhisperer
 
+----
+**Superseded By:** [ADR_023 CypherOS Namespace and profile redesign](ADR_023_2026_08_22_cypher-os_namespace_and_profile_redesign.md)
+
 ---
 
 ## Context
