@@ -5,5 +5,8 @@
 { ... }:
 
 {
-  imports = [ ../profile/hm.nix ];
+  imports = [
+    ../profile/hm.nix
+    ../de/hm.nix
+  ];
 }
