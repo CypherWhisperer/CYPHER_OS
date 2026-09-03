@@ -10,11 +10,11 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 { config, lib, ... }:
-
+let
+  cfg = config.cypher-os.de.gnome;
+in
 {
-  imports = [ ./options.nix ];
-
-  config = lib.mkIf config.cypher-os.de.gnome.enable {
+  config = lib.mkIf cfg.enable {
     # ──────────────────────────────────────────────────────────────────────────
     # DCONF SETTINGS
     # ──────────────────────────────────────────────────────────────────────────

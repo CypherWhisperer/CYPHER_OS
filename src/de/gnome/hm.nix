@@ -14,8 +14,15 @@
 {
   config,
   lib,
+  osConfig ? null,
   ...
 }:
+
+let
+  cfg = config.cypher-os.de.gnome;
+  activeProfile =
+    if osConfig != null then osConfig.cypher-os.profile.active else config.cypher-os.profile.active;
+in
 
 {
   imports = [
@@ -26,32 +33,37 @@
     ./extensions.nix
   ];
 
-  config = lib.mkIf config.cypher-os.de.gnome.enable {
-    # ─────────────────────────────────────────────────────────────────────────────
-    # UNFREE PACKAGES
-    # ─────────────────────────────────────────────────────────────────────────────
-    # Some packages (spotify, obsidian, steam, etc.) carry proprietary licenses.
-    # Nix refuses to build or install them unless you explicitly permit this.
-    # Scoping it here keeps the allowance contained to this Home Manager config.
-    #nixpkgs.config.allowUnfree = true; # the declaration on configuration.nix suffices
+  config = lib.mkMerge [
+    (lib.mkIf cfg.enable {
+      # ──────────────────────────────────────────────────────────────────────────
+      # XDG PROFILE LAUNCHER SCRIPT
+      # ──────────────────────────────────────────────────────────────────────────
+      home.file.".local/bin/launch-gnome" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          # XDG Profile Launcher — GNOME
+          # Managed by Home Manager (modules/de/gnome.nix). Do not edit manually.
 
-    # ─────────────────────────────────────────────────────────────────────────────
-    # XDG PROFILE LAUNCHER SCRIPT
-    # ─────────────────────────────────────────────────────────────────────────────
-    home.file.".local/bin/launch-gnome" = {
-      executable = true;
-      text = ''
-        #!/usr/bin/env bash
-        # XDG Profile Launcher — GNOME
-        # Managed by Home Manager (modules/de/gnome.nix). Do not edit manually.
+          export XDG_CONFIG_HOME="$HOME/.config/profiles/gnome"
+          export XDG_DATA_HOME="$HOME/.local/share/profiles/gnome"
+          export XDG_CACHE_HOME="$HOME/.cache/profiles/gnome"
+          export XDG_STATE_HOME="$HOME/.local/state/profiles/gnome"
 
-        export XDG_CONFIG_HOME="$HOME/.config/profiles/gnome"
-        export XDG_DATA_HOME="$HOME/.local/share/profiles/gnome"
-        export XDG_CACHE_HOME="$HOME/.cache/profiles/gnome"
-        export XDG_STATE_HOME="$HOME/.local/state/profiles/gnome"
+          exec gnome-session
+        '';
+      };
+    })
 
-        exec gnome-session
-      '';
-    };
-  };
+    {
+      assertions = [
+        {
+          assertion = cfg.enable -> activeProfile == "desktop";
+          message = ''
+            cypher-os.de.gnome.enable requires cypher-os.profile.active == "desktop".
+          '';
+        }
+      ];
+    }
+  ];
 }

@@ -18,6 +18,8 @@
 }:
 
 let
+  cfg = config.cypher-os.de.gnome;
+
   # ────────────────────────────────────────────────────────────────────────────
   # Patched extension: compact-quick-settings
   # ────────────────────────────────────────────────────────────────────────────
@@ -37,9 +39,7 @@ let
   });
 in
 {
-  imports = [ ./options.nix ];
-
-  config = lib.mkIf config.cypher-os.de.gnome.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       # ────────────────────────────────────────────────────────────────────────
       # GNOME Shell Extensions

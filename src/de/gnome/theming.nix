@@ -29,6 +29,8 @@
 }:
 
 let
+  cfg = config.cypher-os.de.gnome;
+
   # ────────────────────────────────────────────────────────────────────────────
   # CATPPUCCIN THEME CONFIGURATION: OLDSCHOOL
   # ────────────────────────────────────────────────────────────────────────────
@@ -157,9 +159,7 @@ let
 
 in
 {
-  imports = [ ./options.nix ];
-
-  config = lib.mkIf config.cypher-os.de.gnome.enable {
+  config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       # ────────────────────────────────────────────────────────────────────────
       # Required for Layer 2: (GNOME Shell theme). Provides the user-theme
