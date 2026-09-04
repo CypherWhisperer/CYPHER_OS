@@ -16,7 +16,7 @@ Adding a new environment for hacking on CypherOS itself (`flake/devshells/`) or 
 
 - **CLI/TUI tooling only.** 
     - Per this session's decision, devShells never carry GUI applications — they don't register `.desktop` entries, XDG MIME associations, or autostart, so a GUI package gains nothing by being in a devShell versus installed normally through `hm`/`system`, and loses menu presence entirely.
-    - If the thing you're adding is a GUI app, it belongs in a `pkgs/` category instead — stop and use [RBK_010](RBK_010_adding_a_leaf_to%20an_existing_category.md).
+    - If the thing you're adding is a GUI app, it belongs in a `pkgs/` category instead — stop and use [RBK_010](RBK_010_adding_a_leaf_to_an_existing_category.md).
 
 ## Procedure
 
@@ -41,7 +41,7 @@ pkgs.mkShell {
 
 **Flake-level:** add to the `devShells.<system>` attrset in `flake/devshells/default.nix`.
 
-**Category-level:** add its `enable` leaf to `src/pkgs/devshells/options.nix` and the corresponding install logic to `hm.nix`, following the standard leaf pattern ([RBK_010](RBK_010_adding_a_leaf_to%20an_existing_category.md)).
+**Category-level:** add its `enable` leaf to `src/pkgs/devshells/options.nix` and the corresponding install logic to `hm.nix`, following the standard leaf pattern ([RBK_010](RBK_010_adding_a_leaf_to_an_existing_category.md)).
 
 ### Step 4 — Verify
 
@@ -58,7 +58,7 @@ nix flake check               # category-level, after rebuild
 
 ### A GUI package was added by mistake
 
-Remove it from the devShell definition and install it through the appropriate `pkgs/` category instead — see [RBK_010](RBK_010_adding_a_leaf_to%20an_existing_category.md).
+Remove it from the devShell definition and install it through the appropriate `pkgs/` category instead — see [RBK_010](RBK_010_adding_a_leaf_to_an_existing_category.md).
 
 ## Rollback
 
@@ -66,7 +66,7 @@ Remove the shell file and its wiring from the relevant `default.nix`/ `options.n
 
 ## Related
 
-- Runbook: [RBK_010](RBK_010_adding_a_leaf_to%20an_existing_category.md)
+- Runbook: [RBK_010](RBK_010_adding_a_leaf_to_an_existing_category.md)
 - Module doc: `docs/source_docs/flake/devshells.md` (pending)
 
 ---

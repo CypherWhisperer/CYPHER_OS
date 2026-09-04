@@ -1,6 +1,6 @@
 # Runbook: Adding a Leaf to an Existing Category
 
-**Last verified:** 2026-08-22
+**Last verified:** 2026-09-04
 **Host:** `cypher-nixos`
 **Module:** `src/{pkgs,system}/<category>/<leaf>.nix`
 **Trigger:** Reactive
@@ -41,18 +41,19 @@ Add `<leaf>.enable = lib.mkEnableOption "...";` to the category's existing `opti
 
 Import it from the category's `default.nix` *(HM leaves)* or `system.nix` *(system leaves).*
 
-### Step 3 — If profile-conditional, add the default in the profile module — not here
-
+### Step 3 — If profile-conditional, add the default in the leaf's own file — not the profile module
+​
 ```nix
-# src/profile/hm.nix (or system.nix)
-lib.mkIf (activeProfile == "desktop") {
-  cypher-os.<category>.<leaf>.enable = lib.mkDefault true;
-}
+
+# src/<category>/<leaf>.nix (or system.nix, for a system-context leaf)
+config.cypher-os.<category>.<leaf>.enable = lib.mkDefault (cypherOsProfile == "desktop");
 ```
+​
+`cypherOsProfile` arrives as a module arg (from `src/profile/{system,hm}.nix`'s `_module.args`) — the leaf file takes it as a function parameter alongside `config`/`lib`/etc. `src/profile/*` itself stays profile-*signal*-only and never learns this leaf exists.
 
-The leaf file itself stays profile-blind — it only ever asks "am I enabled."
+If this step feels like it doesn't apply *(the leaf should be on regardless of profile),* skip it — leave the leaf undefaulted, or default it unconditionally in the same file.
 
-If this step feels like it doesn't apply *(the leaf should be on regardless of profile),* skip it — that's a legitimate case too, just leave the leaf undefaulted or default it unconditionally in the same profile file outside any `lib.mkIf (activeProfile == ...)` block.
+Update the profile-membership reference table ([RBK_015](RBK_015_auditing_profile_&_lens_default_membership.md)) if this default is new or changed.
 
 ### Step 4 — Verify
 
@@ -71,22 +72,24 @@ Check the guard in Step 2 — a leaf missing the `parent.enable &&` half of the 
 
 ### Package installs on `server` profile when it shouldn't
 
-The profile-conditional default (Step 3) was skipped, or was written directly into the leaf file instead of the profile module — move it.
+The profile-conditional default (Step 3) was skipped, or was written into `src/profile/*` instead of the leaf's own file — *move it back into the leaf.*
 
 ## Rollback
 
-Remove the leaf file, its import line, and its option declaration; remove its `mkDefault` line from the profile module if one was added.
+Remove the leaf file, its import line, its option declaration, and its `mkDefault` line **from the leaf/category file** if one was added.
 
 ## Related
 
 - Runbook: [RBK_009](RBK_009_adding_a_new_cypher_os_category.md)
+- Runbook: [RBK_015_auditing_profile_&_lens_default_membership](RBK_015_auditing_profile_&_lens_default_membership.md)
 - ADR: [ADR_005](../decisions/ADR_005_module_architecture.md)
+- Convention: [profile_defaults](../../contributing/conventions/profile_defaults.md)
 
 ---
 
 <!--
 METADATA
 Created: 2026-08-22
-Updated: 2026-08-22
+Updated: 2026-09-04
 Tested by: Cypher Whisperer
 -->
