@@ -58,7 +58,7 @@
 
     zshPowerLevel10kThemeFile = lib.mkOption {
       type = lib.types.path;
-      default = "${self}/src/shell/zsh/configs/p10k.zsh";
+      default = "${self}/src/shell/configs/p10k.zsh";
       description = "Path to the Powerlevel10k theme file for Zsh.";
     };
   };
