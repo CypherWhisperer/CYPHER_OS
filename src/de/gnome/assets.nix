@@ -19,6 +19,9 @@ let
   cfg = config.cypher-os.de.gnome;
 in
 {
+  imports = [
+    ./options.nix
+  ];
   config = lib.mkIf cfg.enable {
     home.file.".local/share/backgrounds/default-gnome-bg.jpg" = {
       source = config.cypher-os.constants.defaultWallpaper;

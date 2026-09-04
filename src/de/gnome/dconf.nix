@@ -14,6 +14,9 @@ let
   cfg = config.cypher-os.de.gnome;
 in
 {
+  imports = [
+    ./options.nix
+  ];
   config = lib.mkIf cfg.enable {
     # ──────────────────────────────────────────────────────────────────────────
     # DCONF SETTINGS
