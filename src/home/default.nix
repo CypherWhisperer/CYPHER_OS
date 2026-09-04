@@ -8,5 +8,6 @@
   imports = [
     ../profile/hm.nix
     ../de/hm.nix
+    ../shell/hm.nix
   ];
 }
