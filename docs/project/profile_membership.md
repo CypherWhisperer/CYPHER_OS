@@ -8,22 +8,21 @@ here as a doc bug, not a config bug.
 
 ## Desktop profile
 
-| Option                      | Default | Source file               |
-| --------------------------- | ------- | ------------------------- |
-| `cypher-os.de.gnome.enable` | `true`  | `src/de/gnome/system.nix` |
-| `cypher-os.dm.gdm.enable`   | `true`  | `src/dm/gdm/system.nix`   |
-|                             |         |                           |
+| Option                                              | Default | Source file                 |
+| --------------------------------------------------- | ------- | --------------------------- |
+| `cypher-os.de.gnome.enable`                         | `true`  | `src/de/gnome/system.nix`   |
+| `cypher-os.dm.gdm.enable`                           | `true`  | `src/dm/gdm/system.nix`     |
 
 ## Server profile
 
-| Option | Default | Source file |
-|---|---|---|
+| Option                                              | Default | Source file                 |
+| --------------------------------------------------- | ------- | --------------------------- |
 
 ## Both profiles
 
-| Option | Default | Source file |
-|---|---|---|
-
+| Option                                              | Default | Source file                 |
+| --------------------------------------------------- | ------- | --------------------------- |
+| `cypher-os.{shell,shell.{zsh,fish,nushell}}.enable` | `true`  | `src/shell/{hm,system}.nix` |
 ## Lens-conditional (independent of profile)
 
 | Option | Condition | Source file |

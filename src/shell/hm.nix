@@ -26,22 +26,30 @@ in
     # (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {})
 
     {
-      cypher-os.shell.zsh.enable = lib.mkDefault (cypherOsProfile == "desktop" && cfg.enable);
-      cypher-os.shell.fish.enable = lib.mkDefault (cypherOsProfile == "desktop" && cfg.enable);
-      cypher-os.shell.nushell.enable = lib.mkDefault (cypherOsProfile == "desktop" && cfg.enable);
+      cypher-os.shell.zsh.enable = lib.mkDefault (
+        (cypherOsProfile == "desktop" || cypherOsProfile == "server") && cfg.enable
+      );
+      cypher-os.shell.fish.enable = lib.mkDefault (
+        (cypherOsProfile == "desktop" || cypherOsProfile == "server") && cfg.enable
+      );
+      cypher-os.shell.nushell.enable = lib.mkDefault (
+        (cypherOsProfile == "desktop" || cypherOsProfile == "server") && cfg.enable
+      );
 
     }
 
     {
-      cypher-os.shell.enable = lib.mkDefault (cypherOsProfile == "desktop");
+      cypher-os.shell.enable = lib.mkDefault (
+        cypherOsProfile == "desktop" || cypherOsProfile == "server"
+      );
     }
 
     {
       assertions = [
         {
-          assertion = cfg.enable -> cypherOsProfile == "desktop";
+          assertion = cfg.enable -> (cypherOsProfile == "desktop" || cypherOsProfile == "server");
           message = ''
-            cypher-os.shell.enable requires cypher-os.profile.active == "desktop".
+            cypher-os.shell.enable requires cypher-os.profile.active == "desktop" or "server".
           '';
         }
       ];
