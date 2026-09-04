@@ -65,3 +65,11 @@ Because every category's file states its own profile default independently, ther
 A profile-conditional default doesn't replace the enable-implies-profile assertion from [gating_and_assertions.md](./gating_and_assertions.md) §3/§11 — they answer different questions.
 
 The default answers "what should this be, absent an override"; the assertion answers "is the current value, however it got set, actually valid." Keep both.
+
+## 6. Common mistakes seen in practice
+
+- **Re-deriving the `osConfig ? null` fallback locally**, instead of consuming `cypherOsProfile`/`cypherOsLens` from `_module.args`. Defeats the point of centralizing the resolution in `src/profile/hm.nix` — if the fallback logic ever changes, every category that copy-pasted it needs a separate fix.
+
+- **Prefixing an item inside `config = lib.mkMerge [ ... ]` with `config.` again.** You're already inside `config =`; re-adding `config.` nests one level too deep and produces a phantom, undeclared `config` attribute instead of writing the real option path. Compare against sibling items in the same `mkMerge` list — an inconsistency there is usually the tell.
+
+- **Using `lib.mkDefault` as an attribute name instead of a function** — `cfg.zsh.mkDefault = true;` does nothing useful. You want `cypher-os.shell.zsh.enable = lib.mkDefault true;`.

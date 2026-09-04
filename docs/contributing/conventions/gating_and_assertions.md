@@ -16,6 +16,8 @@ let
 in
 ```
 
+`cfg` is a read-only convenience binding (`config.cypher-os.<category>`) — useful for *reading* (`cfg.enable`), never for *writing*. `cfg.zsh.enable = lib.mkDefault true;` inside a returned config attrset does not write through to `cypher-os.shell.zsh.enable` — it creates a bogus top-level attribute literally named `cfg`. Always spell out the real path (`cypher-os.<category>.<leaf>.enable = ...;`) on the write side, even in a file where `cfg` is already bound for reads.
+
 ## 2. Every category and every leaf gets an `enable`
 
 - Every top-level category gets its own `enable` at the category root, declared in that category's `options.nix`.
