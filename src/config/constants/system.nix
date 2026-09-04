@@ -16,7 +16,11 @@
 # isn't silently dropped.
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 
 let
   cfg = config.cypher-os.constants;
@@ -29,15 +33,20 @@ in
       username = lib.mkDefault "cypher_whisperer";
       homeDirectory = lib.mkDefault "/home/cypher-whisperer";
       primaryDisk = lib.mkDefault "/dev/sda";
-      stateVersion = lib.mkDefault "24.11";
 
       backupRoot = lib.mkDefault "${cfg.homeDirectory}/DATA/FILES";
       obsidianVaultRoot = lib.mkDefault "${cfg.backupRoot}/PROJECTS/PRIVATE/OBSIDIAN_NOTES";
-
-      userAvatar = lib.mkDefault ../../de/assets/default-gnome-avatar.jpg;
-      defaultWallpaper = lib.mkDefault ../../de/assets/default-gnome-bg.jpg;
     };
 
+    _module.args.cypherOsConstants = cfg;
+
+    # ──────────────────────────────────────────────────────────────────────────
+    # System-context read surface: scoped to this lens's own root subvolume, for
+    # root-run scripts/systemd units with no reliable $HOME to resolve.
+    #
+    # See src/config/constants/hm.nix for the cross-lens-shared
+    # ~/.config/cypher-os/constants.json equivalent.
+    # ──────────────────────────────────────────────────────────────────────────
     environment.etc."cypher-os/constants.json".text = builtins.toJSON cfg;
   };
 }

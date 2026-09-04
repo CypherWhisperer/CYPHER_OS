@@ -7,7 +7,7 @@
 # NixOS-context only for now (no hm.nix yet)
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ lib, ... }:
+{ lib, self, ... }:
 
 {
   options.cypher-os.constants = {
@@ -28,6 +28,7 @@
 
     stateVersion = lib.mkOption {
       type = lib.types.str;
+      default = "24.11";
       description = "Shared system.stateVersion / home.stateVersion value.";
     };
 
@@ -45,12 +46,20 @@
 
     userAvatar = lib.mkOption {
       type = lib.types.path;
+      default = "${self}/src/de/assets/default-gnome-avatar.jpg";
       description = "Default user avatar image, sourced from the repo's assets directory.";
     };
 
     defaultWallpaper = lib.mkOption {
       type = lib.types.path;
+      default = "${self}/src/de/assets/default-gnome-bg.jpg";
       description = "Default desktop wallpaper image, sourced from the repo's assets directory.";
+    };
+
+    zshPowerLevel10kThemeFile = lib.mkOption {
+      type = lib.types.path;
+      default = "${self}/src/shell/zsh/configs/p10k.zsh";
+      description = "Path to the Powerlevel10k theme file for Zsh.";
     };
   };
 }

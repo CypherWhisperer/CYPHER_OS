@@ -18,22 +18,36 @@ You're introducing a new hardcoded value that should be treated as a constant *(
 
 ## Procedure
 
-### Step 1 — Declare the option
+### Step 1 — Declare the option, and decide its bucket
 
-Add the constant to `src/config/constants/options.nix`, camelCase per [naming](../../contributing/conventions/naming.md).
-
+- Add the constant to `src/config/constants/options.nix`, camelCase per [naming](../../contributing/conventions/naming.md).
+- Decide which bucket it falls into — ***`static-invariant`, `derived-invariant`, or `machine-variant`*** — per [constants.md](../../contributing/conventions/constants.md).
+- Static-invariant constants get their `default` right in `src/config/constants/options.nix`; the other two buckets are un`default`ed here and set in Step 2.
 ### Step 2 — Set its value
 
 Set it in `src/config/constants/system.nix`, or override per-host if the value should differ across hosts.
 
-### Step 3 — Confirm it regenerates in the JSON file
+### Step 3 — Confirm it regenerates in both JSON files
 
 ```bash
 nixos-rebuild build --flake .#cypher-nixos
+```
+
+```bash
 cat /etc/cypher-os/constants.json
 ```
 
-**Expected output:** the new/changed key appears in the generated JSON, with the exact same key name as the Nix option (no re-casing).
+```bash
+cat ~/.config/cypher-os/constants.json
+```
+
+For a standalone lens, only the `~/.config/...` copy applies — `home-manager build`/`switch` regenerates it.
+
+**Expected output:** the new/changed key appears in both files, with the exact same key name as the Nix option (no re-casing).
+
+### Step 3.5 — If a Home Manager or system-context module needs this constant directly (not just scripts)
+
+Consume it via the `cypherOsConstants` module arg rather than reading `config.cypher-os.constants.<key>` directly — see [constants.md](../../contributing/conventions/constants.md) §3.
 
 ### Step 4 — Update any scripts referencing the old hardcoded value
 
@@ -66,6 +80,7 @@ Revert the option/value change in `src/config/constants/`; revert any script edi
 ## Related
 
 - ADR: [ADR_023](../decisions/ADR_023_2026_08_22_cypher-os_namespace_and_profile_redesign.md), [ADR_014](../decisions/ADR_014_2026_07_31_username_string_change_'cypher-whisperer'_to_'cypher_whisperer'.md)
+- Convention File: [constants.md](../../contributing/conventions/constants.md)
 
 ---
 

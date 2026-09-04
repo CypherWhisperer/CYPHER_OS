@@ -4,7 +4,25 @@
 **Related:** [ADR_005 — Module Architecture](../../project/decisions/ADR_005_module_architecture.md)
 
 ---
+## Terminology: "host" vs. "machine" vs. "lens"
 
+- **Lens** — one OS-flavored view into the shared CypherOS environment
+  (`nixos`, `arch`, `debian`, `fedora`, `opensuse`). Each lens has its
+  own root subvolume, but shares `home`, the Nix store, and swap with
+  every other lens on the same machine.
+  
+- **Host** (`hosts/<name>/`) — the directory-structure sense: one
+  lens's configuration entry point (`hosts/nixos/`, `hosts/arch/`,
+  etc.). "Host" here means *lens entry point*, not physical hardware.
+  
+- **Machine** — the physical hardware multiple lenses co-reside on and
+  share (one disk, one btrfs volume, one home).
+
+A constant is **lens-invariant** if it must hold the same value across every lens on one machine (e.g. `username`, `homeDirectory`, `primaryDisk` — see [constants.md](./constants.md)'s "machine-variant" bucket, named for the axis it actually varies on).
+
+Don't use "host-variant" to describe this — it reads as "varies per `hosts/*` entry," which is the opposite of what's intended.
+
+---
 ## Files and Directories
 
 **Rule: snake_case, always.** Underscores, not hyphens, across every file and directory in the repo — module files, docs, scripts, journal/incident entries. This applies uniformly regardless of what the file contains.
