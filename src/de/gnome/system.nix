@@ -6,6 +6,7 @@
   config,
   pkgs,
   lib,
+  cypherOsProfile,
   ...
 }:
 
@@ -50,6 +51,10 @@ in
         # gnome-characters   # character/emoji picker — borderline useful
       ];
     })
+
+    {
+      config.cypher-os.de.gnome.enable = lib.mkDefault (cypherOsProfile == "desktop");
+    }
 
     {
       assertions = [

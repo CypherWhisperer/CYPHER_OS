@@ -56,6 +56,10 @@ in
     })
 
     {
+      config.cypher-os.de.gnome.enable = lib.mkDefault (activeProfile == "desktop");
+    }
+
+    {
       assertions = [
         {
           assertion = cfg.enable -> activeProfile == "desktop";
