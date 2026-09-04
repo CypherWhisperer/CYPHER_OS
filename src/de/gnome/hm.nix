@@ -14,14 +14,12 @@
 {
   config,
   lib,
-  osConfig ? null,
+  cypherOsProfile,
   ...
 }:
 
 let
   cfg = config.cypher-os.de.gnome;
-  activeProfile =
-    if osConfig != null then osConfig.cypher-os.profile.active else config.cypher-os.profile.active;
 in
 
 {
@@ -34,7 +32,7 @@ in
   ];
 
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
+    (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {
       # ──────────────────────────────────────────────────────────────────────────
       # XDG PROFILE LAUNCHER SCRIPT
       # ──────────────────────────────────────────────────────────────────────────
@@ -56,13 +54,13 @@ in
     })
 
     {
-      config.cypher-os.de.gnome.enable = lib.mkDefault (activeProfile == "desktop");
+      config.cypher-os.de.gnome.enable = lib.mkDefault (cypherOsProfile == "desktop");
     }
 
     {
       assertions = [
         {
-          assertion = cfg.enable -> activeProfile == "desktop";
+          assertion = cfg.enable -> cypherOsProfile == "desktop";
           message = ''
             cypher-os.de.gnome.enable requires cypher-os.profile.active == "desktop".
           '';
