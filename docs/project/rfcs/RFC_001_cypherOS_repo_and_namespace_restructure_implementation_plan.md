@@ -92,16 +92,17 @@ For each category promoted or split in this phase:
 **Move & wire**
 - [ ] Move files from `modules/<old-location>/` to `src/<new-location>/<category>/`
 - [ ] Update internal (within-category) imports if paths shifted
+    - **BE SURE TO REMOVE ANY IMPORTS FROM `configuration.nix` AND ANY OTHER FILE FROM THE OLD SCHOOL PATH.**
 - [ ] Register in `src/{home,system}/default.nix` aggregators as applicable
 - [ ] If the category is split across both graphs, confirm `options.nix` is imported independently by both its own `system.nix` and `hm.nix` — importing it in one does not make it visible in the other
 
 **Constants & cleanup**
 - [ ] Any hardcoded path/id/value now belongs in `cypher-os.constants.*` (per RBK_013) rather than staying inline
-- [ ] Any leaf currently installed but unused (a test install, not part of an actual workflow) gets toggled off — reclaim after garbage collection
+- [ ] Any leaf currently installed but unused *(a test install, not part of an actual workflow)* gets toggled off — *reclaim after garbage collection*
 
 **Gating & assertions** (per `gating_and_assertions.md`)
 - [ ] Every leaf gates on `parent.enable && leaf.enable`, never the leaf alone
-- [ ] The parent-implies-leaf (or leaf-implies-parent) assertion exists, written with `->`, sitting outside any `mkIf`
+- [ ] The parent-implies-leaf *(or leaf-implies-parent)* assertion exists, written with `->`, sitting outside any `mkIf`
 - [ ] If the category has both `system.nix` and `hm.nix`, the assertion is duplicated in **both** — one graph's `assertions` list is invisible to the other
 - [ ] Any assertion resolving `cypherOsProfile`/`cypherOsLens` on the HM side uses the `osConfig ? null` fallback, never bare `config.cypher-os.*`
 

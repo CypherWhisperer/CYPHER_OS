@@ -17,7 +17,7 @@ in
 {
   imports = [ ./options.nix ];
   config = lib.mkMerge [
-    (lib.mkIf (config.cypher-os.profile.active == "desktop" && cfg.enable) {
+    (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {
       # ──────────────────────────────────────────────────────────────────────────
       # desktopManager.gnome.enable pulls in gnome-shell, gnome-session,
       # gnome-control-center, nautilus, and the core GNOME session infrastructure.
@@ -59,7 +59,7 @@ in
     {
       assertions = [
         {
-          assertion = cfg.enable -> config.cypher-os.profile.active == "desktop";
+          assertion = cfg.enable -> cypherOsProfile == "desktop";
           message = ''
             cypher-os.de.gnome.enable requires cypher-os.profile.active == "desktop".
           '';
