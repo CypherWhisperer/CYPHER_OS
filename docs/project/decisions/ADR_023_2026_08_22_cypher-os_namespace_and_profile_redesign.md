@@ -88,8 +88,12 @@ cypher-os
 ├── constants
 │   ├── username
 │   ├── homeDirectory                # independent of username — see ADR-014
+│   ├── userAvatar
+│   ├── defaultWallpaper
 │   ├── primaryDisk
-│   └── vaultPath
+│   ├── stateVersion
+│   ├── backupRoot
+│   └── obsidianVaultRoot
 │
 ├── de
 │   ├── gnome.{enable,variant}
