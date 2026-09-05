@@ -95,5 +95,23 @@
       default = "${self}/src/pkgs/cli/configs/fastfetch_artwork_pngs";
       description = "Path to the Fastfetch Artwork Images.";
     };
+
+    terminalFont = {
+      pkgName = lib.mkOption {
+        type = lib.types.str;
+        description = ''
+          Path to the Obsidian vault. Defaults relative to backupRoot.
+        '';
+        default = "nerd-fonts.caskaydia-cove";
+      };
+
+      displayName = lib.mkOption {
+        type = lib.types.str;
+        description = ''
+          Path to the Obsidian vault. Defaults relative to backupRoot.
+        '';
+        default = "CaskaydiaCove Nerd Font Mono";
+      };
+    };
   };
 }

@@ -7,10 +7,12 @@
   pkgs,
   lib,
   cypherOsLens,
+  cypherOsConstants,
   ...
 }:
 let
   cfg = config.cypher-os.fonts;
+  terminalFont = cypherOsConstants.terminalFont.pkgName;
 in
 {
   imports = [ ./options.nix ];
@@ -39,7 +41,7 @@ in
         # should replace the override method with the specific package:
         # ──────────────────────────────────────────────────────────────────────
         nerd-fonts.jetbrains-mono
-        nerd-fonts.caskaydia-cove # font for kitty + ghostty
+        terminalFont # font for kitty + ghostty
         nerd-fonts.fira-code
         nerd-fonts.hack
         nerd-fonts.lilex

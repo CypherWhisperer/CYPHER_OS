@@ -6,10 +6,12 @@
   lib,
   config,
   pkgs,
+  cypherOsConstants,
   ...
 }:
 let
   cfg = config.cypher-os.fonts;
+  terminalFont = cypherOsConstants.terminalFont.pkgName;
 in
 {
   imports = [ ./options.nix ];
@@ -31,6 +33,7 @@ in
         noto-fonts
         noto-fonts-color-emoji
 
+        terminalFont
         nerd-fonts.jetbrains-mono
         nerd-fonts.fira-code
         nerd-fonts.hack
