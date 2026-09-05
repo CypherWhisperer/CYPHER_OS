@@ -4,13 +4,8 @@
 
 {
   lib,
-  config,
   ...
 }:
-
-let
-  cfg = config.cypher-os.shell;
-in
 
 {
   imports = [
