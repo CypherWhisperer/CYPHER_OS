@@ -5,7 +5,6 @@
 {
   lib,
   config,
-  cypherOsProfile,
   ...
 }:
 
@@ -22,37 +21,17 @@ in
   ];
 
   config = lib.mkMerge [
-    # Currently no logic to gate:
-    # (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {})
+    # (lib.mkIf && cfg.enable {}) # Currently no logic to gate:
 
     {
-      cypher-os.shell.zsh.enable = lib.mkDefault (
-        (cypherOsProfile == "desktop" || cypherOsProfile == "server") && cfg.enable
-      );
-      cypher-os.shell.fish.enable = lib.mkDefault (
-        (cypherOsProfile == "desktop" || cypherOsProfile == "server") && cfg.enable
-      );
-      cypher-os.shell.nushell.enable = lib.mkDefault (
-        (cypherOsProfile == "desktop" || cypherOsProfile == "server") && cfg.enable
-      );
+      cypher-os.shell.zsh.enable = lib.mkDefault true;
+      cypher-os.shell.fish.enable = lib.mkDefault true;
+      cypher-os.shell.nushell.enable = lib.mkDefault true;
 
     }
 
     {
-      cypher-os.shell.enable = lib.mkDefault (
-        cypherOsProfile == "desktop" || cypherOsProfile == "server"
-      );
-    }
-
-    {
-      assertions = [
-        {
-          assertion = cfg.enable -> (cypherOsProfile == "desktop" || cypherOsProfile == "server");
-          message = ''
-            cypher-os.shell.enable requires cypher-os.profile.active == "desktop" or "server".
-          '';
-        }
-      ];
+      cypher-os.shell.enable = lib.mkDefault true;
     }
   ];
 }
