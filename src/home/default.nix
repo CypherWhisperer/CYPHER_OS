@@ -9,5 +9,6 @@
     ../profile/hm.nix
     ../de/hm.nix
     ../shell/hm.nix
+    ../fonts/hm.nix
   ];
 }
