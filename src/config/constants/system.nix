@@ -24,21 +24,23 @@
 
 let
   cfg = config.cypher-os.constants;
+  values = import ./values.nix;
 in
 {
   imports = [ ./options.nix ];
 
   config = {
     cypher-os.constants = {
-      username = lib.mkDefault "cypher_whisperer";
-      homeDirectory = lib.mkDefault "/home/cypher-whisperer";
-      primaryDisk = lib.mkDefault "/dev/sda";
+      username = lib.mkDefault values.username;
+      homeDirectory = lib.mkDefault values.homeDirectory;
+      primaryDisk = lib.mkDefault values.primaryDisk;
 
       backupRoot = lib.mkDefault "${cfg.homeDirectory}/DATA/FILES";
       obsidianVaultRoot = lib.mkDefault "${cfg.backupRoot}/PROJECTS/PRIVATE/OBSIDIAN_NOTES";
     };
 
     _module.args.cypherOsConstants = cfg;
+    users.users.${values.username}.home = values.homeDirectory;
 
     # ──────────────────────────────────────────────────────────────────────────
     # System-context read surface: scoped to this lens's own root subvolume, for

@@ -25,6 +25,8 @@ Every constant falls into exactly one of these. Sort a new one into its bucket b
     - may genuinely differ between physical machines, but **must be identical across every lens on the same machine** (see [naming](naming.md)'s host/machine/lens distinction — ***this is not "may differ per `hosts/*` entry"***).
     - Example: `username`, `homeDirectory`, `primaryDisk`.
     - No default in `options.nix`; authoritative value set in `system.nix`; forwarded to HM via `osConfig`.
+      
+- machine-variant values additionally need a `src/config/constants/values.nix`-style plain import if they're needed outside the module system entirely (flake-level glue) — ***the bucket answers 'what varies,' this answers 'how does a non-module consumer get it.'***
 
 ## 2. Where each bucket lives
 
