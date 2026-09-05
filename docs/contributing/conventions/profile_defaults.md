@@ -14,6 +14,7 @@
 
 This reverses the pre-refactor `modules/profile/{default,system}.nix` pattern, which pushed every category's defaults into one hub file. That pattern is retired, not migrated.
 
+> **NOTE: *Flake-level aggregator files (`flake/hosts.nix`, `flake/home-configurations.nix`) must never set `cypher-os.profile.*`/`cypher-os.lens.*` inline — their job is assembling module lists for `nixosSystem`/`homeManagerConfiguration`, not authoring config. The sole authoritative locations remain `hosts/nixos/profile.nix` (for the nested `cypher-nixos` graph) and each standalone lens's own `home.nix` (per ADR-024).***
 ## 2. The pattern
 
 In the category's own `system.nix` / `hm.nix`:

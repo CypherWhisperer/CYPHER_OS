@@ -8,7 +8,9 @@
   inputs,
   pkgs,
 }:
-
+let
+  values = import ../src/config/constants/values.nix;
+in
 {
   # ── Standalone Home Manager Configurations ────────────────────────────────
   # homeConfigurations are for non-NixOS hosts (Arch, Debian, Fedora, OpenSuse).
@@ -85,9 +87,27 @@
       # `nix eval .#homeConfigurations."cypher_whisperer@cypher-nixos".config.programs.direnv.nix-direnv.enable 2>&1`
 
       {
-        home.username = "cypher_whisperer";
-        home.homeDirectory = "/home/cypher-whisperer";
-        cypher-os.profile.desktop.enable = true;
+        home.username = values.username;
+        home.homeDirectory = values.homeDirectory;
+
+        # ──────────────────────────────────────────────────────────────────────
+        # DROPPED
+        # ──────────────────────────────────────────────────────────────────────
+        # Neither `flake/hosts.nix` nor `flake/home-configurations.nix` should
+        # ever set `cypher-os.profile.*`/`cypher-os.lens.*` directly:
+        #
+        #  - For `cypher-nixos`: `hosts/nixos/profile.nix` is already the sole
+        #    authoritative setter (imported via `configuration.nix`), forwarded
+        #    to the nested HM graph via `osConfig`.
+        #    Nothing at this flake-wiring layer needs to touch it.
+        #
+        #  - For standalone lenses: each lens's own `hosts/<lens>/home.nix` is
+        #    the authoritative setter, per ADR-024. Same principle —
+        #    the flake-level aggregator's job is which modules go into which
+        #    `nixosSystem`/`homeManagerConfiguration` call, not injecting inline
+        #    profile config.
+        # ──────────────────────────────────────────────────────────────────────
+        # cypher-os.profile.desktop.enable = true;
       }
     ];
   };

@@ -80,7 +80,9 @@
             lib,
             ...
           }:
-
+          let
+            values = import ../src/config/constants/values.nix;
+          in
           {
             imports = [
               ../modules/home/default.nix
@@ -88,17 +90,27 @@
             ];
 
             # Identity — must match users.users
-            home.username = "cypher_whisperer";
-            home.homeDirectory = "/home/cypher-whisperer";
+            home.username = values.username;
+            home.homeDirectory = values.homeDirectory;
 
-            # Activate the desktop profile; This cascades all app/DE/DM defaults.
-            # Override any individual option below this line to deviate from the profile.
-            cypher-os.profile.desktop.enable = true;
-
-            # Example overrides (uncomment to use):
-            # cypher-os.de.gnome.enable    = false;
-            # cypher-os.de.hyprland.enable = true;
-            # cypher-os.apps.gaming.enable = false;
+            # ──────────────────────────────────────────────────────────────────────
+            # DROPPED
+            # ──────────────────────────────────────────────────────────────────────
+            # Neither `flake/hosts.nix` nor `flake/home-configurations.nix` should
+            # ever set `cypher-os.profile.*`/`cypher-os.lens.*` directly:
+            #
+            #  - For `cypher-nixos`: `hosts/nixos/profile.nix` is already the sole
+            #    authoritative setter (imported via `configuration.nix`), forwarded
+            #    to the nested HM graph via `osConfig`.
+            #    Nothing at this flake-wiring layer needs to touch it.
+            #
+            #  - For standalone lenses: each lens's own `hosts/<lens>/home.nix` is
+            #    the authoritative setter, per ADR-024. Same principle —
+            #    the flake-level aggregator's job is which modules go into which
+            #    `nixosSystem`/`homeManagerConfiguration` call, not injecting inline
+            #    profile config.
+            # ──────────────────────────────────────────────────────────────────────
+            # cypher-os.profile.desktop.enable = true;
           };
 
         # This tells HM to rename any conflicting existing files to .hm-bak
