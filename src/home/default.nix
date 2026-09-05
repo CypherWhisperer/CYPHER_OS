@@ -23,6 +23,7 @@
     ../security/hm.nix
     ../pkgs/utils/hm.nix
     ../pkgs/networking/hm.nix
+    ../pkgs/cli/hm.nix
 
     # ──────────────────────────────────────────────────────────────────────────
     # An error I hit in prior build:

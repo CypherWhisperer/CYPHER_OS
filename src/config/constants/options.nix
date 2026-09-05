@@ -89,5 +89,11 @@
       default = "${self}/src/shell/configs/p10k.zsh";
       description = "Path to the Powerlevel10k theme file for Zsh.";
     };
+
+    fastfetchArtworkPngsRoot = lib.mkOption {
+      type = lib.types.path;
+      default = "${self}/src/pkgs/cli/configs/fastfetch_artwork_pngs";
+      description = "Path to the Fastfetch Artwork Images.";
+    };
   };
 }
