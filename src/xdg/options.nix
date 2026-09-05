@@ -1,15 +1,11 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/home/default.nix
+# src/xdg/options.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ ... }:
+{ lib, ... }:
 
 {
-  imports = [
-    ../profile/hm.nix
-    ../de/hm.nix
-    ../shell/hm.nix
-    ../fonts/hm.nix
-    ../xdg/hm.nix
-  ];
+  options.cypher-os.xdg = {
+    enable = lib.mkEnableOption "CypherOS XDG configuration";
+  };
 }
