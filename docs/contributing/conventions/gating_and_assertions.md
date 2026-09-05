@@ -178,3 +178,14 @@ Flagging these as things this convention doesn't cover yet; ask if you want any 
 - `lib.optional`/`lib.optionals` for conditionally including list items, vs. wrapping a whole list in `mkIf` when you're only trimming entries
 - `home.packages` vs `environment.systemPackages` placement rules per profile/lens
 - preferring the `cypherOsProfile`/`cypherOsLens` `_module.args` over reaching into `config.cypher-os.profile.active` directly, for consistency across category modules going forward
+
+## 12. Both-profile categories with a partial GUI-only subset
+
+When a category is valid under both profiles but contains some GUI-specific tools that only make sense on desktop, don't gate the whole category behind `cypherOsProfile == "desktop"` — ***that silently drops the category's server-valid contents.***
+
+Don't collapse the GUI-only tools into one flat `gui.enable` gating an inline package list either — ***that regresses per-tool granularity the moment a second GUI tool appears.***
+
+Instead, introduce `<category>.gui.*` as a namespace tier:
+- `gui.enable` gates the subset as a whole (`mkDefault (cfg.enable && cypherOsProfile == "desktop")`), and each individual GUI tool gets its own leaf beneath it (`gui.<tool>.enable`).
+
+State the profile-desktop requirement once, on `gui.enable`'s own assertion — ***every leaf beneath it inherits it transitively through the ordinary parent-implies-leaf assertion, without restating the profile check per tool.***

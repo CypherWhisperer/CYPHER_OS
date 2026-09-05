@@ -215,3 +215,43 @@ Considered seriously, since nixpkgs itself doesn't nest `services.*` under an ar
 **Neutral / Operational:**
 
 - This ADR does not itself implement the migration — see [RFC_001](../rfcs/RFC_001_cypherOS_repo_and_namespace_restructure_implementation_plan.md) for the phased plan.
+
+----
+
+## Amendment — 2026-09-05
+
+**Change:** Two additions to the namespace design, arising from Phase 5 implementation experience.
+
+**1. `<category>.gui` as a standard sub-branch pattern.**
+
+Categories that are valid under both profiles but contain a partial GUI-specific subset *(e.g. `pkgs.networking`: `nmap`/`tcpdump`/`gobuster` valid on both profiles, `wireshark` desktop-only)* get a `gui` namespace tier rather than either gating the whole category behind `profile.active == "desktop"` (which would wrongly drop the both-profile contents from server) or collapsing the GUI subset into one flat switch *(which doesn't scale past one tool):*
+
+```
+cypher-os.<category>.enable
+cypher-os.<category>.gui.enable
+cypher-os.<category>.gui.<tool>.enable
+```
+
+Each leaf under `gui.*` represents one distinct package by default — *same convention as the rest of the namespace.*
+
+Group-toggling multiple tools under one leaf is the exception, reserved for tools that are never meaningfully installed/removed independently of each other, not the default shape.
+
+**Reasoning:**
+- Stating the profile-desktop requirement once, as `gui.enable`'s own assertion (`cfg.gui.enable -> profile.active == "desktop"`), lets every leaf beneath it inherit that constraint transitively through the ordinary parent-implies-leaf assertion chain — *a leaf only needs `<leaf>.enable -> gui.enable`, not its own restated profile check.*
+- This avoids copy-pasting the same profile assertion onto every individual GUI tool as the category grows.
+
+**2. The Full Namespace Tree is illustrative, not exhaustively fixed.**
+
+The tree diagram in this ADR's Decision section reflects the schema as understood at the time of writing — *it is not a closed enumeration that later additions must be read as contradicting.*
+
+Namespace growth is governed by simple local rules rather than requiring a fresh ADR amendment per leaf:
+
+- A new leaf under an existing category follows that category's existing structure and mirrors its repo-tree location, per this ADR's original mirroring principle.
+  
+- A new namespace *tier* within a category (such as `gui` above) is introduced when a category spans a profile- or lens-restricted subset alongside an unrestricted one — ***the tier isolates the restriction to itself and its own leaves, rather than the category's top-level `enable`.***
+  
+- Each leaf represents one package/tool by default; ***group-toggling is the deliberate exception, not the default.***
+
+A *reusable structural pattern* (like the `gui` tier itself) warrants this kind of amendment, since it's a rule other categories will also follow — ***an individual new leaf or category addition does not.***
+
+**Status:** unchanged — remains `Accepted`. This amendment clarifies how the namespace grows; it does not revise why the original restructure was decided.
