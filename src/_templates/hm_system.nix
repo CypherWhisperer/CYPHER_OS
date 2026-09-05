@@ -5,7 +5,7 @@
 { lib, pkgs, config, cypherOsProfile, ... }:
 
 let
-  cfg = config.cypher-os. ...;
+  cfg = config.cypher-os.<category>;
 in
 {
   imports = [ ./options.nix ];
@@ -13,7 +13,7 @@ in
   config = lib.mkMerge [
 
     # ──────────────────────────────────────────────────────────────────────────
-    # Packages eligible for both Server and Desktop Profile
+    # Packages eligible for both Server and Desktop Profiles
     # ──────────────────────────────────────────────────────────────────────────
     (lib.mkIf cfg.enable {
       # Logic, e.g
@@ -25,7 +25,7 @@ in
       #];
     })
 
-    (lib.mkIf (cfg.enable && cfg. ... .enable) {
+    (lib.mkIf (cfg.enable && cfg. <category> .enable) {
       # Logic, e.g
       #home.packages = with pkgs; [
       #];
@@ -51,7 +51,7 @@ in
       #];
     })
 
-    (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable && cfg. ... .enable) {
+    (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable && cfg.<category> .enable) {
       # Logic, e.g
       #home.packages = with pkgs; [
       #];
@@ -74,7 +74,7 @@ in
       #];
     })
 
-    (lib.mkIf (cypherOsProfile == "server" && cfg.enable && cfg. ... .enable) {
+    (lib.mkIf (cypherOsProfile == "server" && cfg.enable && cfg.<category>.enable) {
       # Logic, e.g
       #home.packages = with pkgs; [
       #];
@@ -98,14 +98,14 @@ in
     #     — pair with the matching assertion below.
     # ──────────────────────────────────────────────────────────────────────────
     {
-      cypher-os. ... .enable = lib.mkDefault (cypherOsProfile == "desktop");
-      cypher-os. ... .enable = lib.mkDefault ... ;
+      cypher-os.<category>.enable = lib.mkDefault (cypherOsProfile == "desktop");
+      cypher-os.<category>.enable = lib.mkDefault <condition>;
     }
 
     {
       assertions = [
         {
-          assertion = cfg ... .enable -> ... ;
+          assertion = cfg<category>.enable -> <condition> ;
           message = ''
             cypher-os. ... .enable requires ... .
           '';
@@ -117,7 +117,7 @@ in
           # Stated once here — every leaf under gui.* inherits this via
           # the leaf-implies-gui.enable assertion below, transitively.
           # ────────────────────────────────────────────────────────────────────
-          assertion = cfg. ... .gui.enable -> cypherOsProfile == "desktop";
+          assertion = cfg.<category>.gui.enable -> cypherOsProfile == "desktop";
           message = ''
             cypher-os. ... .gui.enable requires cypher-os.profile.active == "desktop".
           '';

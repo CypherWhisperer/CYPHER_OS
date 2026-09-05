@@ -9,7 +9,8 @@
     enable = lib.mkEnableOption " ";
 
     # ──────────────────────────────────────────────────────────────────────────
-    # Doesn't currently span profiles, hence no <category>.gui.* pattern
+    # Doesn't currently have GUI packages and/or span desktop and server
+    # profiles, hence no <category>.gui.* pattern
     # ──────────────────────────────────────────────────────────────────────────
 
     # OR
