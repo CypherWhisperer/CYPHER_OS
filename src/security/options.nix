@@ -10,6 +10,6 @@
     # ──────────────────────────────────────────────────────────────────────────
     # Doesn't currently span profiles, hence no <category>.gui.* pattern
     # ──────────────────────────────────────────────────────────────────────────
-    keepassxc = lib.mkEnableOption "KeepassXC Local-First Password Manager.";
-  }
+    keepassxc.enable = lib.mkEnableOption "KeepassXC Local-First Password Manager.";
+  };
 }
