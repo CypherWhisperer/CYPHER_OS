@@ -16,6 +16,34 @@
       description = "Primary user's login name — see ADR-014.";
     };
 
+    userId = lib.mkOption {
+      type = lib.types.ints.unsigned;
+      description = "Primary user's UUID value. Same across OS lenses.";
+    };
+
+    displayName = lib.mkOption {
+      type = lib.types.str;
+      description = "Primary user's Display name";
+    };
+
+    primaryUserShell = lib.mkOption {
+      type = lib.types.enum [
+        "bash"
+        "zsh"
+        "fish"
+        "nushell"
+      ];
+      description = ''
+        The primary user's primary shell. "bash" is always valid regardless
+        of cypher-os.shell.*'s state — it's the NixOS/Linux baseline, never
+        gated behind an enable toggle (see src/shell/options.nix's own
+        comment on this). The other three require their corresponding
+        cypher-os.shell.{enable,<name>.enable} to both be true — enforced
+        by src/users/cypher_whisperer.nix's assertion, not by this option's
+        type.
+      '';
+    };
+
     homeDirectory = lib.mkOption {
       type = lib.types.str;
       description = "Primary user's home directory path — see ADR-014.";

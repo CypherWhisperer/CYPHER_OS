@@ -13,6 +13,7 @@
     ../dm/system.nix
     ../shell/system.nix
     ../fonts/system.nix
+    ../users/system.nix
     # ./networking
     # ./security
     # ./virtualisation

@@ -32,6 +32,9 @@ in
   config = {
     cypher-os.constants = {
       username = lib.mkDefault values.username;
+      userId = lib.mkDefault 1000;
+      displayName = lib.mkDefault "Cypher Whisperer";
+      primaryUserShell = lib.mkDefault "zsh";
       homeDirectory = lib.mkDefault values.homeDirectory;
       primaryDisk = lib.mkDefault values.primaryDisk;
 
@@ -40,7 +43,6 @@ in
     };
 
     _module.args.cypherOsConstants = cfg;
-    users.users.${values.username}.home = values.homeDirectory;
 
     # ──────────────────────────────────────────────────────────────────────────
     # System-context read surface: scoped to this lens's own root subvolume, for

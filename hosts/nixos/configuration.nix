@@ -61,7 +61,6 @@
     ../../modules/profile/system.nix
 
     ../../modules/arduino/system.nix
-    ../../modules/users/cypher_whisperer.nix
     ../../modules/gaming/steam-system.nix
     ../../modules/devops/system.nix
     ../../modules/virtualisation/system.nix
