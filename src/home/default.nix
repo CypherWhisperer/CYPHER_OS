@@ -19,6 +19,10 @@
     ../shell/hm.nix
     ../fonts/hm.nix
     ../xdg/hm.nix
+    ../privacy/hm.nix
+    ../security/hm.nix
+    ../pkgs/utils/hm.nix
+    ../pkgs/networking/hm.nix
 
     # ──────────────────────────────────────────────────────────────────────────
     # An error I hit in prior build:
