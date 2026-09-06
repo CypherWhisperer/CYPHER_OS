@@ -128,17 +128,13 @@
     terminalFont = {
       pkgName = lib.mkOption {
         type = lib.types.str;
-        description = ''
-          Path to the Obsidian vault. Defaults relative to backupRoot.
-        '';
+        description = "The nixpkgs package Name to the Font Family used in CypherOS terminals (Kitty and Ghostty).";
         default = "nerd-fonts.caskaydia-cove";
       };
 
       displayName = lib.mkOption {
         type = lib.types.str;
-        description = ''
-          Path to the Obsidian vault. Defaults relative to backupRoot.
-        '';
+        description = "The display Name to the Font Family used in CypherOS terminals (Kitty and Ghostty).";
         default = "CaskaydiaCove Nerd Font Mono";
       };
     };
