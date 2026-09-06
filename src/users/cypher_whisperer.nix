@@ -2,7 +2,12 @@
 # src/users/cypher_whisperer.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ pkgs, cypherOsConstants, config, ... }:
+{
+  pkgs,
+  config,
+  cypherOsConstants,
+  ...
+}:
 let
   cfg = config.cypher-os.shell;
   primaryShell = cypherOsConstants.primaryUserShell;
@@ -15,7 +20,6 @@ let
   # ────────────────────────────────────────────────────────────────────────────
   shellIsAvailable = primaryShell == "bash" || (cfg.enable && cfg.${primaryShell}.enable);
 in
-
 {
   # ────────────────────────────────────────────────────────────────────────────
   # USER ACCOUNT

@@ -10,8 +10,10 @@
 #      in their respective modules categories.
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ cypherOsConstants, ... }:
-
+{
+  cypherOsConstants,
+  ...
+}:
 {
   imports = [
     ../profile/hm.nix

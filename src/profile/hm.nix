@@ -20,7 +20,6 @@
   osConfig ? null,
   ...
 }:
-
 {
   imports = [ ./options.nix ];
 

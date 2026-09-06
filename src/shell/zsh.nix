@@ -35,9 +35,9 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   cypherOsConstants,
   ...
 }:
@@ -45,18 +45,16 @@ let
   cfg = config.cypher-os.shell;
 in
 {
-  imports = [
-    ./options.nix
-  ];
-  config = lib.mkMerge [
-    (lib.mkIf (cfg.enable && cfg.zsh.enable) {
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.zsh.enable) {
 
       home.packages = with pkgs; [
         pkgs.zsh-powerlevel10k
         pkgs.keychain # SSH agent manager
         pkgs.eza # modern ls replacement (used in aliases)
 
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         # Once hooked into the shell, direnv is looking for an .envrc file in
         # the  current directory before every prompt. If found it will load the
         # exported environment variables from that bash script into hte current
@@ -65,27 +63,27 @@ in
         #
         # In short, this little tool allows you to have project-specific
         # environment variables.
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         direnv
       ];
 
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       # ZSH CORE
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       programs.zsh = {
         enable = true;
 
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         # dotDir: where HM places .zshrc, .zshenv, .zprofile.
         # Relative to $HOME. Results in ~/.config/zsh/.zshrc etc.
         # Combined with ZDOTDIR=$HOME/.config/zsh, this keeps $HOME clean.
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         dotDir = "${config.xdg.configHome}/zsh";
 
-        # ── History ───────────────────────────────────────────────────────────
+        # ── History ─────────────────────────────────────────────────────────────
         # historyFile: explicit path keeps history on @home regardless of which
         # OS is booted. The file is in ZDOTDIR so it moves with the XDG profile.
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         history = {
           path = "${config.home.homeDirectory}/.config/zsh/.zsh_history";
           size = 50000; # lines kept in memory during session
@@ -97,23 +95,23 @@ in
           expireDuplicatesFirst = true; # expire dupes b4 unique entries when trimming
         };
 
-        # ── Completion ────────────────────────────────────────────────────────
+        # ── Completion ──────────────────────────────────────────────────────────
         # enableCompletion: generates the completions and wires up compinit.
         # autosuggestion and syntaxHighlighting are OMZ plugins here, but HM also
         # has first-class support — using OMZ for consistency with your existing
         # setup.
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         enableCompletion = true;
         autosuggestion.enable = true;
         syntaxHighlighting.enable = true;
 
-        # ── Oh-My-Zsh ─────────────────────────────────────────────────────────
+        # ── Oh-My-Zsh ───────────────────────────────────────────────────────────
         # theme = "": blank — p10k manages the prompt, OMZ theme system is
         # bypassed.
         #
         # Powerlevel10k must NOT be set as an OMZ theme here; it's sourced
         # manually in initExtraBeforeCompInit to enable instant prompt correctly.
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         oh-my-zsh = {
           enable = true;
           theme = ""; # p10k takes over — no OMZ theme
@@ -127,12 +125,12 @@ in
           ];
         };
 
-        # ── initExtraBeforeCompInit ───────────────────────────────────────────
+        # ── initExtraBeforeCompInit ─────────────────────────────────────────────
         # Code that must run BEFORE compinit. Powerlevel10k instant prompt
         # belongs here — it caches the prompt before the slow parts of zshrc
         # execute. Instant prompt requires this block to be at the very top of
         # zshrc execution.
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         initContent = lib.mkMerge [
 
           (lib.mkOrder 500 ''
@@ -163,13 +161,13 @@ in
             }
           ''
 
-          # ── initExtra ───────────────────────────────────────────────────────
+          # ── initExtra ─────────────────────────────────────────────────────────
           # Everything else: environment variables, functions, keybinds,
           # tool inits.
           #
           # OMZ has already been sourced by this point (HM sources it
           # before initExtra).
-          # ────────────────────────────────────────────────────────────────────
+          # ──────────────────────────────────────────────────────────────────────
 
           ''
             # ── Powerlevel10k: Load Theme ───────────────────────────────────────────
@@ -379,9 +377,9 @@ in
           ''
         ];
 
-        # ── Shell Aliases ─────────────────────────────────────────────────────
+        # ── Shell Aliases ───────────────────────────────────────────────────────
         shellAliases = {
-          # ── Navigation ──────────────────────────────────────────────────────
+          # ── Navigation ────────────────────────────────────────────────────────
           ".." = "cd ..";
           "..." = "cd ../..";
           ".3" = "cd ../../..";
@@ -391,17 +389,17 @@ in
           "proj" = "cd $HOME/DATA/FILES/PROJECTS";
           "docs" = "cd $HOME/Documents";
 
-          # ── fzf Fuzzy Helpers (defined as functions in initExtra above) ─────
+          # ── fzf Fuzzy Helpers (defined as functions in initExtra above) ───────
           "ffcd" = "_fuzzy_change_directory";
           "ffe" = "_fuzzy_edit_search_file";
           "ffec" = "_fuzzy_edit_search_file_content";
           "ffch" = "_fuzzy_search_cmd_history";
 
-          # ── Editors ─────────────────────────────────────────────────────────
+          # ── Editors ───────────────────────────────────────────────────────────
           "n" = "nvim";
           "v" = "vim";
 
-          # ── System Conveniences ─────────────────────────────────────────────
+          # ── System Conveniences ───────────────────────────────────────────────
           "c" = "clear";
           "cls" = "clear && ls";
           "cla" = "clear && ls -lah";
@@ -409,11 +407,11 @@ in
           "mkdir" = "mkdir -p"; # create parent dirs automatically
           "open" = "xdg-open"; # open files with default app
 
-          # ── Listing (use eza if available, fall back to ls) ─────────────────
+          # ── Listing (use eza if available, fall back to ls) ───────────────────
           # eza is a modern ls replacement with icons, git status, tree view.
           # It's declared in modules/common/cli.nix. The fallback means this
           # alias is safe even before HM applies on a fresh install.
-          # ────────────────────────────────────────────────────────────────────
+          # ──────────────────────────────────────────────────────────────────────
 
           # "ls" = "eza --icons --group-directories-first 2>/dev/null || ls --color=auto";   # <- Finicky
           # "ll" = "eza -lh --icons --group-directories-first --git 2>/dev/null || ls -lh";   # <- Finicky
@@ -427,7 +425,7 @@ in
           "tree" = "_tree_wrapper";
           "et" = "eza --tree --icons";
 
-          # ── Git ─────────────────────────────────────────────────────────────
+          # ── Git ───────────────────────────────────────────────────────────────
           # OMZ git plugin provides the heavy aliases (gst, gco, gp, gl, etc.)
           # These are the ones not covered by OMZ or that override it.
           "g" = "git";
@@ -435,14 +433,14 @@ in
           "gd" = "git diff";
           "gl" = "git log --oneline --graph --decorate";
 
-          # ── Docker ──────────────────────────────────────────────────────────
+          # ── Docker ────────────────────────────────────────────────────────────
           "d" = "docker";
           "dc" = "docker compose";
           "dps" = "docker ps";
           "dpa" = "docker ps -a";
           "di" = "docker images";
 
-          # ── Application Fixes ───────────────────────────────────────────────
+          # ── Application Fixes ─────────────────────────────────────────────────
           # Brave sometimes leaves a stale lock file and refuses to start.
           "bravefix" =
             "rm -f ~/.config/BraveSoftware/Brave-Browser/SingletonLock ~/.config/BraveSoftware/Brave-Browser/SingletonSocket";
@@ -453,7 +451,7 @@ in
           # NixOS-integrated path in flake/hosts.nix. Standalone HM has no
           # equivalent Nix-level option — this flag is the only way to get
           # matching backup behavior when running HM independently.
-          # ────────────────────────────────────────────────────────────────────
+          # ──────────────────────────────────────────────────────────────────────
           "hms" =
             "clear && home-manager switch -b hm-bk --flake $HOME/CYPHER_OS#cypher_whisperer@cypher-nixos";
 
@@ -466,11 +464,11 @@ in
           # Build only — for testing evaluation without committing
           "nrbd" = "clear && nixos-rebuild build --flake $HOME/CYPHER_OS#cypher-nixos --impure";
 
-          # ──────────────────── Personal Tooling  ─────────────────────────────
+          # ──────────────────── Personal Tooling  ───────────────────────────────
           "design" =
             "node /home/cypher-whisperer/DATA/FILES/PROJECTS/PRIVATE/DEV_SCRIPTS/js_ts/js/design_tokens/bin/design.js";
 
-          # ── Arduino / IoT ───────────────────────────────────────────────────
+          # ── Arduino / IoT ─────────────────────────────────────────────────────
           # The shellAliases attrset is a single attrset value assigned to
           # shellAliases =.
           #
@@ -502,7 +500,7 @@ in
           #
           # ard-lib:     search the Arduino library registry (pipe to grep to
           #              filter) e.g. ard-lib | grep -i "DHT"
-          # ────────────────────────────────────────────────────────────────────
+          # ──────────────────────────────────────────────────────────────────────
         }
         // lib.optionalAttrs config.cypher-os.arduino.enable {
           "ard-build" = "arduino-cli compile --fqbn ${config.cypher-os.arduino.fqbn}";
@@ -512,35 +510,35 @@ in
           "ard-lib" = "arduino-cli lib search";
         };
 
-        # ── sessionVariables ──────────────────────────────────────────────────
+        # ── sessionVariables ────────────────────────────────────────────────────
         # Variables set for interactive login shells and exported to child
         # processes.
         #
         # Tool-specific variables that need to be available to GUI apps
         # launched from the terminal (e.g. EDITOR, VISUAL) go here rather than
         # in initExtra so they're set early in the session.
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         sessionVariables = {
           EDITOR = "nvim";
           VISUAL = "nvim";
         };
       };
 
-      # ── fzf ─────────────────────────────────────────────────────────────────
+      # ── fzf ───────────────────────────────────────────────────────────────────
       # programs.fzf wires fzf into zsh properly: generates the shell
       # integration script and sets default options.
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       programs.fzf = {
         enable = true;
         enableZshIntegration = true; # sources fzf key-bindings and completion
 
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         # Default options: applied to every fzf invocation unless overridden.
         # --height: don't take over the full terminal
         # --layout=reverse: results appear below the prompt (feels more natural)
         # --border: subtle border around the widget
         # --preview-window: default position for preview panes
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         defaultOptions = [
           "--height=40%"
           "--layout=reverse"
@@ -550,9 +548,9 @@ in
         ];
       };
 
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       # P10K CONFIG FILE DEPLOYMENT
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       # The .p10k.zsh file is too large to inline in initExtra cleanly. It's
       # deployed as a raw file via home.file and sourced from initExtra above.
       #
@@ -562,21 +560,9 @@ in
       # The file is managed by HM — don't edit it at the deployed path. Run
       # `p10k configure` to regenerate it, then copy the result back to
       # configs/shell/p10k.zsh in the repo and commit.
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       home.file.".config/zsh/.p10k.zsh" = {
         source = cypherOsConstants.zshPowerLevel10kThemeFile;
       };
-    })
-
-    {
-      assertions = [
-        {
-          assertion = cfg.zsh.enable -> cfg.enable;
-          message = ''
-            cypher-os.shell.zsh.enable requires cypher-os.shell.enable.
-          '';
-        }
-      ];
-    }
-  ];
+  };
 }

@@ -11,12 +11,11 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
-
 let
   cfg = config.cypher-os.de.gnome;
 
@@ -39,9 +38,8 @@ let
   });
 in
 {
-  imports = [
-    ./options.nix
-  ];
+  imports = [ ./options.nix ];
+
   config = lib.mkIf cfg.enable {
     home.packages = with pkgs; [
       # ────────────────────────────────────────────────────────────────────────

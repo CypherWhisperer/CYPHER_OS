@@ -11,24 +11,24 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
   lib,
+  config,
+  cypherOsConstants,
   ...
 }:
 let
   cfg = config.cypher-os.de.gnome;
 in
 {
-  imports = [
-    ./options.nix
-  ];
+  imports = [ ./options.nix ];
+
   config = lib.mkIf cfg.enable {
     home.file.".local/share/backgrounds/default-gnome-bg.jpg" = {
-      source = config.cypher-os.constants.defaultWallpaper;
+      source = cypherOsConstants.defaultWallpaper;
     };
 
     home.file.".face" = {
-      source = config.cypher-os.constants.userAvatar;
+      source = cypherOsConstants.userAvatar;
     };
   };
 }

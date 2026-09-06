@@ -2,13 +2,19 @@
 # src/privacy/hm.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ lib, pkgs, config, cypherOsProfile, ... }:
-
+{
+  lib,
+  pkgs,
+  config,
+  cypherOsProfile,
+  ...
+}:
 let
   cfg = config.cypher-os.privacy;
 in
 {
   imports = [ ./options.nix ];
+
   config = lib.mkMerge [
     # ──────────────────────────────────────────────────────────────────────────
     # Packages eligible for both Server and Desktop Profile
@@ -19,9 +25,6 @@ in
 
     # ──────────────────────────────────────────────────────────────────────────
     # Packages ONLY eligible for Desktop Profile (GUI subset)
-    # ──────────────────────────────────────────────────────────────────────────
-    # Each package is its own leaf under gui.*, so future additions don't
-    # collapse into one shared switch, unless that's explicitly desired
     # ──────────────────────────────────────────────────────────────────────────
     (lib.mkIf (cfg.enable && cfg.gui.enable && cfg.gui.megasync.enable) {
       home.packages = with pkgs; [ megasync ];
@@ -38,17 +41,7 @@ in
     })
 
     # ──────────────────────────────────────────────────────────────────────────
-    # CONFIGURATION DEFAULTS
-    # ──────────────────────────────────────────────────────────────────────────
-    # NOTE: pick ONE shape for the category's own top-level enable, don't leave
-    # both:
-    #
-    #   Both-profile category:
-    #     cypher-os. ... .enable = lib.mkDefault true; # i.e., no profile gating
-    #
-    #   Desktop-only category:
-    #     cypher-os. ... .enable = lib.mkDefault (cypherOsProfile == "desktop");
-    #     — pair with the matching assertion below.
+    # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
     {
       cypher-os.privacy.enable = lib.mkDefault true;
@@ -58,6 +51,9 @@ in
       cypher-os.privacy.gui.protonSuite.enable = lib.mkDefault cfg.gui.enable;
     }
 
+    # ──────────────────────────────────────────────────────────────────────────
+    # ASSERTIONS.
+    # ──────────────────────────────────────────────────────────────────────────
     {
       assertions = [
         {
@@ -75,10 +71,6 @@ in
         }
 
         {
-          # ────────────────────────────────────────────────────────────────────
-          # Stated once here — every leaf under gui.* inherits this via
-          # the leaf-implies-gui.enable assertion below, transitively.
-          # ────────────────────────────────────────────────────────────────────
           assertion = cfg.gui.enable -> cypherOsProfile == "desktop";
           message = ''
             cypher-os.privacy.gui.enable requires cypher-os.profile.active == "desktop".

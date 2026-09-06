@@ -23,17 +23,7 @@ in
   config = lib.mkMerge [
 
     # ──────────────────────────────────────────────────────────────────────────
-    # CONFIGURATION DEFAULTS
-    # ──────────────────────────────────────────────────────────────────────────
-    # NOTE: pick ONE shape for the category's own top-level enable, don't leave
-    # both:
-    #
-    #   Both-profile category:
-    #     cypher-os. ... .enable = lib.mkDefault true; # i.e., no profile gating
-    #
-    #   Desktop-only category:
-    #     cypher-os. ... .enable = lib.mkDefault (cypherOsProfile == "desktop");
-    #     — pair with the matching assertion below.
+    # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
     {
       cypher-os.pkgs.cli.btop.enable = lib.mkDefault cfg.enable;
@@ -42,6 +32,9 @@ in
       cypher-os.pkgs.cli.fastfetch.enable = lib.mkDefault cfg.enable;
     }
 
+    # ──────────────────────────────────────────────────────────────────────────
+    # ASSERTIONS.
+    # ──────────────────────────────────────────────────────────────────────────
     {
       assertions = [
         {

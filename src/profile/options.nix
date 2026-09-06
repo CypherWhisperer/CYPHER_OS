@@ -8,8 +8,10 @@
 # that options are declared once but visible in both contexts.
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ lib, ... }:
-
+{
+  lib,
+  ...
+}:
 {
   options.cypher-os = {
     profile.active = lib.mkOption {

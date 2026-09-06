@@ -15,12 +15,11 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
-
 let
   cfg = config.cypher-os.pkgs.cli;
 
@@ -35,7 +34,6 @@ let
     rev = "1.0.0";
     sha256 = "sha256-J3UezOQMDdxpflGax0rGBF/XMiKqdqZXuX4KMVGTxFk=";
   };
-
 in
 {
   config = lib.mkIf (cfg.enable && cfg.btop.enable) {

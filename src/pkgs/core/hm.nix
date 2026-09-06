@@ -12,9 +12,7 @@ let
   cfg = config.cypher-os.pkgs.core;
 in
 {
-  imports = [
-    ./options.nix
-  ];
+  imports = [ ./options.nix ];
 
   config = lib.mkMerge [
     (lib.mkIf cfg.enable {
@@ -53,17 +51,7 @@ in
     })
 
     # ──────────────────────────────────────────────────────────────────────────
-    # CONFIGURATION DEFAULTS
-    # ──────────────────────────────────────────────────────────────────────────
-    # NOTE: pick ONE shape for the category's own top-level enable, don't leave
-    # both:
-    #
-    #   Both-profile category:
-    #     cypher-os. ... .enable = lib.mkDefault true; # i.e., no profile gating
-    #
-    #   Desktop-only category:
-    #     cypher-os. ... .enable = lib.mkDefault (cypherOsProfile == "desktop");
-    #     — pair with the matching assertion below.
+    # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
     {
       cypher-os.pkgs.core.enable = lib.mkDefault true;

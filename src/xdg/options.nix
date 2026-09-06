@@ -2,8 +2,10 @@
 # src/xdg/options.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ lib, ... }:
-
+{
+  lib,
+  ...
+}:
 {
   options.cypher-os.xdg = {
     enable = lib.mkEnableOption "CypherOS XDG configuration";

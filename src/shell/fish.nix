@@ -3,34 +3,20 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
 let
   cfg = config.cypher-os.shell;
 in
 {
-  imports = [
-    ./options.nix
-  ];
-  config = lib.mkMerge [
-    (lib.mkIf (cfg.enable && cfg.fish.enable) {
-      home.packages = with pkgs; [
-        fish
-      ];
-    })
+  imports = [ ./options.nix ];
 
-    {
-      assertions = [
-        {
-          assertion = cfg.fish.enable -> cfg.enable;
-          message = ''
-            cypher-os.shell.fish.enable requires cypher-os.shell.enable.
-          '';
-        }
-      ];
-    }
-  ];
+  config = lib.mkIf (cfg.enable && cfg.fish.enable) {
+    home.packages = with pkgs; [
+      fish
+    ];
+  };
 }

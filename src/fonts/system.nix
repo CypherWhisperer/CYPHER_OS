@@ -1,6 +1,6 @@
-# ────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 # src/fonts/system.nix
-# ────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 
 {
   lib,
@@ -14,17 +14,19 @@ let
   terminalFont = cypherOsConstants.terminalFont.pkgName;
 in
 {
-  imports = [ ./options.nix ];
+  imports = [
+    ./options.nix
+    ./defaults.nix
+  ];
 
-  config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
-      # ────────────────────────────────────────────────────────────────────────
+  config = lib.mkIf cfg.enable {
+      # ──────────────────────────────────────────────────────────────────────────
       # FONTS (SYSTEM LEVEL) — NixOS lens only.
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       # No profile check here, deliberately: every valid profile.active
       # value wants fonts on (see the mkDefault below), so there's no
       # invalid combination to gate or assert against.
-      # ────────────────────────────────────────────────────────────────────────
+      # ──────────────────────────────────────────────────────────────────────────
       fonts.fontDir.enable = true;
       fonts.enableGhostscriptFonts = true;
       fonts.packages = with pkgs; [
@@ -44,9 +46,9 @@ in
         nerd-fonts.ubuntu-mono
         nerd-fonts.sauce-code-pro
 
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         # CURRENTLY DISABLED FONTS
-        # ──────────────────────────────────────────────────────────────────────
+        # ────────────────────────────────────────────────────────────────────────
         #fira-code
 
         #nerd-fonts.source-code-pro
@@ -55,8 +57,5 @@ in
         #nerd-fonts.victor-mono
         #nerd-fonts.meslo-lg
       ];
-    })
-
-    { cypher-os.fonts.enable = lib.mkDefault true; }
-  ];
+  };
 }

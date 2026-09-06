@@ -4,33 +4,41 @@
 # GDM (GNOME Display Manager) is the login screen. It handles session
 # selection and hands off to either the GNOME Wayland or X11 session.
 # ──────────────────────────────────────────────────────────────────────────────
+
 {
-  config,
   lib,
+  config,
   cypherOsProfile,
   ...
 }:
-
 let
   cfg = config.cypher-os.dm.gdm;
 in
-
 {
   imports = [ ./options.nix ];
+
   config = lib.mkMerge [
     (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {
       services.displayManager.gdm = {
         enable = true;
+        # ──────────────────────────────────────────────────────────────────────
         # This option is no longer supported with GNOME 50. This came after a
         # flake update 2026-06-05.
-        # wayland = true; # prefer Wayland sessions; GDM falls back to X11 if needed
+        # wayland = true; # GDM falls back to X11.
+        # ──────────────────────────────────────────────────────────────────────
       };
     })
 
+    # ──────────────────────────────────────────────────────────────────────────
+    # DEFAULTS CONFIGURATION.
+    # ──────────────────────────────────────────────────────────────────────────
     {
       config.cypher-os.dm.gdm.enable = lib.mkDefault (cypherOsProfile == "desktop");
     }
 
+    # ──────────────────────────────────────────────────────────────────────────
+    # ASSERTIONS.
+    # ──────────────────────────────────────────────────────────────────────────
     {
       assertions = [
         {
@@ -43,10 +51,17 @@ in
     }
   ];
 }
+# ──────────────────────────────────────────────────────────────────────────────
+# RFC: ASSERTION
+# ──────────────────────────────────────────────────────────────────────────────
+# Assertion to ensure:
+# 1. No 2 dms are installed at the same time
+# 2. At least one is installed.
+# ──────────────────────────────────────────────────────────────────────────────
 
-# ─────────────────────────────────────────────────────────────────────────────
-# RFC DRAFT: GDM BLURRED BACKGROUND
-# ─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
+# RFC: GDM BLURRED BACKGROUND
+# ──────────────────────────────────────────────────────────────────────────────
 # GDM runs its own isolated gnome-shell instance — user extensions (including
 # blur-my-shell) never run there. The only way to set a GDM background is to
 # patch the gnome-shell gresource file that GDM reads.
@@ -62,7 +77,7 @@ in
 # PREREQUISITE: generate the blurred image once:
 #  nix-shell -p imagemagick --run \
 #  "convert src/de/assets/default-gnome-bg.jpg -blur 0x18 src/de/assets/default-gdm-bg.jpg"
-# ─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 #system.activationScripts.gdmBackground = {
 #  deps = [ "users" ];
 #  text = let
@@ -98,12 +113,12 @@ in
 #  '';
 #};
 
-# ─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 # Override the GDM gnome-shell gresource path via an environment variable
 # injected into the GDM session.
-# ─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 # NOTE:
-# ─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 # Honest note: The GNOME_SHELL_THEME_DIR env var approach may or may not be
 # respected depending on gnome-shell version — this is the part that's
 # genuinely version-sensitive. If it doesn't take effect, the fallback is a
@@ -115,7 +130,7 @@ in
 # but that writes into the store (read-only). The cleanest alternative at
 # that point would be a services.xserver.displayManager.gdm.extraConfig-style
 # approach or a bind mount.
-# ─────────────────────────────────────────────────────────────────────────────
+# ──────────────────────────────────────────────────────────────────────────────
 #systemd.services.gdm.environment = {
 #  GNOME_SHELL_THEME_DIR = "/etc/gnome-shell-gdm-theme";
 #};

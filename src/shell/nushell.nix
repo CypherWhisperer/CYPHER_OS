@@ -3,36 +3,22 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
 let
   cfg = config.cypher-os.shell;
 in
 {
-  imports = [
-    ./options.nix
-  ];
-  config = lib.mkMerge [
-    (lib.mkIf (cfg.enable && cfg.nushell.enable) {
-      home.packages = with pkgs; [
-        nushell
-      ];
-    })
+  imports = [ ./options.nix ];
 
-    {
-      assertions = [
-        {
-          assertion = cfg.nushell.enable -> cfg.enable;
-          message = ''
-            cypher-os.shell.nushell.enable requires cypher-os.shell.enable.
-          '';
-        }
-      ];
-    }
-  ];
+  config = lib.mkIf (cfg.enable && cfg.nushell.enable) {
+    home.packages = with pkgs; [
+      nushell
+    ];
+  };
 }
 
 # ──────────────────────────────────────────────────────────────────────────────

@@ -7,8 +7,11 @@
 # NixOS-context only for now (no hm.nix yet)
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ lib, self, ... }:
-
+{
+  lib,
+  self,
+  ...
+}:
 {
   options.cypher-os.constants = {
     username = lib.mkOption {

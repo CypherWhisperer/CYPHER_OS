@@ -33,7 +33,6 @@
   osConfig ? null,
   ...
 }:
-
 let
   cfg = if osConfig != null then osConfig.cypher-os.constants else config.cypher-os.constants;
 in

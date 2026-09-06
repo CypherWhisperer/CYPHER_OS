@@ -50,7 +50,6 @@ let
 
   primaryShell = cypherOsConstants.primaryUserShell;
 in
-
 {
   config = lib.mkIf (cfg.enable && cfg.tmux.enable) {
     programs.tmux = {

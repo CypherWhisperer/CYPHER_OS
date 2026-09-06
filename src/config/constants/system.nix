@@ -17,11 +17,10 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
   lib,
+  config,
   ...
 }:
-
 let
   cfg = config.cypher-os.constants;
   values = import ./values.nix;

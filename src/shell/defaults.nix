@@ -1,45 +1,52 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/shell/system.nix
+# src/shell/defaults.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
   lib,
   config,
+  cypherOsProfile,
   ...
 }:
 let
   cfg = config.cypher-os.shell;
 in
 {
-  imports = [
-    ./options.nix
-    ./defaults.nix
-  ];
+  imports = [ ./options.nix ];
 
-  config = lib.mkMerge [
-    (lib.mkIf (cfg.enable && cfg.zsh.enable) {
-      # ────────────────────────────────────────────────────────────────────────
-      # ZSH (SYSTEM LEVEL ENABLEMENT).
-      # ────────────────────────────────────────────────────────────────────────
-      # Setting the user shell to zsh - as done - requires zsh to be enabled
-      # at the system level — NixOS won't add it to /etc/shells otherwise,
-      # which breaks login.
-      # ────────────────────────────────────────────────────────────────────────
-      programs.zsh.enable = true;
-    })
+  config = {
+    # ──────────────────────────────────────────────────────────────────────────
+    # DEFAULTS CONFIGURATION.
+    # ──────────────────────────────────────────────────────────────────────────
+    cypher-os.shell.enable = lib.mkDefault true;
+    cypher-os.shell.zsh.enable = lib.mkDefault cfg.enable;
+    cypher-os.shell.fish.enable = lib.mkDefault cfg.enable;
+    cypher-os.shell.nushell.enable = lib.mkDefault cfg.enable;
 
     # ──────────────────────────────────────────────────────────────────────────
-    # FISH (SYSTEM LEVEL ENABLEMENT).
+    # ASSERTIONS.
     # ──────────────────────────────────────────────────────────────────────────
-    (lib.mkIf (cfg.enable && cfg.fish.enable) {
-      programs.fish.enable = true;
-    })
+    assertions = [
+      {
+        assertion = cfg.zsh.enable -> cfg.enable;
+        message = ''
+          cypher-os.shell.zsh.enable requires cypher-os.shell.enable.
+        '';
+      }
 
-    # ──────────────────────────────────────────────────────────────────────────
-    # NUSHELL (SYSTEM LEVEL ENABLEMENT).
-    # ──────────────────────────────────────────────────────────────────────────
-    (lib.mkIf (cfg.enable && cfg.nushell.enable) {
-      programs.nushell.enable = true;
-    })
-  ];
+      {
+        assertion = cfg.fish.enable -> cfg.enable;
+        message = ''
+          cypher-os.shell.fish.enable requires cypher-os.shell.enable.
+        '';
+      }
+
+      {
+        assertion = cfg.nushell.enable -> cfg.enable;
+        message = ''
+          cypher-os.shell.nushell.enable requires cypher-os.shell.enable.
+        '';
+      }
+    ];
+  };
 }

@@ -9,14 +9,17 @@
 # live in extensions.nix alongside the packages that need them.
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ config, lib, ... }:
+{
+  config,
+  lib,
+  ...
+}:
 let
   cfg = config.cypher-os.de.gnome;
 in
 {
-  imports = [
-    ./options.nix
-  ];
+  imports = [ ./options.nix ];
+
   config = lib.mkIf cfg.enable {
     # ──────────────────────────────────────────────────────────────────────────
     # DCONF SETTINGS

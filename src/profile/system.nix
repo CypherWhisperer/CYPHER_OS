@@ -17,8 +17,10 @@
 # the diff reviewable on its own.
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ config, ... }:
-
+{
+  config,
+  ...
+}:
 {
   imports = [ ./options.nix ];
 

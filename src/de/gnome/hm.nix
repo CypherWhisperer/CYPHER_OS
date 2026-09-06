@@ -12,60 +12,42 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
   lib,
+  config,
   cypherOsProfile,
   ...
 }:
-
 let
   cfg = config.cypher-os.de.gnome;
 in
-
 {
   imports = [
     ./options.nix
+    ./defaults.nix
     ./assets.nix
     ./dconf.nix
     ./theming.nix
     ./extensions.nix
   ];
 
-  config = lib.mkMerge [
-    (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {
-      # ──────────────────────────────────────────────────────────────────────────
-      # XDG PROFILE LAUNCHER SCRIPT
-      # ──────────────────────────────────────────────────────────────────────────
-      home.file.".local/bin/launch-gnome" = {
-        executable = true;
-        text = ''
-          #!/usr/bin/env bash
-          # XDG Profile Launcher — GNOME
-          # Managed by Home Manager (modules/de/gnome.nix). Do not edit manually.
+  config = lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {
+    # ──────────────────────────────────────────────────────────────────────────
+    # XDG PROFILE LAUNCHER SCRIPT
+    # ──────────────────────────────────────────────────────────────────────────
+    home.file.".local/bin/launch-gnome" = {
+      executable = true;
+      text = ''
+        #!/usr/bin/env bash
+        # XDG Profile Launcher — GNOME
+        # Managed by Home Manager (modules/de/gnome.nix). Do not edit manually.
 
-          export XDG_CONFIG_HOME="$HOME/.config/profiles/gnome"
-          export XDG_DATA_HOME="$HOME/.local/share/profiles/gnome"
-          export XDG_CACHE_HOME="$HOME/.cache/profiles/gnome"
-          export XDG_STATE_HOME="$HOME/.local/state/profiles/gnome"
+        export XDG_CONFIG_HOME="$HOME/.config/profiles/gnome"
+        export XDG_DATA_HOME="$HOME/.local/share/profiles/gnome"
+        export XDG_CACHE_HOME="$HOME/.cache/profiles/gnome"
+        export XDG_STATE_HOME="$HOME/.local/state/profiles/gnome"
 
-          exec gnome-session
-        '';
-      };
-    })
-
-    {
-      config.cypher-os.de.gnome.enable = lib.mkDefault (cypherOsProfile == "desktop");
-    }
-
-    {
-      assertions = [
-        {
-          assertion = cfg.enable -> cypherOsProfile == "desktop";
-          message = ''
-            cypher-os.de.gnome.enable requires cypher-os.profile.active == "desktop".
-          '';
-        }
-      ];
-    }
-  ];
+        exec gnome-session
+      '';
+    };
+  };
 }
