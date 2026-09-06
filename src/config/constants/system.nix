@@ -40,6 +40,17 @@ in
 
       backupRoot = lib.mkDefault "${cfg.homeDirectory}/DATA/FILES";
       obsidianVaultRoot = lib.mkDefault "${cfg.backupRoot}/PROJECTS/PRIVATE/OBSIDIAN_NOTES";
+
+      gamingFiles = {
+        root = lib.mkDefault "${cfg.backupRoot}/GAMING";
+
+        steamFiles = {
+          root = lib.mkDefault "${cfg.gamingFiles.root}/STEAM_FILES";
+          dataRoot = lib.mkDefault "${cfg.gamingFiles.steamFiles.root}/Steam";
+          xdgRoot = lib.mkDefault "${cfg.homeDirectoy}/.local/share/Steam";
+          steamLibraryRoot lib.mkDefault "${cfg.gamingFiles.steamFiles.root}/SteamLibrary";
+        };
+      };
     };
 
     _module.args.cypherOsConstants = cfg;

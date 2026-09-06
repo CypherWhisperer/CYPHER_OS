@@ -25,6 +25,7 @@
     ../pkgs/networking/hm.nix
     ../pkgs/cli/hm.nix
     ../pkgs/terminal/hm.nix
+    ../pkgs/gaming/hm.nix
 
     # ──────────────────────────────────────────────────────────────────────────
     # An error I hit in prior build:

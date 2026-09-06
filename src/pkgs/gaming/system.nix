@@ -1,22 +1,12 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/system/default.nix
+# src/pkgs/gaming/system.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 { ... }:
-
 {
   imports = [
-    ./boot
-    ../profile/system.nix
-    ../config/constants/system.nix
-    ../de/system.nix
-    ../dm/system.nix
-    ../shell/system.nix
-    ../fonts/system.nix
-    ../users/system.nix
-    ../pkgs/gaming/system.nix
-    # ./networking
-    # ./security
-    # ./virtualisation
+    ./options.nix
+    ./defaults.nix
+    ./steam_system.nix
   ];
 }

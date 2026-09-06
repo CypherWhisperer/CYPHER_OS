@@ -72,6 +72,35 @@
       '';
     };
 
+    gamingFiles = {
+      root = lib.mkOption {
+        type = lib.types.str;
+        description = "Path to the parent directory hosting all Gaming related data under @data mount point.";
+      };
+
+      steamFiles = {
+        root = lib.mkOption {
+          type = lib.types.str;
+          description = "Path to the parent directory hosting all Steam related data.";
+        };
+
+        dataRoot = lib.mkOption {
+          type = lib.types.str;
+          description = "Path to the parent directory hosting Steam data files.";
+        };
+
+        steamLibraryRoot = lib.mkOption {
+          type = lib.types.str;
+          description = "Path to the parent directory hosting Steam Library related files.";
+        };
+
+        xdgRoot = lib.mkOption {
+          type = lib.types.str;
+          description = "Path to the parent directory hosting Steam XDG relates files (Steam's expected XDG data location).";
+        };
+      };
+    };
+
     userAvatar = lib.mkOption {
       type = lib.types.path;
       default = "${self}/src/de/assets/default-gnome-avatar.jpg";

@@ -1,22 +1,15 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/system/default.nix
+# src/pkgs/gaming/options.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ ... }:
-
 {
-  imports = [
-    ./boot
-    ../profile/system.nix
-    ../config/constants/system.nix
-    ../de/system.nix
-    ../dm/system.nix
-    ../shell/system.nix
-    ../fonts/system.nix
-    ../users/system.nix
-    ../pkgs/gaming/system.nix
-    # ./networking
-    # ./security
-    # ./virtualisation
-  ];
+  lib,
+  ...
+}:
+{
+  options.cypher-os.pkgs.gaming = {
+    enable = lib.mkEnableOption "CypherOS Gaming Configuration.";
+    steam.enable = lib.mkEnableOption "Steam and gaming infrastructure.";
+    minecraft.enable = lib.mkEnableOption "Minecraft and related gaming infrastructure.";
+  };
 }
