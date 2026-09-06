@@ -41,6 +41,8 @@ Add `<leaf>.enable = lib.mkEnableOption "...";` to the category's existing `opti
 
 Import it from the category's `default.nix` *(HM leaves)* or `system.nix` *(system leaves).*
 
+If the parent category has a `defaults.nix` (per [gating_and_assertions.md](../../contributing/conventions/gating_and_assertions.md) §13), add this leaf's default and parent-implies-leaf assertion there instead of in the leaf file itself or duplicating across `hm.nix`/`system.nix`.
+
 ### Step 3 — If profile-conditional, add the default in the leaf's own file — not the profile module
 ​
 ```nix

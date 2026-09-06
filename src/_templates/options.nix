@@ -1,22 +1,27 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/ ... /options.nix
+# src/CATEGORY/options.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ lib, ... }:
+# ──────────────────────────────────────────────────────────────────────────────
+# NOTE: Each package is its own leaf as per ADR_023, so multiple independent
+# packages don't collapse into one shared switch, unless that's explicitly
+# desired (i.e., a set of packages that are ideally groupable.)
+# ──────────────────────────────────────────────────────────────────────────────
 
+{
+  lib,
+  ...
+}:
 {
   options.cypher-os. ... = {
     enable = lib.mkEnableOption " ";
 
     # ──────────────────────────────────────────────────────────────────────────
-    # Doesn't currently have GUI packages and/or span desktop and server
-    # profiles, hence no <category>.gui.* pattern
+    # IF CATEGORY SPANS BOTH DESKTOP AND SERVER PROFILES AND HAS GUI PACKAGES
+    # INCLUDE A gui NAMESPACE (i.e., CATEGORY) SUB-BRANCH.
     # ──────────────────────────────────────────────────────────────────────────
-
-    # OR
-
     #gui = {
-    #  enable = lib.mkEnableOption "GUI (Graphical User Interface) Packages suite.";
+    #  enable = lib.mkEnableOption " ... GUI (Graphical User Interface) Packages ...";
     #}
   }
 }

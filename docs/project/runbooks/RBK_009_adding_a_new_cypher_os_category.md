@@ -33,9 +33,11 @@ Expected output: file exists, `nix flake check` still passes *(no config referen
 
 Imports `./options.nix` and `./hm.nix` *(omit `hm.nix` from imports if the category has no HM-level config at all).*
 
-### Step 3 — Create `hm.nix` and/or `system.nix` as needed
+### Step 3 — Create `hm.nix` and/or `system.nix` as needed, and `defaults.nix` if both exist
 
 Each file: `imports = [ ./options.nix ];` at the top, then a `config = lib.mkIf config.cypher-os.<path>.enable { ... }` block. Never mix `home.*`/`dconf.*` into `system.nix`, or `services.*`/`environment.*` into `hm.nix`/`default.nix`.
+
+If the category has **both** `hm.nix` and `system.nix`, create `src/<category>/defaults.nix` per [gating_and_assertions.md §13](../../contributing/conventions/gating_and_assertions.md) and import it from both, instead of duplicating defaults/assertions in each.
 
 ### Step 4 — Register in the relevant aggregator(s)
 

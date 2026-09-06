@@ -120,6 +120,8 @@ in
 
 Assertions sit in their own `mkMerge` branch, unconditional at the file level — conditionality belongs inside each assertion's `->`, never around the whole `assertions` block, so a check is never accidentally skipped by an outer `mkIf`.
 
+> **NOTE: If the category has both `system.nix` and `hm.nix`, see §13 — defaults and assertions usually belong in a shared `defaults.nix` both files import, not duplicated in each.**
+
 ## 9. Assertion message style
 
 Name the exact option path(s) involved and state the fix, not just the problem — *established in `src/profile/hm.nix`'s assertions.* A message that only says "invalid configuration" sends you back to the module source to figure out what to change; one that names the path and the fix doesn't.
@@ -189,3 +191,38 @@ Instead, introduce `<category>.gui.*` as a namespace tier:
 - `gui.enable` gates the subset as a whole (`mkDefault (cfg.enable && cypherOsProfile == "desktop")`), and each individual GUI tool gets its own leaf beneath it (`gui.<tool>.enable`).
 
 State the profile-desktop requirement once, on `gui.enable`'s own assertion — ***every leaf beneath it inherits it transitively through the ordinary parent-implies-leaf assertion, without restating the profile check per tool.***
+
+## 13. `defaults.nix` — centralizing cross-context defaults and assertions
+
+When a category has **both** `system.nix` and `hm.nix`, its defaults and assertions almost never need to differ between them — both consume the same `cfg` *(from the shared `options.nix`)* and the same `cypherOsProfile`/`cypherOsLens` module args, resolved differently underneath but identically named in both graphs.
+
+Duplicating the defaults/assertions block across both files is unnecessary maintenance burden, not a requirement.
+
+Extract them into `src/<category>/defaults.nix`, imported by both `system.nix` and `hm.nix`:
+
+```nix
+{ config, lib, cypherOsProfile, ... }:
+let
+  cfg = config.cypher-os.<category>;
+in
+{
+  imports = [ ./options.nix ];
+
+  config = {
+    cypher-os.<category>.enable = lib.mkDefault (...);
+    # ... every leaf's default
+
+    assertions = [ ... ];
+  };
+}
+```
+
+**Only extract what's genuinely cross-context-safe:**
+- An assertion or default is safe to centralize only if its condition is expressible purely in terms of `cfg.*`, `cypherOsProfile`, `cypherOsLens`, and `lib`.
+  
+- Anything referencing a context-specific option *(`programs.*`, `services.*` on the system side; `home.file.*`, `home.packages` on the HM side)* can't move — referencing it from the wrong graph throws "option does not exist."
+  
+- Those stay local to whichever file actually owns that option.
+
+**Only applies where both files exist:**
+- A category with only `hm.nix` or only `system.nix` has nothing to centralize — *keep defaults/assertions inline in its single file rather than adding a `defaults.nix` only one file would ever import.*
