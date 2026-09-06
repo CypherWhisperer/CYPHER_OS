@@ -1,23 +1,12 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/system/default.nix
+# src/pkgs/mail/system.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 { ... }:
-
 {
   imports = [
-    ./boot
-    ../profile/system.nix
-    ../config/constants/system.nix
-    ../de/system.nix
-    ../dm/system.nix
-    ../shell/system.nix
-    ../fonts/system.nix
-    ../users/system.nix
-    ../pkgs/gaming/system.nix
-    ../pkgs/mail/system.nix
-    # ./networking
-    # ./security
-    # ./virtualisation
+     ./options.nix
+     ./defaults.nix
+     ./proton_bridge_system.nix
   ];
 }

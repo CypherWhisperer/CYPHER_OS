@@ -1,10 +1,16 @@
-{ lib, ... }:
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/mail/options.nix
+# ──────────────────────────────────────────────────────────────────────────────
 
+{
+  lib,
+  ...
+}:
 let
   inherit (lib) mkEnableOption mkOption types;
 in
 {
-  options.cypher-os.apps.mail = {
+  options.cypher-os.pkgs.mail = {
     enable = mkEnableOption "CypherOS mail applications";
 
     thunderbird = {

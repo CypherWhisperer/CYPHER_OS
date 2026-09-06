@@ -28,6 +28,7 @@
     ../pkgs/cli/hm.nix
     ../pkgs/terminal/hm.nix
     ../pkgs/gaming/hm.nix
+    ../pkgs/mail/hm.nix
 
     # ──────────────────────────────────────────────────────────────────────────
     # An error I hit in prior build:
