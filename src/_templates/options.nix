@@ -13,7 +13,7 @@
   ...
 }:
 {
-  options.cypher-os. ... = {
+  options.cypher-os.CATEGORY = {
     enable = lib.mkEnableOption " ";
 
     # ──────────────────────────────────────────────────────────────────────────
@@ -23,5 +23,5 @@
     #gui = {
     #  enable = lib.mkEnableOption " ... GUI (Graphical User Interface) Packages ...";
     #}
-  }
+  };
 }

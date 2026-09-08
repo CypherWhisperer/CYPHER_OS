@@ -7,7 +7,7 @@
   pkgs,
   config,
   cypherOsProfile,
- ...
+  ...
 }:
 let
   cfg = config.cypher-os.CATEGORY;
@@ -67,7 +67,8 @@ in
     # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
     {
-      # NOTE: REFER TO ./defaults.nix FOR STRUCTURE, TEMPLATES AND CONVENTIONS.
+      # NOTE: REFER TO src/_templates/defaults.nix FOR STRUCTURE, TEMPLATES
+      # AND CONVENTIONS.
     }
 
     # ──────────────────────────────────────────────────────────────────────────
@@ -75,7 +76,8 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     {
       assertions = [
-        # NOTE: REFER TO ./defaults.nix FOR STRUCTURE, TEMPLATES AND CONVENTIONS.
+        # NOTE: REFER TO src/_templates/defaults.nix FOR STRUCTURE, TEMPLATES
+        # AND CONVENTIONS.
       ];
     }
   ];
