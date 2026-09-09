@@ -1,58 +1,87 @@
-# modules/apps/vim.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/editor/vim.nix
+# ──────────────────────────────────────────────────────────────────────────────
 #
-# Home Manager module for Vim — minimal CLI notepad.
+# Home Manager module for Vim — configured as "minimal CLI notepad" to CypherOS.
 #
+# ──────────────────────────────────────────────────────────────────────────────
 # PHILOSOPHY:
-#   Vim serves one purpose here: open a file quickly, edit it, close it.
-#   No plugin manager. No LSP servers. No startup overhead.
-#   What it does have:
-#     - Treesitter-quality syntax highlighting via vim's built-in syntax engine
-#       + a manually curated polyglot syntax pack (vim-polyglot covers 600+
-#       languages with maintained syntax files, zero runtime cost)
-#     - System clipboard integration (wl-clipboard + xclip fallback)
-#     - Comfortable editing defaults (line numbers, indentation, search)
-#     - A dark colorscheme that doesn't hurt your eyes
+# ──────────────────────────────────────────────────────────────────────────────
+# Vim serves one purpose here: open a file quickly, edit it, close it. No plugin
+# manager. No LSP servers. No startup overhead.
 #
+# What it does have:
+#  - Treesitter-quality syntax highlighting via vim's built-in syntax engine
+#    + a manually curated polyglot syntax pack (vim-polyglot covers 600+
+#    languages with maintained syntax files, zero runtime cost)
+#
+#  - System clipboard integration (wl-clipboard + xclip fallback)
+#  - Comfortable editing defaults (line numbers, indentation, search)
+#
+# ──────────────────────────────────────────────────────────────────────────────
 # WHY NOT TREESITTER FOR VIM:
-#   nvim-treesitter is a Neovim plugin — it doesn't run in Vim.
-#   Vim's syntax engine is regex-based. vim-polyglot packages the best
-#   available syntax files for each language into one plugin, giving you
-#   accurate highlighting for Python, JS/TS, Lua, Bash, Nix, and hundreds
-#   more. It's the correct Vim-native equivalent of Treesitter highlighting.
+# ──────────────────────────────────────────────────────────────────────────────
+# nvim-treesitter is a Neovim plugin — it doesn't run in Vim.
 #
+# Vim's syntax engine is regex-based. vim-polyglot packages the best available
+# syntax files for each language into one plugin, giving accurate highlighting
+# for Python, JS/TS, Lua, Bash, Nix, and hundreds more.
+#
+# It's the correct Vim-native equivalent of Treesitter highlighting.
+#
+# ──────────────────────────────────────────────────────────────────────────────
 # ALIAS:
-#   `v` — defined in zsh.nix shellAliases, points to vim
-#   programs.vim.defaultEditor = false — nvim remains $EDITOR
-
-{ config, pkgs, lib, ... }:
+# ──────────────────────────────────────────────────────────────────────────────
+# `v` — defined in zsh.nix shellAliases, points to vim
+# programs.vim.defaultEditor = false — nvim remains $EDITOR
+# ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config = lib.mkIf (
-    config.cypher-os.apps.editor.enable &&
-    config.cypher-os.apps.editor.vim.enable ) {
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  cfg = config.cypher-os.pkgs.editor;
+in
+{
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.vim.enable) {
 
     programs.vim = {
       enable = true;
 
+      # ────────────────────────────────────────────────────────────────────────
       # defaultEditor: if true, sets $EDITOR=vim. If $EDITOR=nvim (set in
       # zsh.nix sessionVariables), this will be false, and vice versa
+      # ────────────────────────────────────────────────────────────────────────
       defaultEditor = true;
 
+      # ────────────────────────────────────────────────────────────────────────
       # plugins: installed by Home Manager into Vim's package path.
       # No plugin manager needed — HM handles the runtimepath injection.
+      # ────────────────────────────────────────────────────────────────────────
       plugins = with pkgs.vimPlugins; [
-        # vim-polyglot: syntax highlighting for 600+ languages.
-        # Lazy-loads per filetype — only the relevant syntax file is sourced
-        # when you open a file. Zero cost for filetypes you don't open.
+        # ──────────────────────────────────────────────────────────────────────
+        # vim-polyglot: syntax highlighting for 600+ languages. Lazy-loads per
+        # filetype — only the relevant syntax file is sourced when a file is
+        # openned. Zero cost for filetypes not openned.
+        # ──────────────────────────────────────────────────────────────────────
         vim-polyglot
 
-        # vim-nightfly-colors: dark colorscheme, clean and easy on the eyes.
-        # Alternatives if you prefer something different:
-        #   tokyonight-nvim (same palette as kitty — consistency)
-        #   catppuccin-vim  (same palette as tmux — consistency)
-        # Swap by changing the plugin name and the colorscheme line in extraConfig.
-
-        catppuccin-vim
+        # ──────────────────────────────────────────────────────────────────────
+        # dark colorscheme, clean and easy on the eyes.
+        # ──────────────────────────────────────────────────────────────────────
+        # Alternatives:
+        #   tokyonight-nvim
+        #   catppuccin-vim
+        # Swap by changing the plugin name and the colorscheme line in
+        # extraConfig (see below).
+        # ──────────────────────────────────────────────────────────────────────
+        #vim-nightfly-colors
+        #catppuccin-vim
         #tokyonight-nvim
       ];
 
@@ -70,7 +99,7 @@
         " ── Appearance ───────────────────────────────────────────────────────────
         set termguicolors          " 24-bit true color (requires a capable terminal)
         " colorscheme tokyonight-night
-        colorscheme catpuccin_mocha
+        " colorscheme catpuccin_mocha
 
         set number                 " absolute line numbers
         set relativenumber         " relative numbers for easy jump targets (5j, 12k)
@@ -188,3 +217,7 @@
     };
   };
 }
+
+# ──────────────────────────────────────────────────────────────────────────────
+# RFC: Handle Proper Configuration alongside CypherIDE (Neovim (./neovim.nix))
+# ──────────────────────────────────────────────────────────────────────────────

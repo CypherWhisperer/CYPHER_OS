@@ -1,45 +1,32 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/pkgs/cli/hm.nix
+# src/pkgs/editor/hm.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
   lib,
-  pkgs,
   config,
+  cypherOsProfile,
   ...
 }:
 let
-  cfg = config.cypher-os.pkgs.cli;
+  cfg = config.cypher-os.pkgs.editor;
 in
 {
   imports = [
     ./options.nix
-    ./btop.nix
-    ./htop.nix
-    ./tmux.nix
-    ./zellij.nix
-    ./fastfetch.nix
+    ./vim.nix
+    ./zettlr.nix
   ];
 
   config = lib.mkMerge [
-    (lib.mkIf cfg.enable {
-      home.packages = with pkgs; [
-        # ──────────────────────────────────────────────────────────────────────
-        # Mermaid tooling
-        # ──────────────────────────────────────────────────────────────────────
-        mermaid-cli # mmdc binary — render .mmd → SVG/PNG
-        #mermaid-filter # if using pandoc export pipelines
-      ];
-    })
-
     # ──────────────────────────────────────────────────────────────────────────
     # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
     {
-      cypher-os.pkgs.cli.btop.enable = lib.mkDefault cfg.enable;
-      cypher-os.pkgs.cli.htop.enable = lib.mkDefault cfg.enable;
-      cypher-os.pkgs.cli.tmux.enable = lib.mkDefault cfg.enable;
-      cypher-os.pkgs.cli.fastfetch.enable = lib.mkDefault cfg.enable;
+      cypher-os.pkgs.editor.enable = lib.mkDefault true;
+      cypher-os.pkgs.editor.vim.enable = lib.mkDefault cfg.enable;
+      cypher-os.pkgs.editor.gui.enable = lib.mkDefault (cfg.enable && cypherOsProfile == "desktop");
+      cypher-os.pkgs.editor.gui.zettlr.enable = lib.mkDefault cfg.gui.enable;
     }
 
     # ──────────────────────────────────────────────────────────────────────────
@@ -48,30 +35,30 @@ in
     {
       assertions = [
         {
-          assertion = cfg.btop.enable -> cfg.enable;
+          assertion = cfg.vim.enable -> cfg.enable;
           message = ''
-            cypher-os.pkgs.cli.btop.enable requires cypher-os.pkgs.cli.enable.
+            cypher-os.pkgs.editor.vim.enable requires cypher-os.pkgs.editor.enable.
           '';
         }
 
         {
-          assertion = cfg.htop.enable -> cfg.enable;
+          assertion = cfg.gui.enable -> cfg.enable;
           message = ''
-            cypher-os.pkgs.cli.htop.enable requires cypher-os.pkgs.cli.enable.
+            cypher-os.pkgs.editor.gui.enable requires cypher-os.pkgs.editor.enable.
           '';
         }
 
         {
-          assertion = cfg.tmux.enable -> cfg.enable;
+          assertion = cfg.gui.enable -> cypherOsProfile == "desktop";
           message = ''
-            cypher-os.pkgs.cli.tmux.enable requires cypher-os.pkgs.cli.enable.
+            cypher-os.pkgs.editor.gui.enable requires cypher-os.profile.active == "desktop".
           '';
         }
 
         {
-          assertion = cfg.fastfetch.enable -> cfg.enable;
+          assertion = cfg.gui.zettlr.enable -> cfg.gui.enable;
           message = ''
-            cypher-os.pkgs.cli.fastfetch.enable requires cypher-os.pkgs.cli.enable.
+            cypher-os.pkgs.editor.gui.zettlr.enable requires cypher-os.pkgs.editor.gui.enable.
           '';
         }
       ];

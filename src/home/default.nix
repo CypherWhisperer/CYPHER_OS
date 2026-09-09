@@ -29,6 +29,8 @@
     ../pkgs/terminal/hm.nix
     ../pkgs/gaming/hm.nix
     ../pkgs/mail/hm.nix
+    ../pkgs/editor/hm.nix
+    ../pkgs/dev/ide/hm.nix
 
     # ──────────────────────────────────────────────────────────────────────────
     # An error I hit in prior build:

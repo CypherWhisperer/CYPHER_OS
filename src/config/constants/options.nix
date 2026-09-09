@@ -141,5 +141,16 @@
         default = "CaskaydiaCove Nerd Font Mono";
       };
     };
+
+    # ──────────────────────────────────────────────────────────────────────────
+    # cypherIDE setup may require
+    # ──────────────────────────────────────────────────────────────────────────
+    cypherIdeRepoRoot = lib.mkOption {
+      type = lib.types.path;
+      default = "${self}/src/pkgs/dev/ide/configs/cypher_ide";
+      description = ''
+        Path to the the Root of CypherIDE's repository (i.e., submodule to CypherOS repository).
+      '';
+    };
   };
 }
