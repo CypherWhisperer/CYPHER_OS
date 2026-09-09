@@ -226,3 +226,12 @@ in
 
 **Only applies where both files exist:**
 - A category with only `hm.nix` or only `system.nix` has nothing to centralize — *keep defaults/assertions inline in its single file rather than adding a `defaults.nix` only one file would ever import.*
+
+---
+> **See also: [shared_config_accumulation.md](./shared_config_accumulation.md) for the sibling pattern — not centralizing defaults/assertions, but centralizing leaf-*contributed content* (e.g. several extension leaves each contributing a settings fragment) into one write point.**
+---
+## 14. Namespace-dependent leaves (mirroring another category's state)
+
+When a leaf's relevance depends on another category's state, but enabling it anyway isn't actually invalid *(e.g. an IDE's language extension vs. that language's toolchain being installed),* default the leaf to mirror the dependency (`lib.mkDefault config.cypher-os.<other-category>.enable`) rather than gating it away entirely — and don't add an assertion.
+
+Contrast with §3/§11's parent-implies-leaf case: those protect against genuinely invalid combinations; this pattern only sets a sensible default for an otherwise-legitimate independent choice.

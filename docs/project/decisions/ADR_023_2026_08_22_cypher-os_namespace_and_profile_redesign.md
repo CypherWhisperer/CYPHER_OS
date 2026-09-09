@@ -255,3 +255,13 @@ Namespace growth is governed by simple local rules rather than requiring a fresh
 A *reusable structural pattern* (like the `gui` tier itself) warrants this kind of amendment, since it's a rule other categories will also follow — ***an individual new leaf or category addition does not.***
 
 **Status:** unchanged — remains `Accepted`. This amendment clarifies how the namespace grows; it does not revise why the original restructure was decided.
+
+---
+
+## Amendment — 2026-09-06
+
+**Change:** `cypher-os.pkgs.editor.*` split. Full IDEs (`vscode`, `cursor`, `antigravity`, `neovim`, `androidStudio`, `webStorm`) move to `cypher-os.pkgs.dev.ide.*`. `vim` and `zettlr` remain under `cypher-os.pkgs.editor.*` — both are lightweight, single-purpose tools (`vim`: CLI text viewer/editor via vim-polyglot, not an IDE; `zettlr`: markdown "open-with" companion to Obsidian's vault-based workflow), not IDEs in the sense the new branch groups.
+
+**Reasoning:** the original Full Namespace Tree's flat `editor.*` listing conflated two different kinds of tool. This split makes the distinction structural rather than left to naming convention.
+
+**Status:** unchanged — remains `Accepted`.
