@@ -152,5 +152,19 @@
         Path to the the Root of CypherIDE's repository (i.e., submodule to CypherOS repository).
       '';
     };
+
+    gitIdentity = {
+      name = lib.mkOption {
+        type = lib.types.str;
+        default = "CypherWhisperer";
+        description = "Git's Globally configured username";
+      };
+
+      email = lib.mkOption {
+        type = lib.types.str;
+        default = "cypherwhisperer@gmail.com";
+        description = "Git's Globally configured email";
+      };
+    };
   };
 }
