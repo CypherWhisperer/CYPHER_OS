@@ -31,6 +31,7 @@
     ../pkgs/mail/hm.nix
     ../pkgs/editor/hm.nix
     ../pkgs/dev/hm.nix
+    ../pkgs/browser/hm.nix
 
     # ──────────────────────────────────────────────────────────────────────────
     # An error I hit in prior build:

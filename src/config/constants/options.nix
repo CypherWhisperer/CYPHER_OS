@@ -142,9 +142,6 @@
       };
     };
 
-    # ──────────────────────────────────────────────────────────────────────────
-    # cypherIDE setup may require
-    # ──────────────────────────────────────────────────────────────────────────
     cypherIdeRepoRoot = lib.mkOption {
       type = lib.types.path;
       default = "${self}/src/pkgs/dev/ide/configs/cypher_ide";
@@ -165,6 +162,14 @@
         default = "cypherwhisperer@gmail.com";
         description = "Git's Globally configured email";
       };
+    };
+
+    braveConfigsRoot = lib.mkOption {
+      type = lib.types.path;
+      default = "${self}/src/pkgs/browser/configs/brave";
+      description = ''
+        Path to the the Root of Brave's backed up seed files.
+      '';
     };
   };
 }
