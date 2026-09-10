@@ -40,10 +40,10 @@ in
       # ────────────────────────────────────────────────────────────────────────
       # D2
       # ────────────────────────────────────────────────────────────────────────
-      "d2.layout" = config.cypher-os.pkgs.dev.language.d2.layoutEngine;
-      "d2.theme" = config.cypher-os.pkgs.dev.language.d2.themeId;
-      "d2.darkTheme" = config.cypher-os.pkgs.dev.language.d2.darkThemeId;
-      "d2.pad" = config.cypher-os.pkgs.dev.language.d2.pad;
+      "d2.layout" = config.cypher-os.pkgs.dev.languages.d2.layoutEngine;
+      "d2.theme" = config.cypher-os.pkgs.dev.languages.d2.themeId;
+      "d2.darkTheme" = config.cypher-os.pkgs.dev.languages.d2.darkThemeId;
+      "d2.pad" = config.cypher-os.pkgs.dev.languages.d2.pad;
       # ────────────────────────────────────────────────────────────────────────
       # "D2.checkForInstallAtStart" defaults to true and just verifies the CLI
       # is reachable on activation — harmless to leave at default.

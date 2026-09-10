@@ -1,25 +1,20 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/dev/languages/hm.nix
+# src/pkgs/creativity/houdini.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
+  lib,
+  pkgs,
+  config,
   ...
 }:
+let
+  cfg = config.cypher-os.pkgs.creativity;
+in
 {
-  imports = [
-    ./options.nix
-    ./defaults.nix
-    ./go_hm.nix
-    ./bash.nix
-    ./c_cpp.nix
-    ./d2.nix
-    ./dart.nix
-    ./js_js.nix
-    ./kotlin.nix
-    ./lua.nix
-    ./nix.nix
-    ./python.nix
-    ./rust.nix
-    ./zig.nix
-  ];
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.houdini.enable) {
+    home.packages = with pkgs; [ houdini ];
+  };
 }

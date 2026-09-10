@@ -31,6 +31,7 @@ in
     cypher-os.pkgs.dev.languages.python.enable = lib.mkDefault cfg.language.enable;
     cypher-os.pkgs.dev.languages.rust.enable = lib.mkDefault cfg.language.enable;
     cypher-os.pkgs.dev.languages.zig.enable = lib.mkDefault cfg.language.enable;
+    cypher-os.pkgs.dev.languages.d2.enable = lib.mkDefault cfg.language.enable;
 
     # ──────────────────────────────────────────────────────────────────────────
     # ASSERTIONS.
@@ -113,6 +114,12 @@ in
         assertion = cfg.languages.zig.enable -> cfg.languages.enable;
         message = ''
           cypher-os.pkgs.dev.languages.zig.enable requires cypher-os.pkgs.dev.languages.enable.
+        '';
+      }
+      {
+        assertion = cfg.languages.d2.enable -> cfg.languages.enable;
+        message = ''
+          cypher-os.pkgs.dev.languages.d2.enable requires cypher-os.pkgs.dev.languages.enable.
         '';
       }
     ];

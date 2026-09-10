@@ -1,25 +1,17 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/dev/languages/hm.nix
+# src/pkgs/media/options.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
+  lib,
   ...
 }:
 {
-  imports = [
-    ./options.nix
-    ./defaults.nix
-    ./go_hm.nix
-    ./bash.nix
-    ./c_cpp.nix
-    ./d2.nix
-    ./dart.nix
-    ./js_js.nix
-    ./kotlin.nix
-    ./lua.nix
-    ./nix.nix
-    ./python.nix
-    ./rust.nix
-    ./zig.nix
-  ];
+  options.cypher-os.pkgs.media = {
+    enable = lib.mkEnableOption "CypherOS Media related Applications suite";
+
+    vlc.enable = lib.mkEnableOption "VLC Multi-media Desktop App";
+    clapper.enable = lib.mkEnableOption "Clapper Multi-media Desktop App";
+    spotify.enable = lib.mkEnableOption "Spotify Music Desktop App";
+  };
 }

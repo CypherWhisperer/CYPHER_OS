@@ -1,25 +1,27 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/dev/languages/hm.nix
+# src/pkgs/productivity/affine_system.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
+  lib,
+  config,
+  cypherOsConstants,
   ...
 }:
+let
+  cfg = config.cypher-os.pkgs.productivity;
+  affineCerts = cypherOsConstants.affineCertificateFile;
+in
 {
-  imports = [
-    ./options.nix
-    ./defaults.nix
-    ./go_hm.nix
-    ./bash.nix
-    ./c_cpp.nix
-    ./d2.nix
-    ./dart.nix
-    ./js_js.nix
-    ./kotlin.nix
-    ./lua.nix
-    ./nix.nix
-    ./python.nix
-    ./rust.nix
-    ./zig.nix
-  ];
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.affine.enable) {
+    networking.hosts = {
+      "127.0.0.1" = [ "affine.local" ];
+    };
+
+    security.pki.certificateFiles = [
+      affineCerts
+    ];
+  };
 }

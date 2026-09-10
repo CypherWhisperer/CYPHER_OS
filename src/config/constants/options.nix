@@ -171,5 +171,26 @@
         Path to the the Root of Brave's backed up seed files.
       '';
     };
+
+    affineCertificateFile = lib.mkOption {
+      type = lib.types.str;
+      description = ''
+        Path to the the AFFiNE certificate files.
+      '';
+    };
+
+    penpotCertificateFile = lib.mkOption {
+      type = lib.types.str;
+      description = ''
+        Path to the the penpot's certificate files.
+      '';
+    };
+
+    logseqGraphBaseRoot = lib.mkOption {
+      type = lib.types.str;
+      description = ''
+        Path to Logseq's Graph base.
+      '';
+    };
   };
 }

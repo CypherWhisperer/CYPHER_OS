@@ -47,9 +47,14 @@ in
           root = lib.mkDefault "${cfg.gamingFiles.root}/STEAM_FILES";
           dataRoot = lib.mkDefault "${cfg.gamingFiles.steamFiles.root}/Steam";
           xdgRoot = lib.mkDefault "${cfg.homeDirectoy}/.local/share/Steam";
-          steamLibraryRoot lib.mkDefault "${cfg.gamingFiles.steamFiles.root}/SteamLibrary";
+          steamLibraryRoot = lib.mkDefault "${cfg.gamingFiles.steamFiles.root}/SteamLibrary";
         };
       };
+
+      affineCertificateFile = lib.mkDefault "${cfg.backupRoot}/DE_FILES/SHARED/APPS/affine/NEW_SCHOOL/PERSISTENT_DATA/caddy/data/caddy/pki/authorities/local/root.crt";
+      penpotCertificateFile = lib.mkDefault "${cfg.backupRoot}/DE_FILES/SHARED/APPS/Penpot/NEW_SCHOOL/PERSISTENT_INSTANCE_DATA/caddy/data/caddy/pki/authorities/local/root.crt";
+
+      logseqGraphBaseRoot = lib.mkDefault "${cfg.backupRoot}/DE_FILES/SHARED/APPS/logseq/NEW_SCHOOL/PERSISTENT_INSTANCE_DATA/graph";
     };
 
     _module.args.cypherOsConstants = cfg;

@@ -1,27 +1,24 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/system/default.nix
+# src/pkgs/productivity/hm.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ ... }:
-
+{
+  ...
+}:
 {
   imports = [
-    ./boot
-    ../profile/system.nix
-    ../config/constants/system.nix
-    ../de/system.nix
-    ../dm/system.nix
-    ../shell/system.nix
-    ../fonts/system.nix
-    ../users/system.nix
-    ../pkgs/gaming/system.nix
-    ../pkgs/mail/system.nix
-    ../pkgs/dev/system.nix
-    ../pkgs/browser/system.nix
-    ../pkgs/creativity/system.nix
-    ../pkgs/productivity/system.nix
-    # ./networking
-    # ./security
-    # ./virtualisation
+    ./options.nix
+    ./defaults.nix
+    ./affine_hm.nix
+    ./anydesk.nix
+    ./claude.nix
+    ./drawio.nix
+    ./libreoffice.nix
+    ./logseq.nix
+    ./obs.nix
+    ./obsidian.nix
+    ./rustdesk_hm.nix
+    ./staruml.nix
+    ./zathura.nix
   ];
 }
