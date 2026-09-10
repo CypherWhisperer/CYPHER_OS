@@ -36,6 +36,7 @@
     ../pkgs/creativity/hm.nix
     ../pkgs/media/hm.nix
     ../pkgs/productivity/hm.nix
+    ../pkgs/noeta/hm.nix
     # ──────────────────────────────────────────────────────────────────────────
     # An error I hit in prior build:
     # (error: error parsing derivation
