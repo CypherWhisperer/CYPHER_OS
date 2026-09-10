@@ -5,6 +5,10 @@
 {
   ...
 }:
+let
+  values = import ../../config/constants/values.nix;
+  activeHostName = values.activeHostName;
+in
 {
   # ────────────────────────────────────────────────────────────────────────────
   # NETWORKING
@@ -13,7 +17,7 @@
   # indicator and Settings panel talk to it via D-Bus.
   # ────────────────────────────────────────────────────────────────────────────
   networking = {
-    hostName = "cypher-nixos";
+    hostName = activeHostName;
     networkmanager.enable = true;
     nameservers = [
       "1.1.1.1"

@@ -17,4 +17,7 @@
 
   # Needed to ensure flake's HM configuration is aligned to active profile
   activeProfile = "desktop";
+
+  activeHostName = "cypher-nixos";
+  activeSystem = "x86_64-linux";
 }
