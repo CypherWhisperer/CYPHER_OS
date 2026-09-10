@@ -21,6 +21,8 @@
     ../pkgs/creativity/system.nix
     ../pkgs/productivity/system.nix
     ../pkgs/devops/system.nix
+
+    ./virtualisation/system.nix
     # ./networking
     # ./security
     # ./virtualisation
