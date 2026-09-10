@@ -1,14 +1,20 @@
-# modules/devops/kubernetes.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/kubernetes.nix
+# ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
-
+let
+  cfg = config.cypher-os.pkgs.devops;
+in
 {
-  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.kubernetes.enable) {
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.kubernetes.enable) {
 
     # ── k3s Service ────────────────────────────────────────────────────────────
     services.k3s = {
@@ -27,7 +33,6 @@
     systemd.services.k3s.wantedBy = lib.mkForce [ ];
 
     environment.systemPackages = with pkgs; [
-
       # ── Core Kubernetes CLI ───────────────────────────────────────────────────
       kubectl # universal Kubernetes CLI; works with any cluster
       kubernetes-helm # Helm v3 — the de-facto Kubernetes package manager

@@ -1,10 +1,20 @@
-# modules/devops/cicd.nix
-
-{ config, pkgs, lib, ... }:
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/cicd.nix
+# ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.cicd.enable) {
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  cfg = config.cypher-os.pkgs.devops;
+in
+{
+  imports = [ ./options.nix ];
 
+  config = lib.mkIf (cfg.enable && cfg.cicd.enable) {
     environment.systemPackages = with pkgs; [
 
       # ── GitHub CLI ────────────────────────────────────────────────────────────

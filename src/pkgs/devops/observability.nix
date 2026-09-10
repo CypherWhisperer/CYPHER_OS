@@ -1,14 +1,20 @@
-# modules/devops/observability.nix
-
-{ config, pkgs, lib, ... }:
-
-let
-  cfg = config.cypher-os.devops.observability;
-  top = config.cypher-os.devops;
-in
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/observability.nix
+# ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config = lib.mkIf (top.enable && cfg.enable) {
+  lib,
+  pkgs,
+  config,
+  ...
+}:
+let
+  cfg = config.cypher-os.pkgs.devops;
+in
+{
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.observability.enable) {
 
     # ── Prometheus ─────────────────────────────────────────────────────────────
     # Time-series metrics collection and storage. Scrapes metrics from configured
@@ -18,34 +24,43 @@ in
     # Web UI available at http://localhost:9090 after activation.
     # PromQL (Prometheus Query Language) is the query interface; Grafana visualises
     # the same data with richer dashboards.
-    services.prometheus = lib.mkIf cfg.prometheus.enable {
+    services.prometheus = lib.mkIf cfg.observability.prometheus.enable {
       enable = true;
-      port   = 9090;
+      port = 9090;
 
       # globalConfig: settings applied to all scrape jobs unless overridden.
       globalConfig = {
-        scrape_interval     = "15s";  # how often to scrape targets
-        evaluation_interval = "15s";  # how often to evaluate alert rules
+        scrape_interval = "15s"; # how often to scrape targets
+        evaluation_interval = "15s"; # how often to evaluate alert rules
       };
 
       # exporters.node: the node exporter exposes host-level metrics — CPU, memory,
       # disk I/O, network, filesystem. The most fundamental Prometheus exporter.
       # Metrics endpoint: http://localhost:9100/metrics
       exporters.node = {
-        enable          = true;
-        port            = 9100;
+        enable = true;
+        port = 9100;
         enabledCollectors = [
-          "cpu" "diskstats" "filesystem" "loadavg"
-          "meminfo" "netdev" "stat" "time" "uname"
+          "cpu"
+          "diskstats"
+          "filesystem"
+          "loadavg"
+          "meminfo"
+          "netdev"
+          "stat"
+          "time"
+          "uname"
         ];
       };
 
       scrapeConfigs = [
         {
           job_name = "node";
-          static_configs = [{
-            targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
-          }];
+          static_configs = [
+            {
+              targets = [ "localhost:${toString config.services.prometheus.exporters.node.port}" ];
+            }
+          ];
         }
         # Add more scrape targets here as you deploy services:
         # { job_name = "caddy"; static_configs = [{ targets = ["localhost:2019"]; }]; }
@@ -59,14 +74,14 @@ in
     #
     # Web UI: http://localhost:3001 (3001 to avoid collision with common dev servers)
     # Default credentials on first boot: admin / admin (change immediately)
-    services.grafana = lib.mkIf cfg.grafana.enable {
+    services.grafana = lib.mkIf cfg.observability.grafana.enable {
       enable = true;
 
       settings = {
         server = {
           http_addr = "127.0.0.1";
           http_port = 3001;
-          domain    = "localhost";
+          domain = "localhost";
         };
 
         # analytics.reporting_enabled: disable telemetry sent to grafana.com.
@@ -77,19 +92,19 @@ in
       # sources on first start. Without this, you'd configure them manually
       # through the Grafana UI on every rebuild.
       provision.datasources.settings.datasources =
-        lib.optionals cfg.prometheus.enable [
+        lib.optionals cfg.observability.prometheus.enable [
           {
-            name      = "Prometheus";
-            type      = "prometheus";
-            url       = "http://localhost:${toString config.services.prometheus.port}";
+            name = "Prometheus";
+            type = "prometheus";
+            url = "http://localhost:${toString config.services.prometheus.port}";
             isDefault = true;
           }
         ]
-        ++ lib.optionals cfg.loki.enable [
+        ++ lib.optionals cfg.observability.loki.enable [
           {
             name = "Loki";
             type = "loki";
-            url  = "http://localhost:3100";
+            url = "http://localhost:3100";
           }
         ];
     };
@@ -100,57 +115,61 @@ in
     # Queryable from Grafana using LogQL (similar syntax to PromQL).
     #
     # Loki itself stores and queries logs. Promtail (below) ships logs into Loki.
-    services.loki = lib.mkIf cfg.loki.enable {
-      enable     = true;
-      configFile = pkgs.writeText "loki-config.yaml" (builtins.toJSON {
-        auth_enabled = false;
+    services.loki = lib.mkIf cfg.observability.loki.enable {
+      enable = true;
+      configFile = pkgs.writeText "loki-config.yaml" (
+        builtins.toJSON {
+          auth_enabled = false;
 
-        server.http_listen_port = 3100;
+          server.http_listen_port = 3100;
 
-        ingester = {
-          lifecycler = {
-            address = "127.0.0.1";
-            ring = {
-              kvstore.store = "inmemory";
-              replication_factor = 1;
+          ingester = {
+            lifecycler = {
+              address = "127.0.0.1";
+              ring = {
+                kvstore.store = "inmemory";
+                replication_factor = 1;
+              };
+              final_sleep = "0s";
             };
-            final_sleep = "0s";
+            chunk_idle_period = "5m";
+            chunk_retain_period = "30s";
           };
-          chunk_idle_period   = "5m";
-          chunk_retain_period = "30s";
-        };
 
-        schema_config.configs = [{
-          from         = "2024-01-01";
-          store        = "boltdb-shipper";
-          object_store = "filesystem";
-          schema       = "v13";
-          index = {
-            prefix = "index_";
-            period = "24h";
+          schema_config.configs = [
+            {
+              from = "2024-01-01";
+              store = "boltdb-shipper";
+              object_store = "filesystem";
+              schema = "v13";
+              index = {
+                prefix = "index_";
+                period = "24h";
+              };
+            }
+          ];
+
+          storage_config = {
+            boltdb_shipper = {
+              active_index_directory = "/var/lib/loki/index";
+              cache_location = "/var/lib/loki/cache";
+            };
+            filesystem.directory = "/var/lib/loki/chunks";
           };
-        }];
 
-        storage_config = {
-          boltdb_shipper = {
-            active_index_directory = "/var/lib/loki/index";
-            cache_location         = "/var/lib/loki/cache";
+          limits_config = {
+            reject_old_samples = true;
+            reject_old_samples_max_age = "168h";
           };
-          filesystem.directory = "/var/lib/loki/chunks";
-        };
-
-        limits_config = {
-          reject_old_samples      = true;
-          reject_old_samples_max_age = "168h";
-        };
-      });
+        }
+      );
     };
 
     # ── Promtail ───────────────────────────────────────────────────────────────
     # The log shipper that feeds Loki. Tails log files and the systemd journal,
     # attaches labels (hostname, unit name, etc.), and forwards to Loki.
     # Think of Promtail as the Prometheus node exporter, but for logs.
-    services.promtail = lib.mkIf cfg.loki.enable {
+    services.promtail = lib.mkIf cfg.observability.loki.enable {
       enable = true;
 
       configuration = {
@@ -161,24 +180,28 @@ in
 
         positions.filename = "/var/lib/promtail/positions.yaml";
 
-        clients = [{
-          url = "http://localhost:3100/loki/api/v1/push";
-        }];
+        clients = [
+          {
+            url = "http://localhost:3100/loki/api/v1/push";
+          }
+        ];
 
         scrape_configs = [
           {
             job_name = "journal";
             journal = {
               max_age = "12h";
-              labels  = {
-                job  = "systemd-journal";
+              labels = {
+                job = "systemd-journal";
                 host = config.networking.hostName;
               };
             };
-            relabel_configs = [{
-              source_labels = [ "__journal__systemd_unit" ];
-              target_label  = "unit";
-            }];
+            relabel_configs = [
+              {
+                source_labels = [ "__journal__systemd_unit" ];
+                target_label = "unit";
+              }
+            ];
           }
         ];
       };

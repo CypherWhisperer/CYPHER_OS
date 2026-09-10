@@ -1,19 +1,23 @@
-# modules/devops/secrets.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/secrets.nix
+# ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
-
+let
+  cfg = config.cypher-os.pkgs.devops;
+in
 {
   imports = [
-    #./vault-contained.nix
+    ./options.nix
     ./vault.nix
   ];
 
-  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.secrets.enable) {
+  config = lib.mkIf (cfg.enable && cfg.secrets.enable) {
 
     # ── sops-nix ───────────────────────────────────────────────────────────────
     # Uncomment once sops-nix is added to flake.nix inputs and imported in the
@@ -65,6 +69,5 @@
       #         # blocked on: choosing one secrets management path; revisit if
       #         # sops-nix proves cumbersome
     ];
-
   };
 }

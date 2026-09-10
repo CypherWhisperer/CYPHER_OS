@@ -20,6 +20,7 @@
     ../pkgs/browser/system.nix
     ../pkgs/creativity/system.nix
     ../pkgs/productivity/system.nix
+    ../pkgs/devops/system.nix
     # ./networking
     # ./security
     # ./virtualisation

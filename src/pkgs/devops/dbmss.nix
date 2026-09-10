@@ -1,4 +1,6 @@
-# modules/devops/dbmss.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/dbmss.nix
+# ──────────────────────────────────────────────────────────────────────────────
 # CypherOS DBMS layer.
 #
 # Design decisions baked into this file
@@ -42,13 +44,15 @@
 # a substitute for these dumps, and aren't part of the offsite path unless
 # the backup external HDD is ever reformatted to Btrfs.
 {
-  config,
   lib,
   pkgs,
+  config,
+  cypherOsConstants,
   ...
 }:
-
 let
+  cfg = config.cypher-os.pkgs.devops;
+
   dbmsSubvolumes = [
     "postgres"
     "mariadb"
@@ -58,7 +62,7 @@ let
     "neo4j"
   ];
 
-  backupRoot = "/home/cypher-whisperer/DATA/FILES/DE_FILES/SHARED/DBMS_DATA_BACKUPS";
+  backupRoot = "${cypherOsConstants.backupRoot}/DE_FILES/SHARED/DBMS_DATA_BACKUPS";
   retentionDays = 14;
 
   # Shared group so DB service users can write into a directory owned by
@@ -84,7 +88,9 @@ let
   '';
 in
 {
-  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.dbmss.enable) {
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.dbmss.enable) {
 
     # setting up users and groups.
     users.groups.${backupGroup} = { };

@@ -1,14 +1,19 @@
-# modules/devops/networking.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/networking.nix
+# ──────────────────────────────────────────────────────────────────────────────
 
-{ config, pkgs, lib, ... }:
-
+{
+  lib,
+  pkgs,
+  config,
+  ...
+}:
 let
-  cfg = config.cypher-os.devops.networking;
-  top = config.cypher-os.devops;
+  cfg = config.cypher-os.pkgs.devops;
 in
 
 {
-  config = lib.mkIf (top.enable && cfg.enable) {
+  config = lib.mkIf (cfg.enable && cfg.networking.enable) {
 
     # ── Caddy ──────────────────────────────────────────────────────────────────
     # Modern web server and reverse proxy. Automatic HTTPS via Let's Encrypt,
@@ -23,7 +28,7 @@ in
     #
     # Admin API (for live config reload): http://localhost:2019
     # Metrics endpoint (Prometheus-compatible): http://localhost:2019/metrics
-    services.caddy = lib.mkIf cfg.caddy.enable {
+    services.caddy = lib.mkIf cfg.networking.caddy.enable {
       enable = true;
 
       # globalConfig: top-level Caddy global block. Equivalent to the `{ }` block
@@ -51,7 +56,7 @@ in
     # Docker Compose and k3s setups.
     #
     # Dashboard: http://localhost:8080 (when insecure API is enabled below)
-    services.traefik = lib.mkIf cfg.traefik.enable {
+    services.traefik = lib.mkIf cfg.networking.traefik.enable {
       enable = true;
 
       staticConfigOptions = {
@@ -60,20 +65,20 @@ in
         api.insecure = true;
 
         entryPoints = {
-          web.address      = ":80";
+          web.address = ":80";
           websecure.address = ":443";
         };
 
         # providers.docker: enable Docker provider — Traefik watches the Docker
         # socket for containers with `traefik.*` labels and auto-configures routes.
         providers.docker = {
-          exposedByDefault = false;  # only route containers that explicitly opt in
+          exposedByDefault = false; # only route containers that explicitly opt in
         };
       };
     };
 
     # Traefik needs access to the Docker socket to discover containers.
-    users.users.traefik.extraGroups = lib.mkIf cfg.traefik.enable [ "docker" ];
+    users.users.traefik.extraGroups = lib.mkIf cfg.networking.traefik.enable [ "docker" ];
 
     environment.systemPackages = with pkgs; [
 

@@ -1,17 +1,23 @@
-# modules/devops/iac.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/iac.nix
+# ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
-
+let
+  cfg = config.cypher-os.pkgs.devops;
+in
 {
-  imports = [ ./terraform.nix ];
+  imports = [
+    ./options.nix
+    ./terraform.nix
+  ];
 
-  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.iac.enable) {
-
+  config = lib.mkIf (cfg.enable && cfg.iac.enable) {
     environment.systemPackages = with pkgs; [
 
       # ── OpenTofu ──────────────────────────────────────────────────────────────

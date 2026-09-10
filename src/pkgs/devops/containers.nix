@@ -1,4 +1,6 @@
-# modules/devops/containers.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# src/pkgs/devops/containers.nix
+# ──────────────────────────────────────────────────────────────────────────────
 #
 # Docker and Podman solve the same problem differently.
 # Docker uses a root daemon;, Podman is daemonless and rootless by default.
@@ -10,14 +12,18 @@
 # Podman when Docker daemon isn't running; you can test both with the same muscle memory.
 
 {
-  config,
-  pkgs,
   lib,
+  pkgs,
+  config,
   ...
 }:
-
+let
+  cfg = config.cypher-os.pkgs.devops;
+in
 {
-  config = lib.mkIf (config.cypher-os.devops.enable && config.cypher-os.devops.containers.enable) {
+  imports = [ ./options.nix ];
+
+  config = lib.mkIf (cfg.enable && cfg.containers.enable) {
     # ─────────────────────────────────────────────────────────────────────────────
     # DOCKER
     # ─────────────────────────────────────────────────────────────────────────────
