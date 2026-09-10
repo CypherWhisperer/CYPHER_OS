@@ -20,5 +20,6 @@ in
 
     # ide -> ./ide/options.nix
     # languages -> ./languages/options.nix
+    # arduino -> ./arduino/options.nix
   };
 }

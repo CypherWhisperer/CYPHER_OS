@@ -9,5 +9,6 @@
   imports = [
     ./options.nix
     ./languages/system.nix
+    ./arduino/system.nix
   ];
 }
