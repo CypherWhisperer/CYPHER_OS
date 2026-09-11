@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# flake/nixpkgs-config.nix
+# flake/nixpkgs_config.nix
 # ──────────────────────────────────────────────────────────────────────────────
 # Single source of truth for overlays and nixpkgs.config.
 # Consumed by BOTH flake/hosts.nix (nixosConfigurations) and

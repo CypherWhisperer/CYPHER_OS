@@ -34,7 +34,7 @@ in
     # inside configuration.nix without importing the flake directly there
     # (which would break modularity).
     #
-    # The overlay registration in flake/nixpkgs-config.nix then reads:
+    # The overlay registration in flake/nixpkgs_config.nix then reads:
     #   nixpkgs.overlays = [ inputs.* ];
     #
     # self makes the current flake available in all NixOS modules, including
@@ -71,7 +71,7 @@ in
         # ──────────────────────────────────────────────────────────────────────
         # useGlobalPkgs: Home Manager uses the same nixpkgs instance as the
         # system — critically, this means the overlays applied in
-        # flake/nixpkgs-config.nix are also visible inside Home Manager
+        # flake/nixpkgs_config.nix are also visible inside Home Manager
         # Without it, HM would build its own pkgs without the overlay.
         # ──────────────────────────────────────────────────────────────────────
         home-manager.useGlobalPkgs = true;

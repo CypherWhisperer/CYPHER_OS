@@ -48,7 +48,7 @@ in
       # Every flake input that contributes HM modules (catppuccin, future
       # ones) must be imported in EVERY HM evaluation context separately —
       # importing pkgs overlays does not import HM module option
-      # declarations. See flake/nixpkgs-config.nix for the overlay half
+      # declarations. See flake/nixpkgs_config.nix for the overlay half
       # of this same principle.
       # ────────────────────────────────────────────────────────────────────────
       inputs.catppuccin.homeModules.catppuccin

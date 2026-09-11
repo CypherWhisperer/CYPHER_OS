@@ -1,7 +1,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # flake/default.nix
 # ──────────────────────────────────────────────────────────────────────────────
-# Builds the shared pkgs instance from the SSOT nixpkgs-config, then
+# Builds the shared pkgs instance from the SSOT nixpkgs_config, then
 # composes hosts.nix, home-configurations.nix, and devshells.nix into
 # the final flake outputs attrset.
 # ──────────────────────────────────────────────────────────────────────────────
@@ -11,7 +11,7 @@
 }:
 let
   values = import ../src/config/constants/values.nix;
-  nixpkgsCfg = import ./nixpkgs-config.nix { inherit inputs; };
+  nixpkgsCfg = import ./nixpkgs_config.nix { inherit inputs; };
 
   # ────────────────────────────────────────────────────────────────────────────
   # system: the CPU architecture + OS pair Nix uses to select packages.
