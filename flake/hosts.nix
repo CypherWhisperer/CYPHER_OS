@@ -25,7 +25,7 @@ in
   # Home Manager directly into `nixos-rebuild switch` — one command applies
   # both the system config and the user config.
   # ────────────────────────────────────────────────────────────────────────────
-  nixosConfigurations.${activeHostName} = inputs.nixpkgs.lib.nixosSystem {
+  ${activeHostName} = inputs.nixpkgs.lib.nixosSystem {
     inherit system;
 
     # ──────────────────────────────────────────────────────────────────────────
