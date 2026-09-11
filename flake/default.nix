@@ -55,7 +55,7 @@ in
     inherit inputs pkgs;
   };
 
-  devShells.${system} = import ./devshells.nix {
+  devShells.${system} = import ./devshells/default.nix {
     inherit inputs system pkgs;
   };
 }
