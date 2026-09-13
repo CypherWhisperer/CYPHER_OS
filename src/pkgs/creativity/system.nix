@@ -9,6 +9,6 @@
   imports = [
     ./options.nix
     ./defaults.nix
-    ./penpot_system.nix
+    # ./penpot_system.nix
   ];
 }

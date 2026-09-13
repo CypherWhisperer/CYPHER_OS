@@ -60,7 +60,7 @@ in
     # certificate at:
     #   <caddy-data-volume>/caddy/pki/authorities/local/root.crt
     #
-    # Which on this machine resolves to:
+    # Which on this machine currently resolves to:
     #
     #  /home/cypher-whisperer/DATA/FILES/DE_FILES/SHARED/APPS/Penpot/
     #  NEW_SCHOOL/PERSISTENT_INSTANCE_DATA/caddy/data/caddy/pki/authorities/
@@ -77,6 +77,25 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     security.pki.certificateFiles = [
       penpotCerts
+    ];
+
+    # ──────────────────────────────────────────────────────────────────────────
+    # Without this assertion, if this file is ever missing when someone runs
+    # `nixos-rebuild switch` (not just `build`), the failure surfaces as a
+    # cryptic `buildcatrust`/Python traceback deep in a derivation log.
+    #
+    # This assertion entry in checks the certificate files existence with
+    # `builtins.pathExists affineCerts` and fails with a clear message pointing
+    # at the bootstrap sequence, instead of letting it fall through to
+    # nss-cacert's internals:
+    # ──────────────────────────────────────────────────────────────────────────
+    assertions = [
+      {
+        assertion = !(cfg.enable && cfg.penpot.enable) || builtins.pathExists penpotCerts;
+        message = ''
+          Penpot's Caddy CA cert not found at ${penpotCerts} — bootstrap Penpot's docker-compose stack first (see module header).
+        '';
+      }
     ];
   };
 }
