@@ -187,4 +187,7 @@ Step 3 should be read with this correction. The pre-refactor `modules/profile/{d
 
 ---
 
-<!-- METADATA Opened: 2026-08-22 Resolved: 2026-08-22 -->
+<!-- METADATA
+Opened: 2026-08-22
+Resolved: 2026-09-13
+-->
