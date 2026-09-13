@@ -4,12 +4,8 @@
 
 {
   lib,
-  config,
   ...
 }:
-let
-  cfg = config.cypher-os.fonts;
-in
 {
   imports = [ ./options.nix ];
 

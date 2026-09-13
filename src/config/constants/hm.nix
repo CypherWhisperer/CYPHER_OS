@@ -37,11 +37,13 @@ let
   cfg = if osConfig != null then osConfig.cypher-os.constants else config.cypher-os.constants;
 in
 {
-  imports = [ ./options.nix ];
+  imports = [
+    ./options.nix
+    ./defaults.nix
+  ];
 
   config = {
     _module.args.cypherOsConstants = cfg;
-
     home.file.".config/cypher-os/constants.json".text = builtins.toJSON cfg;
   };
 }

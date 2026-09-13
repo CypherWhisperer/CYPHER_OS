@@ -15,8 +15,6 @@ in
   imports = [ ./options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.staruml.enable) {
-    home.packages = with pkgs; [
-      staruml
-    ];
+    home.packages = with pkgs; [ staruml ];
   };
 }

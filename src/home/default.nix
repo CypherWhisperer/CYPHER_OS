@@ -14,15 +14,22 @@
   cypherOsConstants,
   ...
 }:
+let
+  stateVersion = cypherOsConstants.stateVersion;
+in
 {
   imports = [
     ../profile/hm.nix
+    ../config/constants/hm.nix
+    ../theme/hm.nix
+
     ../de/hm.nix
     ../shell/hm.nix
     ../fonts/hm.nix
     ../xdg/hm.nix
     ../privacy/hm.nix
     ../security/hm.nix
+
     ../pkgs/utils/hm.nix
     ../pkgs/networking/hm.nix
     ../pkgs/cli/hm.nix
@@ -35,23 +42,15 @@
     ../pkgs/communication/hm.nix
     ../pkgs/creativity/hm.nix
     ../pkgs/media/hm.nix
-    ../pkgs/productivity/hm.nix
     ../pkgs/noeta/hm.nix
-    # ──────────────────────────────────────────────────────────────────────────
-    # An error I hit in prior build:
-    # (error: error parsing derivation
-    # '/nix/store/nzhz804z407sw3zi40ls5h71jdsgcpgm-home-manager-auto-expire.
-    # service.drv':
-    #
-    # file is empty (possible filesystem corruption))
-    # ──────────────────────────────────────────────────────────────────────────
-    # ./gc-hm.nix
+    ../pkgs/productivity/hm.nix
   ];
 
   # ────────────────────────────────────────────────────────────────────────────
   # HOME MANAGER STATE VERSION
   # ────────────────────────────────────────────────────────────────────────────
   # Set once, never change. This tells HM which release its config schema was
-  # written against. It gates HM migration logic, not which packages you receive.
-  home.stateVersion = cypherOsConstants.stateVersion;
+  # written against. It gates HM migration logic, not which packages you receive
+  # ────────────────────────────────────────────────────────────────────────────
+  home.stateVersion = stateVersion;
 }

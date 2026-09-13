@@ -16,6 +16,7 @@ in
 {
   imports = [
     ../../options.nix
+
     ./bash.nix
     ./html_css_svg.nix
     ./md.nix
@@ -70,7 +71,7 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     # userSettings: written to VSCode's settings.
     # ──────────────────────────────────────────────────────────────────────────
-    cypher-os.pkgs.dev.ide.vscode._sharedSettings = {
+    cypher-os.pkgs.dev.ide.gui.vscode._sharedSettings = {
       # ────────────────────────────────────────────────────────────────────────
       # YAML.
       # ────────────────────────────────────────────────────────────────────────

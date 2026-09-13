@@ -9,6 +9,7 @@
   imports = [
     ./options.nix
     ./defaults.nix
+
     ./affine_hm.nix
     ./anydesk.nix
     ./claude.nix

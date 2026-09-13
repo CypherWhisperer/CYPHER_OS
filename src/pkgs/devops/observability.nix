@@ -74,6 +74,25 @@ in
     #
     # Web UI: http://localhost:3001 (3001 to avoid collision with common dev servers)
     # Default credentials on first boot: admin / admin (change immediately)
+
+    # ──────────────────────────────────────────────────────────────────────────
+    # NOTE: ASSERTION ERROR:
+    #
+    # Grafana's secret key (services.grafana.settings.security.secret_key)
+    # doesn't have a default value anymore. Please generate your own and use a
+    # file-provider on this option! See also
+    # https://grafana.com/docs/grafana/latest/setup-grafana/configure-grafana/#secret_key
+    # for more information.
+    #
+    #See https://grafana.com/docs/grafana/latest/setup-grafana/configure-security/configure-database-encryption/#re-encrypt-secrets
+    # on how to re-encrypt.
+    #
+    # As stated in the NixOS changelog for 26.05, there's no official way to
+    # rotate. Either hard-code the old key ("SW2YcwTIb9zpOOhoPsMm") if your
+    # setup doesn't have any secrets in the DB that need special protection or
+    # perform a rotation with a 3rd-party tool:
+    # (https://github.com/erooke/grafana-secretkey-rotation-tool/tree/d9dc788902fa5185e15cb15ce6129f7237ab6138).
+    # ──────────────────────────────────────────────────────────────────────────
     services.grafana = lib.mkIf cfg.observability.grafana.enable {
       enable = true;
 
@@ -169,43 +188,60 @@ in
     # The log shipper that feeds Loki. Tails log files and the systemd journal,
     # attaches labels (hostname, unit name, etc.), and forwards to Loki.
     # Think of Promtail as the Prometheus node exporter, but for logs.
-    services.promtail = lib.mkIf cfg.observability.loki.enable {
-      enable = true;
+    #
+    # ──────────────────────────────────────────────────────────────────────────
+    # NOTE: PROMTAIL REACHED END OF LIFE
+    # ──────────────────────────────────────────────────────────────────────────
+    # Assertion error:
+    #
+    # - The option definition `services.promtail' in
+    # `/nix/store/[hash]/src/pkgs/devops/observability.nix'
+    # no longer has any effect; please remove it.
+    #  The promtail module has been removed, as promtail reached its end of life
+    # Consider migrating to `grafana-alloy` (`services.alloy.enable`), or, if
+    # you are looking for something light-weight, `fluent-bit`
+    # (`services.fluent-bit.enable`). See:
+    # <https://grafana.com/docs/alloy/latest/set-up/migrate/> or
+    # <https://docs.fluentbit.io/manual/data-pipeline/outputs/loki>.
+    # ──────────────────────────────────────────────────────────────────────────
 
-      configuration = {
-        server = {
-          http_listen_port = 9080;
-          grpc_listen_port = 0;
-        };
-
-        positions.filename = "/var/lib/promtail/positions.yaml";
-
-        clients = [
-          {
-            url = "http://localhost:3100/loki/api/v1/push";
-          }
-        ];
-
-        scrape_configs = [
-          {
-            job_name = "journal";
-            journal = {
-              max_age = "12h";
-              labels = {
-                job = "systemd-journal";
-                host = config.networking.hostName;
-              };
-            };
-            relabel_configs = [
-              {
-                source_labels = [ "__journal__systemd_unit" ];
-                target_label = "unit";
-              }
-            ];
-          }
-        ];
-      };
-    };
+    #services.promtail = lib.mkIf cfg.observability.loki.enable {
+    #  enable = true;
+    #
+    #  configuration = {
+    #    server = {
+    #      http_listen_port = 9080;
+    #      grpc_listen_port = 0;
+    #    };
+    #
+    #    positions.filename = "/var/lib/promtail/positions.yaml";
+    #
+    #    clients = [
+    #      {
+    #        url = "http://localhost:3100/loki/api/v1/push";
+    #      }
+    #    ];
+    #
+    #    scrape_configs = [
+    #      {
+    #        job_name = "journal";
+    #        journal = {
+    #          max_age = "12h";
+    #          labels = {
+    #            job = "systemd-journal";
+    #            host = config.networking.hostName;
+    #          };
+    #        };
+    #        relabel_configs = [
+    #          {
+    #            source_labels = [ "__journal__systemd_unit" ];
+    #            target_label = "unit";
+    #          }
+    #        ];
+    #      }
+    #    ];
+    #  };
+    #};
 
     # ── Supporting packages ────────────────────────────────────────────────────
     environment.systemPackages = with pkgs; [

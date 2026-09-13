@@ -18,10 +18,12 @@ in
 {
   imports = [
     ./options.nix
+
     ./git.nix
     ./ssh.nix
     ./direnv.nix
     ./devenv.nix
+
     ./ide/hm.nix
     ./languages/hm.nix
     ./arduino/hm.nix

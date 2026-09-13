@@ -33,7 +33,7 @@ let
   graphBase = cypherOsConstants.logseqGraphBaseRoot;
 in
 {
-  options = [ ./options.nix ];
+  imports = [ ./options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.logseq.enable) {
     home.packages = with pkgs; [ logseq ];
@@ -110,7 +110,7 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     home.activation.logseqCatppuccinCss = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
       $DRY_RUN_CMD cp --remove-destination \
-        ${./config/catppuccin-mocha.css} \
+        ${./configs/catppuccin-mocha.css} \
         "${graphBase}/logseq/custom.css"
       $DRY_RUN_CMD chmod 644 "${graphBase}/logseq/custom.css"
     '';

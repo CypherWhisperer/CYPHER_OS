@@ -22,10 +22,13 @@ in
         accent = cfg.accent;
         # ──────────────────────────────────────────────────────────────────────
         # autoEnable deliberately omitted — every consuming leaf sets its own
-        # catppuccin.<app>.enable explicitly (see kitty.nix example below),
+        # catppuccin.<app>.enable explicitly,
         # matching this codebase's parent+leaf gating convention rather than
         # relying on a blanket auto-apply.
         # ──────────────────────────────────────────────────────────────────────
+        # NOTE: currently present to surpress an error
+        # ──────────────────────────────────────────────────────────────────────
+        autoEnable = true;
 
         # ──────────────────────────────────────────────────────────────────────
         # NOTE: MOVE THESE TO THEIR RESPECTIVE FILES:

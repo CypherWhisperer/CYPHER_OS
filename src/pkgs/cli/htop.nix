@@ -15,6 +15,8 @@ let
   cfg = config.cypher-os.pkgs.cli;
 in
 {
+  imports = [ ./options.nix ];
+
   config = lib.mkIf (cfg.enable && cfg.htop.enable) {
 
     programs.htop = {

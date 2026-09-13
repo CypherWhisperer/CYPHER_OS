@@ -51,7 +51,7 @@ in
 
       protonSupport = mkEnableOption ''
         Proton Mail Bridge integration for Thunderbird.
-        Requires cypher-os.apps.mail.protonBridge.enable = true.
+        Requires cypher-os.pkgs.mail.protonBridge.enable = true.
       '';
     };
 

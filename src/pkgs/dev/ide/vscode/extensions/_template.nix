@@ -106,7 +106,7 @@ in
       # NOTE: actual deployment is handled by ../core_config.nix, leaf files
       # simply contribute to the attrset. Check comment block in ../options.nix
       # ────────────────────────────────────────────────────────────────────────
-      cypher-os.pkgs.dev.ide.vscode._sharedSettings = {
+      cypher-os.pkgs.dev.ide.gui.vscode._sharedSettings = {
       };
     };
 }

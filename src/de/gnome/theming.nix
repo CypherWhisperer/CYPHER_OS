@@ -312,15 +312,17 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     dconf.settings = {
 
-      enabled-extensions = [
-        # ──────────────────────────────────────────────────────────────────────
-        # Layer 2: GNOME Shell chrome (top bar, overview,
-        # notifications). user-theme extension reads from
-        # org/gnome/shell/extensions/user-theme and applies a shell theme from
-        # ~/.themes or the system themes directory.
-        # ──────────────────────────────────────────────────────────────────────
-        "user-theme@gnome-shell-extensions.gcampax.github.com"
-      ];
+      "org/gnome/shell" = {
+        enabled-extensions = [
+          # ──────────────────────────────────────────────────────────────────────
+          # Layer 2: GNOME Shell chrome (top bar, overview,
+          # notifications). user-theme extension reads from
+          # org/gnome/shell/extensions/user-theme and applies a shell theme from
+          # ~/.themes or the system themes directory.
+          # ──────────────────────────────────────────────────────────────────────
+          "user-theme@gnome-shell-extensions.gcampax.github.com"
+        ];
+      };
 
       # ────────────────────────────────────────────────────────────────────────
       # Layer 2: GNOME Shell theme (top bar, overview, notifications, dash).

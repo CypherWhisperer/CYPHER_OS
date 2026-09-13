@@ -6,8 +6,9 @@
 # host — src/profile/system.nix only declares and re-exposes
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ ... }:
-
+{
+  ...
+}:
 {
   cypher-os.profile.active = "desktop";
   cypher-os.lens.current = "nixos";

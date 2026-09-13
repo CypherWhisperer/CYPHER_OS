@@ -15,8 +15,6 @@ in
   imports = [ ./options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.fish.enable) {
-    home.packages = with pkgs; [
-      fish
-    ];
+    home.packages = with pkgs; [ fish ];
   };
 }

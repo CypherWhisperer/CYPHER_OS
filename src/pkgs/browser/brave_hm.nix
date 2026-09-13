@@ -183,7 +183,7 @@ let
   # pkgs.lib.cleanSource or a plain path both work here; a plain
   # repo-relative path is simplest and is what Home Manager expects.
   # ────────────────────────────────────────────────────────────────────────────
-  braveConfigDir = cypherOsConstants.braveConfigRoot;
+  braveConfigDir = cypherOsConstants.braveConfigsRoot;
 
   # ────────────────────────────────────────────────────────────────────────────
   # Wayland + privacy flags passed to every Brave launch.

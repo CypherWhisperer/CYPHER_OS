@@ -15,7 +15,6 @@ in
   imports = [ ./options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.anydesk.enable) {
-
     home.packages = with pkgs; [ anydesk ];
 
     # ──────────────────────────────────────────────────────────────────────────

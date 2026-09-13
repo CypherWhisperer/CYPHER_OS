@@ -93,11 +93,14 @@ in
         };
 
         # ──────────────────────────────────────────────────────────────────────
-        # The actual Home Manager configuration for cypher_whisperer.
+        # The actual Home Manager configuration for the primary user.
         # This imports modules/home/default.nix.
         # ──────────────────────────────────────────────────────────────────────
         home-manager.users.${username} =
           {
+            lib,
+            pkgs,
+            config,
             ...
           }:
           let
@@ -176,7 +179,7 @@ in
         # NixOS option, not a home-manager.lib.homeManagerConfiguration one).
         #
         # Worth adopting once more users are added under home-manager.users —
-        # with only cypher_whisperer today, it saves zero duplication right now,
+        # with only one primary user today, it saves zero duplication right now,
         # so it's a "when you need it" option rather than an immediate win.
         # ──────────────────────────────────────────────────────────────────────
         #home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];

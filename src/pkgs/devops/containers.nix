@@ -15,10 +15,12 @@
   lib,
   pkgs,
   config,
+  cypherOsConstants,
   ...
 }:
 let
   cfg = config.cypher-os.pkgs.devops;
+  primaryUser = cypherOsConstants.username;
 in
 {
   imports = [ ./options.nix ];
@@ -84,7 +86,7 @@ in
     # add user to run commands without sudo (disabled; I am going for rootless docker for security).
     # the same can be achieved with:
     #   users.extraGroups.docker.members = [ "username-with-access-to-socket" ];
-    users.users.cypher_whisperer.extraGroups = [
+    users.users.${primaryUser}.extraGroups = [
       "docker"
       "podman"
     ];

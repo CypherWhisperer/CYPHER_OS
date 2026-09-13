@@ -12,7 +12,7 @@
 }:
 let
   values = import ../src/config/constants/values.nix;
-  username = values.username;
+  primaryUsername = values.username;
   homeDirectory = values.homeDirectory;
   activeHostName = values.activeHostName;
 in
@@ -21,7 +21,7 @@ in
   # STANDALONE HOME MANAGER CONFIGURATIONS:
   # ────────────────────────────────────────────────────────────────────────────
   # homeConfigurations are for non-NixOS hosts (Arch, Debian, Fedora, OpenSuse).
-  # Applied with: home-manager switch --flake .#cypher_whisperer@<host>
+  # Applied with: home-manager switch --flake .#<primaryUsername>@<host>
   #
   # On these hosts, the OS manages the system level. Home Manager manages
   # only the user environment (packages, dotfiles, dconf settings, etc).
@@ -29,7 +29,7 @@ in
   # The cypher-nixos entry here is a convenience — allows running HM standalone
   # ────────────────────────────────────────────────────────────────────────────
 
-  "${username}@${activeHostName}" = inputs.home-manager.lib.homeManagerConfiguration {
+  "${primaryUsername}@${activeHostName}" = inputs.home-manager.lib.homeManagerConfiguration {
     inherit pkgs;
 
     # ──────────────────────────────────────────────────────────────────────────
@@ -59,7 +59,7 @@ in
       # inputs.catppuccin.homeModules.catppuccin must be imported here
       # explicitly, mirroring the import in the NixOS-integrated path
       # ( flake.nix nixosConfigurations block, under:
-      #   home-manager.users.cypher_whisperer.imports
+      #   home-manager.users.${primaryUsername}.imports
       # ).
       #
       # ────────────────────────────────────────────────────────────────────────
@@ -116,16 +116,24 @@ in
       # triggered the error leading to the resolution:
       #
       # `nix eval \
-      # .#homeConfigurations."cypher_whisperer@cypher-nixos".config.programs.direnv.enable 2>&1`
+      # .#homeConfigurations."<primaryUsername>@<hostname>".config.programs.direnv.enable 2>&1`
       #
       # `nix eval \
-      # .#homeConfigurations."cypher_whisperer@cypher-nixos".config.programs.direnv.nix-direnv.enable 2>&1`
+      # .#homeConfigurations."<primaryUsername>@<hostname>".config.programs.direnv.nix-direnv.enable 2>&1`
       #
       # ────────────────────────────────────────────────────────────────────────
 
       {
-        home.username = username;
+        home.username = primaryUsername;
         home.homeDirectory = homeDirectory;
+        cypher-os.profile.active = values.activeProfile;
+
+        # ──────────────────────────────────────────────────────────────────────
+        # `lens.current` is different — it's supposed to vary per lens/host
+        # (nixos vs arch vs debian), so it should stay a literal hardcoded in
+        # each host's own file, not centralized.
+        # ──────────────────────────────────────────────────────────────────────
+        cypher-os.lens.current = "nixos"; # standalone HM entry for the nixos lens
 
         # ──────────────────────────────────────────────────────────────────────
         # DROPPED
@@ -153,7 +161,7 @@ in
   # ────────────────────────────────────────────────────────────────────────────
   # Future hosts — uncomment and add host-specific home.nix progressively:
   # ────────────────────────────────────────────────────────────────────────────
-  #"cypher_whisperer@arch" = inputs.home-manager.lib.homeManagerConfiguration {
+  #"${primaryUsername}@arch" = inputs.home-manager.lib.homeManagerConfiguration {
   #  inherit pkgs;
   #  extraSpecialArgs = {
   #    inherit inputs;

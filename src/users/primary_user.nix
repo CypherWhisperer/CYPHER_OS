@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/users/cypher_whisperer.nix
+# src/users/primary_user.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
@@ -11,6 +11,8 @@
 let
   cfg = config.cypher-os.shell;
   primaryShell = cypherOsConstants.primaryUserShell;
+  primaryUser = cypherOsConstants.username;
+  userAvatar = cypherOsConstants.userAvatar;
 
   # ────────────────────────────────────────────────────────────────────────────
   # "bash" is intentionally excluded from cypher-os.shell.* — it's the baseline,
@@ -24,7 +26,7 @@ in
   # ────────────────────────────────────────────────────────────────────────────
   # USER ACCOUNT
   # ────────────────────────────────────────────────────────────────────────────
-  # This is the canonical user declaration for cypher_whisperer on NixOS.
+  # This is the canonical user declaration for the primary user on NixOS.
   # The uid = 1000 is the universal truth across the CypherOS fleet — every OS
   # recognises this user by UID number, not by username string.
   #
@@ -39,7 +41,7 @@ in
   # extraGroups: the groups that give this user elevated access to hardware
   # and services. Each group is explained inline.
   # ────────────────────────────────────────────────────────────────────────────
-  users.users.${cypherOsConstants.username} = {
+  users.users.${primaryUser} = {
     isNormalUser = true;
     uid = cypherOsConstants.userId;
     description = cypherOsConstants.displayName;
@@ -96,13 +98,13 @@ in
   # ────────────────────────────────────────────────────────────────────────────
   system.activationScripts.userAvatar = {
     text = ''
-          install -Dm644 ${cypherOsConstants.userAvatar} \
-            /var/lib/AccountsService/icons/cypher_whisperer
+          install -Dm644 ${userAvatar} \
+            /var/lib/AccountsService/icons/${primaryUser}
           # AccountsService also needs a config file pointing at the icon
           mkdir -p /var/lib/AccountsService/users
-          cat > /var/lib/AccountsService/users/cypher_whisperer <<EOF
+          cat > /var/lib/AccountsService/users/${primaryUser} <<EOF
       [User]
-      Icon=/var/lib/AccountsService/icons/cypher_whisperer
+      Icon=/var/lib/AccountsService/icons/${primaryUser}
       EOF
     '';
   };

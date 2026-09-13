@@ -19,7 +19,6 @@ in
   imports = [ ./options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.claude.enable) {
-
     # ──────────────────────────────────────────────────────────────────────────
     # ── Package:
     # ──────────────────────────────────────────────────────────────────────────
@@ -66,7 +65,7 @@ in
           # ────────────────────────────────────────────────────────────────────
           #filesystem = {
           #  command = "npx";
-          #  args = [ "-y" "@modelcontextprotocol/server-filesystem" "/home/cypher_whisperer/Projects" ];
+          #  args = [ "-y" "@modelcontextprotocol/server-filesystem" "/home/<username>/Projects" ];
           #};
         };
       };

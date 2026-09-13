@@ -5,6 +5,6 @@
 { ... }:
 {
   imports = [
-    ./cypher_whisperer.nix
+    ./primary_user.nix
   ];
 }

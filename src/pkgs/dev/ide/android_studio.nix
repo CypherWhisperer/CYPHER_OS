@@ -14,7 +14,7 @@ in
 {
   imports = [ ./options.nix ];
 
-  config = lib.mkIf (cfg.enable && cfg.androdStudio.enable) {
+  config = lib.mkIf (cfg.enable && cfg.androidStudio.enable) {
     home.packages = with pkgs; [
       # ────────────────────────────────────────────────────────────────────────
       # NOTE: bare install — configure SDK via UI.

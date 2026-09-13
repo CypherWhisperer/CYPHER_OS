@@ -14,7 +14,7 @@ in
 {
   imports = [ ./options.nix ];
 
-  config = lib.mkIf (cfg.enable && cfg.openCode.enable){
+  config = lib.mkIf (cfg.enable && cfg.openCode.enable) {
     home.packages = with pkgs; [ opencode ];
   };
 }

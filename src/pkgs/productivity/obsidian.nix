@@ -44,6 +44,7 @@ let
   cfg = config.cypher-os.pkgs.productivity;
   catppuccinAccent = config.cypher-os.theme.accent;
   catppuccinFlavor = config.cypher-os.theme.flavor;
+  d2Cfg = config.cypher-os.pkgs.dev.languages.d2;
 
   # ────────────────────────────────────────────────────────────────────────────
   # NOTE: The assertion related to this is currently in ./defaults.nix but is
@@ -809,10 +810,10 @@ in
           {
             pkg = pluginD2;
             settings = {
-              "layoutEngine" = config.cypher-os.apps.productivity.d2.layoutEngine;
-              "themeID" = config.cypher-os.apps.productivity.d2.themeId;
-              "pad" = config.cypher-os.apps.productivity.d2.pad;
-              "sketch" = config.cypher-os.apps.productivity.d2.sketch;
+              "layoutEngine" = d2Cfg.layoutEngine;
+              "themeID" = d2Cfg.themeId;
+              "pad" = d2Cfg.pad;
+              "sketch" = d2Cfg.sketch;
 
               # ────────────────────────────────────────────────────────────────
               # px cap before the render scrolls; tune to taste

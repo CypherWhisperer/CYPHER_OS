@@ -43,13 +43,13 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     # userSettings: written to VSCode's settings.
     # ──────────────────────────────────────────────────────────────────────────
-    cypher-os.pkgs.dev.ide.vscode._sharedSettings = {
+    cypher-os.pkgs.dev.ide.gui.vscode._sharedSettings = {
       # ────────────────────────────────────────────────────────────────────────
       # Flutter SDK path: Home Manager installs flutter to the Nix store.
       # The path below is set dynamically — replace with the actual store path
       # or set it to the flutter binary location after first switch:
       #   `which flutter | xargs dirname | xargs dirname`
-      #  e.g /etc/profiles/per-user/cypher_whisperer
+      #  e.g /etc/profiles/per-user/<username>
       # Alternatively leave unset and let the extension auto-detect.
       # "dart.flutterSdkPath" = "/path/to/flutter";  # set after first switch
       # ────────────────────────────────────────────────────────────────────────

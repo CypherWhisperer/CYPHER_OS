@@ -2,11 +2,13 @@
 # src/pkgs/mail/system.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ ... }:
+{
+  ...
+}:
 {
   imports = [
-     ./options.nix
-     ./defaults.nix
-     ./proton_bridge_system.nix
+    ./options.nix
+    ./defaults.nix
+    ./proton_bridge_system.nix
   ];
 }

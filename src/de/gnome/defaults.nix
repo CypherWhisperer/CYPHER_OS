@@ -9,7 +9,7 @@
   ...
 }:
 let
-  cfg = config.cypher-os.de;
+  cfg = config.cypher-os.de.gnome;
 in
 {
   imports = [ ./options.nix ];
@@ -18,7 +18,7 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
-    config.cypher-os.de.gnome.enable = lib.mkDefault (cypherOsProfile == "desktop");
+    cypher-os.de.gnome.enable = lib.mkDefault (cypherOsProfile == "desktop");
 
     # ──────────────────────────────────────────────────────────────────────────
     # ASSERTIONS.

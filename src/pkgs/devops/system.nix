@@ -35,18 +35,26 @@ in
     cypher-os.pkgs.devops.containers.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.devops.kubernetes.enable = lib.mkDefault cfg.enable;
 
-    cypher-os.pkgs.devops.iac.enable = lib.mkDefault cfg.enable;
+    #cypher-os.pkgs.devops.iac.enable = lib.mkDefault cfg.enable; # overriden
+    cypher-os.pkgs.devops.iac.enable = lib.mkDefault false;
+
     cypher-os.pkgs.devops.iac.terraform.enable = lib.mkDefault cfg.iac.enable;
 
-    cypher-os.pkgs.devops.secrets.enable = lib.mkDefault cfg.enable;
+    #cypher-os.pkgs.devops.secrets.enable = lib.mkDefault cfg.enable; # overriden
+    cypher-os.pkgs.devops.secrets.enable = lib.mkDefault false;
+
     cypher-os.pkgs.devops.secrets.vault.enable = lib.mkDefault cfg.secrets.enable;
 
-    cypher-os.pkgs.devops.cloud.enable = lib.mkDefault cfg.enable;
+    #cypher-os.pkgs.devops.cloud.enable = lib.mkDefault cfg.enable; # overriden
+    cypher-os.pkgs.devops.cloud.enable = lib.mkDefault false;
+
     cypher-os.pkgs.devops.cloud.aws.enable = lib.mkDefault cfg.cloud.enable;
     cypher-os.pkgs.devops.cloud.gcp.enable = lib.mkDefault cfg.cloud.enable;
     cypher-os.pkgs.devops.cloud.azure.enable = lib.mkDefault cfg.cloud.enable;
 
-    cypher-os.pkgs.devops.observability.enable = lib.mkDefault cfg.enable;
+    #cypher-os.pkgs.devops.observability.enable = lib.mkDefault cfg.enable; # overriden
+    cypher-os.pkgs.devops.observability.enable = lib.mkDefault false;
+
     cypher-os.pkgs.devops.observability.loki.enable = lib.mkDefault cfg.observability.enable;
     cypher-os.pkgs.devops.observability.grafana.enable = lib.mkDefault cfg.observability.enable;
     cypher-os.pkgs.devops.observability.prometheus.enable = lib.mkDefault cfg.observability.enable;

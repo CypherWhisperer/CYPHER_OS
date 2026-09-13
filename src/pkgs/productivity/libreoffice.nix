@@ -19,7 +19,6 @@ let
     sha256 = "sha256-c7BIwKlwUpD+rLKQQi43mHi2s/hlNkxPE+eX7iWb2vI=";
   };
 in
-
 {
   imports = [ ./options.nix ];
 

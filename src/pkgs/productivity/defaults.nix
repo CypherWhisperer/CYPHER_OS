@@ -7,6 +7,7 @@
   config,
   cypherOsProfile,
   cypherOsConstants,
+  ...
 }:
 let
   cfg = config.cypher-os.pkgs.productivity;

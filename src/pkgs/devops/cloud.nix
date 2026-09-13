@@ -9,7 +9,7 @@
   ...
 }:
 let
-  cfg = config.cypher-os.devops;
+  cfg = config.cypher-os.pkgs.devops;
 in
 {
   imports = [ ./options.nix ];

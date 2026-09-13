@@ -21,17 +21,17 @@ in
 
     cypher-os.pkgs.dev.languages.go.enable = lib.mkDefault cfg.languages.enable;
     cypher-os.pkgs.dev.languages.php.enable = lib.mkDefault cfg.languages.enable;
-    cypher-os.pkgs.dev.languages.bash.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.cCpp.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.dart.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.jsTs.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.kotlin.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.lua.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.nix.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.python.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.rust.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.zig.enable = lib.mkDefault cfg.language.enable;
-    cypher-os.pkgs.dev.languages.d2.enable = lib.mkDefault cfg.language.enable;
+    cypher-os.pkgs.dev.languages.bash.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.cCpp.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.dart.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.jsTs.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.kotlin.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.lua.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.nix.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.python.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.rust.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.zig.enable = lib.mkDefault cfg.languages.enable;
+    cypher-os.pkgs.dev.languages.d2.enable = lib.mkDefault cfg.languages.enable;
 
     # ──────────────────────────────────────────────────────────────────────────
     # ASSERTIONS.

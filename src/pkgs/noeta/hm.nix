@@ -16,7 +16,7 @@ in
     ./options.nix
     ./claude_code.nix
     ./codex.nix
-    ./hermes.nix
+    # ./hermes.nix  # <- no implementation yet
     ./open_code.nix
     ./t3_code.nix
   ];

@@ -4,6 +4,7 @@
 
 {
   lib,
+  pkgs,
   config,
   ...
 }:
@@ -39,7 +40,12 @@ in
     # NUSHELL (SYSTEM LEVEL ENABLEMENT).
     # ──────────────────────────────────────────────────────────────────────────
     (lib.mkIf (cfg.enable && cfg.nushell.enable) {
-      programs.nushell.enable = true;
+      # ────────────────────────────────────────────────────────────────────────
+      # NOTE: got error: The option `programs.nushell' does not exist.
+      # ────────────────────────────────────────────────────────────────────────
+      #programs.nushell.enable = true;
+
+      environment.systemPackages = with pkgs; [ nushell ];
     })
   ];
 }

@@ -9,7 +9,7 @@
 }:
 let
   cfg = config.cypher-os.pkgs.dev.ide.gui.vscode;
-  catppuccinAccent = config.cypher-os.theme.flavor;
+  catppuccinAccent = config.cypher-os.theme.accent;
   catppuccinFlavor = config.cypher-os.theme.flavor;
 in
 {
@@ -63,7 +63,7 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     # userSettings: written to VSCode's settings.
     # ──────────────────────────────────────────────────────────────────────────
-    cypher-os.pkgs.dev.ide.vscode._sharedSettings = {
+    cypher-os.pkgs.dev.ide.gui.vscode._sharedSettings = {
       # ── Theme ───────────────────────────────────────────────────────────────
       # workbench.colorTheme is intentionally absent here.
       # It is set automatically by the catppuccin.vscode HM module in config above,

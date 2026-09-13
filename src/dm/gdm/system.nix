@@ -33,7 +33,7 @@ in
     # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
     {
-      config.cypher-os.dm.gdm.enable = lib.mkDefault (cypherOsProfile == "desktop");
+      cypher-os.dm.gdm.enable = lib.mkDefault (cypherOsProfile == "desktop");
     }
 
     # ──────────────────────────────────────────────────────────────────────────

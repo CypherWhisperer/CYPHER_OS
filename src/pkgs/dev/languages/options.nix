@@ -309,6 +309,7 @@ in
       # ────────────────────────────────────────────────────────────────────────
       package = mkOption {
         type = types.package;
+        default = pkgs.go;
         description = ''
           The Go toolchain package to expose on PATH via `programs.go.package`.
           Pass e.g. `pkgs.go_1_24` to pin a specific minor, `pkgs.go_latest`

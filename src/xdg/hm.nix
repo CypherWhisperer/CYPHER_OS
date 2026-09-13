@@ -29,6 +29,7 @@ let
 in
 {
   imports = [ ./options.nix ];
+
   config = lib.mkMerge [
     (lib.mkIf (cypherOsProfile == "desktop" && cfg.enable) {
 

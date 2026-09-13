@@ -15,9 +15,7 @@ in
   imports = [ ./options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.nushell.enable) {
-    home.packages = with pkgs; [
-      nushell
-    ];
+    home.packages = with pkgs; [ nushell ];
   };
 }
 

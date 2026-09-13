@@ -2,7 +2,18 @@
 # src/home/gc-hm.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
-{ ... }:
+# ──────────────────────────────────────────────────────────────────────────────
+# An error I hit in prior build:
+# (error: error parsing derivation
+# '/nix/store/nzhz804z407sw3zi40ls5h71jdsgcpgm-home-manager-auto-expire.
+# service.drv':
+#
+# file is empty (possible filesystem corruption))
+# ──────────────────────────────────────────────────────────────────────────────
+
+{
+  ...
+}:
 {
   services.home-manager.autoExpire = {
 

@@ -56,7 +56,7 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     # userSettings: written to VSCode's settings.
     # ──────────────────────────────────────────────────────────────────────────
-    cypher-os.pkgs.dev.ide.vscode._sharedSettings = {
+    cypher-os.pkgs.dev.ide.gui.vscode._sharedSettings = {
       # ────────────────────────────────────────────────────────────────────────
       # arduino-cli is the compile/upload backend. The extension resolves it
       # from $PATH — no absolute path needed since arduino-cli is a statically-

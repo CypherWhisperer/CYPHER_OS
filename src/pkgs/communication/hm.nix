@@ -6,6 +6,7 @@
   lib,
   config,
   cypherOsProfile,
+  ...
 }:
 let
   cfg = config.cypher-os.pkgs.communication;

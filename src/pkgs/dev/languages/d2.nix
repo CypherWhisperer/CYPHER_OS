@@ -15,7 +15,7 @@ in
   imports = [ ./options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.d2.enable) {
-    home.packages = [ cfg.package ]; # or pkgs.d2
+    home.packages = [ cfg.d2.package ]; # or pkgs.d2
 
     # ──────────────────────────────────────────────────────────────────────────
     # These env vars make the *bare CLI* (used by scripts, mdbook-d2, CI, etc.)
@@ -24,16 +24,16 @@ in
     # instead of CypherOS' configured Mauve theme.
     # ──────────────────────────────────────────────────────────────────────────
     home.sessionVariables = {
-      D2_LAYOUT = cfg.layoutEngine;
-      D2_THEME = toString cfg.themeId;
+      D2_LAYOUT = cfg.d2.layoutEngine;
+      D2_THEME = toString cfg.d2.themeId;
     }
-    // lib.optionalAttrs (cfg.darkThemeId != null) {
-      D2_DARK_THEME = toString cfg.darkThemeId;
+    // lib.optionalAttrs (cfg.d2.darkThemeId != null) {
+      D2_DARK_THEME = toString cfg.d2.darkThemeId;
     }
     // {
-      D2_PAD = toString cfg.pad;
+      D2_PAD = toString cfg.d2.pad;
     }
-    // lib.optionalAttrs cfg.sketch {
+    // lib.optionalAttrs cfg.d2.sketch {
       D2_SKETCH = "1";
     };
   };

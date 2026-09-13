@@ -5,7 +5,6 @@
 {
   lib,
   config,
-  cypherOsProfile,
   ...
 }:
 let

@@ -80,10 +80,12 @@
   lib,
   pkgs,
   config,
+  cypherOsConstants,
   ...
 }:
 let
   cfg = config.cypher-os.pkgs.dev;
+  primaryUser = cypherOsConstants.username;
 in
 {
   imports = [
@@ -151,7 +153,7 @@ in
     # IMPORTANT: group membership only takes effect after a full re-login or
     # reboot. See the POST-SWITCH IMPERATIVE STEPS note above.
     # ──────────────────────────────────────────────────────────────────────────
-    users.users.cypher_whisperer = {
+    users.users.${primaryUser} = {
       extraGroups = [
         "dialout"
         "uucp"

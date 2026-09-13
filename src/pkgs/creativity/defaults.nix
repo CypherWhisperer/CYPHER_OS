@@ -6,6 +6,7 @@
   lib,
   config,
   cypherOsProfile,
+  ...
 }:
 let
   cfg = config.cypher-os.pkgs.creativity;
@@ -22,7 +23,8 @@ in
     cypher-os.pkgs.creativity.penpot.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.creativity.krita.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.creativity.blender.enable = lib.mkDefault cfg.enable;
-    cypher-os.pkgs.creativity.houdini.enable = lib.mkDefault cfg.enable;
+    # cypher-os.pkgs.creativity.houdini.enable = lib.mkDefault cfg.enable; # overriden
+    cypher-os.pkgs.creativity.houdini.enable = lib.mkDefault false;
     cypher-os.pkgs.creativity.audacity.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.creativity.gimp.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.creativity.inkscape.enable = lib.mkDefault cfg.enable;

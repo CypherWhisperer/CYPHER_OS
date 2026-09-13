@@ -42,7 +42,7 @@
         gated behind an enable toggle (see src/shell/options.nix's own
         comment on this). The other three require their corresponding
         cypher-os.shell.{enable,<name>.enable} to both be true — enforced
-        by src/users/cypher_whisperer.nix's assertion, not by this option's
+        by src/users/primary_user.nix's assertion, not by this option's
         type.
       '';
     };
@@ -55,6 +55,11 @@
     primaryDisk = lib.mkOption {
       type = lib.types.str;
       description = "Block device path of the primary disk (e.g. /dev/sda).";
+    };
+
+    activeHostName = lib.mkOption {
+      type = lib.types.str;
+      description = "The Active Host Name of the Machine.";
     };
 
     stateVersion = lib.mkOption {

@@ -14,7 +14,7 @@ in
 {
   imports = [ ./options.nix ];
 
-  config = lib.mkIf (cfg.enable && cfg.codex.enable){
+  config = lib.mkIf (cfg.enable && cfg.codex.enable) {
     home.packages = with pkgs; [ codex ];
   };
 }

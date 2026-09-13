@@ -9,7 +9,7 @@
   ...
 }:
 let
-  cfg = config.cypher-os.apps.mail;
+  cfg = config.cypher-os.pkgs.mail;
   inherit (lib) mkIf;
 in
 {

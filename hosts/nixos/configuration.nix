@@ -3,8 +3,8 @@
 # ──────────────────────────────────────────────────────────────────────────────
 #
 # TO APPLY:
-#   sudo nixos-rebuild switch --flake .#cypher-nixos
-#   home-manager switch --flake .#cypher_whisperer@cypher-nixos
+#   sudo nixos-rebuild switch --flake .#<active hostname>
+#   home-manager switch --flake .#<username>@<active hostname>
 # ──────────────────────────────────────────────────────────────────────────────
 
 {

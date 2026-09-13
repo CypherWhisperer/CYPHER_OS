@@ -36,6 +36,8 @@ let
   };
 in
 {
+  imports = [ ./options.nix ];
+
   config = lib.mkIf (cfg.enable && cfg.btop.enable) {
     home.packages = with pkgs; [
       btop

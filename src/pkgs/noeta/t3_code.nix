@@ -9,12 +9,12 @@
   ...
 }:
 let
-  cfg = config.cypher-os.pkgs.noeta;
+  cfg = config.cypher-os.pkgs.noeta.gui;
 in
 {
   imports = [ ./options.nix ];
 
-  config = lib.mkIf (cfg.enable && cfg.t3Code.enable){
+  config = lib.mkIf (cfg.enable && cfg.t3Code.enable) {
     home.packages = with pkgs; [ t3code ];
   };
 }

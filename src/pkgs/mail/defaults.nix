@@ -20,7 +20,8 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     cypher-os.pkgs.mail.enable = lib.mkDefault (cypherOsProfile == "desktop");
     cypher-os.pkgs.mail.thunderbird.enable = lib.mkDefault cfg.enable;
-    cypher-os.pkgs.mail.protonBridge.enable = lib.mkDefault cfg.enable;
+    # cypher-os.pkgs.mail.protonBridge.enable = lib.mkDefault cfg.enable; # overriden
+    cypher-os.pkgs.mail.protonBridge.enable = lib.mkDefault false;
 
     # ──────────────────────────────────────────────────────────────────────────
     # ASSERTIONS.

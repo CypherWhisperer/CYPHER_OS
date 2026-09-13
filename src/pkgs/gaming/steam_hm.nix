@@ -91,7 +91,7 @@
 }:
 let
   cfg = config.cypher-os.pkgs.gaming;
-  steamFilesRoot = cypherOsConstants.gamingFiles.steamFiles.root;
+  # steamFilesRoot = cypherOsConstants.gamingFiles.steamFiles.root;
   steamDataRoot = cypherOsConstants.gamingFiles.steamFiles.dataRoot;
   steamXdgRoot = cypherOsConstants.gamingFiles.steamFiles.xdgRoot;
   #steamLibraryRoot = cypherOsConstants.gamingFiles.steamFiles.steamLibraryRoot;

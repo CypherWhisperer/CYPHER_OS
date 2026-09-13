@@ -14,7 +14,7 @@ in
 {
   imports = [ ./options.nix ];
 
-  config = lib.mkIf (cfg.enable && cfg.claudeCode.enable){
+  config = lib.mkIf (cfg.enable && cfg.claudeCode.enable) {
     home.packages = with pkgs; [ claude-code ];
   };
 }

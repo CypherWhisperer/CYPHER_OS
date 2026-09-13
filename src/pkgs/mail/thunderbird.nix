@@ -8,8 +8,8 @@
   ...
 }:
 let
-  cfg = config.cypher-os.apps.mail;
-  bridgeCfg = config.cypher-os.apps.mail.protonBridge;
+  cfg = config.cypher-os.pkgs.mail;
+  bridgeCfg = config.cypher-os.pkgs.mail.protonBridge;
   catppuccinAccent = config.cypher-os.theme.accent;
   catppuccinFlavor = config.cypher-os.theme.flavor;
   inherit (lib) mkIf mkMerge;
@@ -26,10 +26,10 @@ in
     # ──────────────────────────────────────────────────────────────────────────
     assertions = [
       {
-        assertion = !cfg.protonSupport || bridgeCfg.enable;
+        assertion = !cfg.thunderbird.protonSupport || bridgeCfg.enable;
         message = ''
-          cypher-os.apps.mail.thunderbird.protonSupport = true requires
-          cypher-os.apps.mail.protonBridge.enable = true.
+          cypher-os.pkgs.mail.thunderbird.protonSupport = true requires
+          cypher-os.pkgs.mail.protonBridge.enable = true.
         '';
       }
     ];
@@ -81,7 +81,7 @@ in
         "mail.rights.version" = 1;
       };
 
-      profiles.${cfg.profile} = {
+      profiles.${cfg.thunderbird.profile} = {
         isDefault = true;
 
         settings = mkMerge [
@@ -125,7 +125,7 @@ in
           # Account wiring (server address, username, port) is deferred to the
           # one-time manual setup after Bridge's interactive login ceremony.
           # ────────────────────────────────────────────────────────────────────
-          (mkIf cfg.protonSupport {
+          (mkIf cfg.thunderbird.protonSupport {
             "mail.server.default.authMethod" = 4; # normal password
             "mail.smtpserver.default.authMethod" = 4;
           })

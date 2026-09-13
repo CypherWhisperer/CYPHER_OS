@@ -99,7 +99,7 @@ in
         # ──────────────────────────────────────────────────────────────────────
         # core.editor: nvim for commit messages, rebase todo lists, etc.
         # ──────────────────────────────────────────────────────────────────────
-        core.editor = if config.cypher-os.pkgs.ide.neovim.enable == true then "nvim" else "";
+        core.editor = if config.cypher-os.pkgs.dev.ide.neovim.enable == true then "nvim" else "";
 
         # ──────────────────────────────────────────────────────────────────────
         # core.autocrlf: never mangle line endings (you're on Linux everywhere)
