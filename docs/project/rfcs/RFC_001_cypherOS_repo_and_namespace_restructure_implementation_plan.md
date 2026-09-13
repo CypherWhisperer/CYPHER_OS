@@ -9,7 +9,7 @@
 
 ## Problem
 
-The architectural decisions locked in 2026_08_22 session (namespace redesign, profile/lens SSOT mechanism, category promotions and splits, constants management, aggregator symmetry) touch nearly every part of the existing `flake/`, `hosts/`, and `modules/` trees at once.
+The architectural decisions locked in 2026_08_22 session *(namespace redesign, profile/lens SSOT mechanism, category promotions and splits, constants management, aggregator symmetry)* touch nearly every part of the existing `flake/`, `hosts/`, and `modules/` trees at once.
 
 Implemented as one undifferentiated pass, this is high-risk:
 - A broken intermediate state is hard to bisect, and there's no natural point to stop, verify, and commit.
@@ -69,7 +69,7 @@ A dedicated refactor branch, worked in the phases below, each ending in a `nix f
 
 **Phase 5 — Category promotions and splits** Each of the following is independently commit-able; do them as separate commits within this phase rather than one large diff:
 
-1. Promote `de`, `dm`, `shell`, `fonts`, `xdg` to top-level categories (they largely already are at the file level — this is primarily a namespace-path change, `cypher-os.<name>.*` rather than any nested form).
+1. Promote `de`, `dm`, `shell`, `fonts`, `xdg` to top-level categories (they largely already are at the file level — *this is primarily a namespace-path change, `cypher-os.<name>.*` rather than any nested form*).
    
 2. Apply the fonts `lens.current` fix from ADR-024 — HM installs the full font set only when `lens.current != "nixos"`.
    
@@ -82,6 +82,40 @@ A dedicated refactor branch, worked in the phases below, each ending in a `nix f
 6. Move `arduino` under `src/pkgs/dev/arduino/`; move `virtualisation` under `src/system/virtualisation/`.
 
 Verify after **each** sub-step: `nixos-rebuild build --flake .#cypher-nixos` and `home-manager build --flake .#cypher_whisperer@cypher-nixos`.
+
+---
+
+**Per-Category Execution Checklist (added 2026-09-04)**
+
+For each category promoted or split in this phase:
+
+**Move & wire**
+- [ ] Move files from `modules/<old-location>/` to `src/<new-location>/<category>/`
+- [ ] Update internal (within-category) imports if paths shifted
+    - **BE SURE TO REMOVE ANY IMPORTS FROM `configuration.nix` AND ANY OTHER FILE FROM THE OLD SCHOOL PATH.**
+- [ ] Register in `src/{home,system}/default.nix` aggregators as applicable
+- [ ] If the category is split across both graphs, confirm `options.nix` is imported independently by both its own `system.nix` and `hm.nix` — importing it in one does not make it visible in the other
+
+**Constants & cleanup**
+- [ ] Any hardcoded path/id/value now belongs in `cypher-os.constants.*` (per RBK_013) rather than staying inline
+- [ ] Any leaf currently installed but unused *(a test install, not part of an actual workflow)* gets toggled off — *reclaim after garbage collection*
+
+**Gating & assertions** (per `gating_and_assertions.md`)
+- [ ] Every leaf gates on `parent.enable && leaf.enable`, never the leaf alone
+- [ ] The parent-implies-leaf *(or leaf-implies-parent)* assertion exists, written with `->`, sitting outside any `mkIf`
+- [ ] If the category has both `system.nix` and `hm.nix`, the assertion is duplicated in **both** — one graph's `assertions` list is invisible to the other
+- [ ] Any assertion resolving `cypherOsProfile`/`cypherOsLens` on the HM side uses the `osConfig ? null` fallback, never bare `config.cypher-os.*`
+
+**Profile/lens defaults** (per `profile_defaults.md`)
+- [ ] Profile-conditional defaults live in the category's **own** `system.nix`/`hm.nix` — never in `src/profile/*`
+- [ ] Defaults are expressed via the `cypherOsProfile`/`cypherOsLens` module args, not `config.cypher-os.profile.active` directly, for consistency
+- [ ] The profile-membership table (`docs/source_docs/.../profile_membership.md` or wherever it lands) is updated for any default added or changed this category
+
+**Verify**
+- [ ] `nixos-rebuild build --flake .#cypher-nixos` (if system-context)
+- [ ] `home-manager build --flake .#cypher_whisperer@cypher-nixos` (if HM-context)
+- [ ] Commit this category's changes as its own commit within Phase 5, per the RFC's sub-step guidance
+---
 
 **Phase 6 — Documentation restructuring**
 
@@ -141,5 +175,19 @@ Considered, since category splits are the most numerous individual changes.
 **ADR:** [ADR_023](../decisions/ADR_023_2026_08_22_cypher-os_namespace_and_profile_redesign.md), [ADR_024](../decisions/ADR_024_2026_08_22_cross-context_single_source_of_truth_via_osConfig.md)
 
 ---
+## Amendment (2026-09-03)
 
-<!-- METADATA Opened: 2026-08-22 Resolved: 2026-08-22 -->
+**Phase 5, step 3** originally read, in part: "...move their profile-conditional defaults into `src/profile/hm.nix`." This is superseded.
+
+`src/profile/{system,hm}.nix` are signal-only — they resolve `cypher-os.profile.active`/`cypher-os.lens.current` and expose them via `_module.args` as `cypherOsProfile`/`cypherOsLens`, and must never reference another category's namespace.
+
+Any category's profile-conditional defaults belong in that category's own `system.nix`/`hm.nix`, expressed as `lib.mkDefault (cypherOsProfile == "desktop")` or equivalent — see [profile_defaults.md](../../contributing/conventions/profile_defaults.md).
+
+Step 3 should be read with this correction. The pre-refactor `modules/profile/{default,system}.nix` push-based pattern is retired, not migrated into the new tree.
+
+---
+
+<!-- METADATA
+Opened: 2026-08-22
+Resolved: 2026-09-13
+-->

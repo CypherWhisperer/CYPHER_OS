@@ -9,8 +9,21 @@ Honest > polished.
 
 **Date:** YYYY-MM-DD
 **Duration:** ~N hours
-**Repos touched:** [ ... ]
-**Modules touched:** [ e.g. `modules/devops/observability.nix`, `modules/profile/system.nix` ]
+**Repos touched:** <!-- e.g.,
+1. CypherOS
+2. CypherIDE
+3. ...
+-->
+**Modules touched:** <!-- e.g.,
+4. `modules/devops/observability.nix`
+5. `modules/profile/system.nix`
+6. ...
+-->
+**Related Docs:** <!-- e.g.,
+7. [Doc Repo Name](relative path to the doc)
+8. [gating_and_assertions](../contributing/conventions/gating_and_assertions.md)
+9. ...
+-->
 **Phase:** [ e.g. Phase 2 — Infrastructure ]
 
 ---

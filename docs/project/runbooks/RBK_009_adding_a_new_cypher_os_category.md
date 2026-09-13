@@ -1,6 +1,6 @@
 # Runbook: Adding a New `cypher-os` Category
 
-**Last verified:** 2026-08-22
+**Last verified:** 2026-09-04
 **Host:** `cypher-nixos`
 **Module:** `src/{pkgs,system}/<new-category>/`
 **Trigger:** Reactive
@@ -33,9 +33,11 @@ Expected output: file exists, `nix flake check` still passes *(no config referen
 
 Imports `./options.nix` and `./hm.nix` *(omit `hm.nix` from imports if the category has no HM-level config at all).*
 
-### Step 3 — Create `hm.nix` and/or `system.nix` as needed
+### Step 3 — Create `hm.nix` and/or `system.nix` as needed, and `defaults.nix` if both exist
 
 Each file: `imports = [ ./options.nix ];` at the top, then a `config = lib.mkIf config.cypher-os.<path>.enable { ... }` block. Never mix `home.*`/`dconf.*` into `system.nix`, or `services.*`/`environment.*` into `hm.nix`/`default.nix`.
+
+If the category has **both** `hm.nix` and `system.nix`, create `src/<category>/defaults.nix` per [gating_and_assertions.md §13](../../contributing/conventions/gating_and_assertions.md) and import it from both, instead of duplicating defaults/assertions in each.
 
 ### Step 4 — Register in the relevant aggregator(s)
 
@@ -45,7 +47,7 @@ Expected output: `nix flake check` passes; the new options resolve in `nix eval 
 
 ### Step 5 — Add profile defaults, if any
 
-If the category *(or specific leaves within it)* should default on/off per profile, add the `lib.mkDefault` line to `src/profile/{system,hm}.nix` — never inside the category's own files. See [RBK_010](RBK_010_adding_a_leaf_to%20an_existing_category.md) for the leaf-level version of this step.
+If the category *(or specific leaves within it)* should default on/off per profile, add the `lib.mkDefault (cypherOsProfile == "...")` line **inside the category's own `system.nix`/`hm.nix`** — never in `src/profile/*`, which is signal-only and must never reference another category's namespace. See [profile_defaults.md](../../contributing/conventions/profile_defaults.md) for the pattern, and [RBK_010](RBK_010_adding_a_leaf_to_an_existing_category.md) for the leaf-level version of this step. If the default is added, update the profile-membership reference table per RBK_015.
 
 ### Step 6 — Verify
 
@@ -75,13 +77,14 @@ Delete the new category directory and revert the aggregator import(s) added in S
 ## Related
 
 - ADR: [ADR_005](../decisions/ADR_005_module_architecture.md), [ADR_023](../decisions/ADR_023_2026_08_22_cypher-os_namespace_and_profile_redesign.md)
-- Runbook: [RBK_010](RBK_010_adding_a_leaf_to%20an_existing_category.md)
+- Runbook: [RBK_010](RBK_010_adding_a_leaf_to_an_existing_category.md)
+- Convention: [profile_defaults](../../contributing/conventions/profile_defaults.md)
 
 ---
 
 <!--
 METADATA
-Created: 2026-08-22 
-Updated: 2026-08-22
+Created: 2026-08-22
+Updated: 2026-09-04
 Tested by: Cypher Whisperer
 -->
