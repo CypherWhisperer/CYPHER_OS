@@ -56,7 +56,7 @@
 
 **What is this?** NixOS `services.postgresql` module configuration.
 
-**What does it do?** Starts a PostgreSQL 16 server as a systemd service. Enables TCP connections (not just Unix socket). Applies a `pg_hba.conf` that allows the `postgres` superuser to connect without a password (local trust), all local connections with MD5, and all TCP connections from localhost with MD5. Configures connection logging and a 256 MB shared buffer for dev use. Declaratively creates the `cypher_dev` database and a `cypher_dev` user with ownership of that database. _NOTE: The NixOS postgresql module manages: The PostgreSQL data directory (/var/lib/postgresql/<version>/), The postgres system user and group, The systemd service unit, Initial database cluster creation (initdb)._
+**What does it do?** Starts a PostgreSQL 16 server as a systemd service. Enables TCP connections (not just Unix socket). Applies a `pg_hba.conf` that allows the `postgres` superuser to connect without a password (local trust), all local connections with MD5, and all TCP connections from localhost with MD5. Configures connection logging and a 256 MB shared buffer for dev use. Declaratively creates the `cypher_dev` database and a `cypher_dev` user with ownership of that database. _NOTE: The NixOS postgresql module manages: The PostgreSQL data directory (/var/lib/postgresql/`<version>`/), The postgres system user and group, The systemd service unit, Initial database cluster creation (initdb)._
 
 **Why is it here?** PostgreSQL (the most capable open-source Relational DBMS) is the standard database for most projects I'll work on (Prisma-based Next.js apps, Django projects, etc.). Running it locally avoids the latency and cost of a cloud database during development and allows offline work.
 
@@ -92,7 +92,7 @@ services.postgresql = {
 
 **What is this?** NixOS `services.redis.servers.<name>` module configuration for a named Redis instance.
 
-**What does it do?** Starts a Redis (_In-memory data structure store. Upstash Redis usage in Next.js projects can be tested locally against this instance._) instance named `dev` (_NixOS supports multiple named Redis instances: services.redis.servers.<name>. Ports are configurable per instance._) on `127.0.0.1:6379`. Disables authentication (no `requirePass`) for local dev convenience. Configures RDB snapshot persistence at standard intervals. Sets log level to `notice` (low noise, appropriate for dev).
+**What does it do?** Starts a Redis (_In-memory data structure store. Upstash Redis usage in Next.js projects can be tested locally against this instance._) instance named `dev` (_NixOS supports multiple named Redis instances: services.redis.servers.`<name>`. Ports are configurable per instance._) on `127.0.0.1:6379`. Disables authentication (no `requirePass`) for local dev convenience. Configures RDB snapshot persistence at standard intervals. Sets log level to `notice` (low noise, appropriate for dev).
 
 **Why is it here?** Redis is used across many project types: rate limiting, session storage, job queues (BullMQ), Pub/Sub, and as a local stand-in for Upstash Redis in Next.js projects. The NixOS `services.redis.servers.<name>` pattern supports multiple named instances on different ports — the `dev` name is intentional, leaving room for a `test` or `staging` instance later.
 
