@@ -54,7 +54,6 @@ in
     shell = pkgs.${primaryShell};
     extraGroups = [
       "wheel" # sudo access
-      "networkmanager" # manage network connections without sudo
       "audio" # direct audio device access (belt-and-suspenders with PipeWire)
       "video" # GPU/video device access
       "input" # input device access (needed for some Wayland compositors)

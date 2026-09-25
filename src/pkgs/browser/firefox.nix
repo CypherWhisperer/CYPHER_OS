@@ -101,6 +101,20 @@ in
       enable = true;
 
       # ────────────────────────────────────────────────────────────────────────
+      # evaluation warning: The default value of `programs.firefox.configPath`
+      # has changed from `".mozilla/firefox"` to
+      # `"${config.xdg.configHome}/mozilla/firefox"`. You are currently using
+      # the legacy default (`".mozilla/firefox"`) because `home.stateVersion`
+      # is less than "26.05".
+      #
+      # Silence error: configPath = ".mozilla/firefox";
+      #
+      # Adopt the new default behavior:
+      #   configPath = "${config.xdg.configHome}/mozilla/firefox";
+      # ────────────────────────────────────────────────────────────────────────
+      configPath = "${config.xdg.configHome}/mozilla/firefox";
+
+      # ────────────────────────────────────────────────────────────────────────
       # ── Privacy/Security Policies (system-level, cannot be overridden
       # by user) ─ These apply machine-wide and survive profile resets.
       # ────────────────────────────────────────────────────────────────────────

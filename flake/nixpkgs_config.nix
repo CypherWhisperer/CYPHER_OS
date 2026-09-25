@@ -31,7 +31,9 @@
     allowUnfree = true;
     permittedInsecurePackages = [
       "ventoy-1.1.12"
+      "ventoy-1.1.17" # 2026_09_14 version bump addition.
       "nodejs-slim-20.20.2"
+      "nodejs-slim-24.20.0" # 2026_09_14 version bump addition.
 
       # ────────────────────────────────────────────────────────────────────────
       # Logseq pins electron_39 (39.8.10), which nixpkgs has marked EOL/insecure
@@ -41,6 +43,7 @@
       # removed/insecure.
       # ────────────────────────────────────────────────────────────────────────
       "electron-39.8.10"
+      "electron-41.10.6" # 2026_09_14 version bump addition.
     ];
   };
 }

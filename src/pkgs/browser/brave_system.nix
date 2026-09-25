@@ -129,15 +129,15 @@ let
     # Playlist — video/audio download queue feature. Disable.
     # ──────────────────────────────────────────────────────────────────────────
     BravePlaylistEnabled = false;
-    # ──────────────────────────────────────────────────────────────────────────
 
+    # ──────────────────────────────────────────────────────────────────────────
     # IPFS — peer-to-peer content addressing. Disabling removes the local IPFS
     # node that Brave can spin up. Reduces background network activity.
     # NOTE: If you're actively using IPFS/Web3, set this to true.
     # ──────────────────────────────────────────────────────────────────────────
     IPFSEnabled = false;
-    # ──────────────────────────────────────────────────────────────────────────
 
+    # ──────────────────────────────────────────────────────────────────────────
     # Tor integration — Brave ships a bundled Tor binary for "Private Window
     # with Tor". This is INSECURE compared to Tor Browser proper:
     #   - No circuit isolation between tabs
@@ -323,18 +323,19 @@ let
     # ──────────────────────────────────────────────────────────────────────────
     # §7 — EXTENSION MANAGEMENT
     # ──────────────────────────────────────────────────────────────────────────
-    # Block all extensions except those explicitly allowlisted.
-    # This prevents extensions being installed that aren't in the seed
-    # Preferences.
-    # The wildcard "*" blocks all; allowlisted IDs override the block.
+    # Strategy: Block all extensions except those explicitly allowlisted.
+    # ──────────────────────────────────────────────────────────────────────────
+    # The wildcard "*" blocks all; allowlisted IDs override the block. This
+    # prevents extensions being installed that aren't in the seed Preferences.
+    # ──────────────────────────────────────────────────────────────────────────
+    # `brave://extensions` dev mode isn't needed at all for this — the
+    # extension's ID is embedded in its Chrome Web Store URL itself, and that
+    # page is browsable without installing the extension:
     #
-    # uBlock Origin (MV2, Brave-hosted):  cjpalhdlnbpafiamejdnhcphjbkeiagm
-    # MetaMask:                           nkbihfbeogaeaoehlefnkodbefgpgknn
-    # Proton Pass:                        ghmbeldphafepmbegfdlkpapadhbakde
-    # ColorZilla:                         bhlhnicpbhignbdhedgjmacdmmjfjbnm
+    #  https://chromewebstore.google.com/detail/<slug>/<extension-id>
     #
-    # To find an extension ID: install it, go to brave://extensions, enable
-    # Developer Mode, the ID appears under the extension name.
+    # Right-click the extension's icon/link on its store listing and
+    # "Copy link address" (or just read the address bar).
     # ──────────────────────────────────────────────────────────────────────────
     ExtensionSettings = {
       # ────────────────────────────────────────────────────────────────────────
@@ -343,8 +344,9 @@ let
       "*" = {
         installation_mode = "blocked";
       };
+
       # ────────────────────────────────────────────────────────────────────────
-      # uBlock Origin — primary ad/tracker blocker
+      # uBlock Origin — primary ad/tracker blocker (MV2, Brave-hosted)
       # ────────────────────────────────────────────────────────────────────────
       "cjpalhdlnbpafiamejdnhcphjbkeiagm" = {
         installation_mode = "allowed";
@@ -359,6 +361,12 @@ let
       # Proton Pass — password manager
       # ────────────────────────────────────────────────────────────────────────
       "ghmbeldphafepmbegfdlkpapadhbakde" = {
+        installation_mode = "allowed";
+      };
+      # ────────────────────────────────────────────────────────────────────────
+      # Proton VPN - Virtual Private Network Service Provision.
+      # ────────────────────────────────────────────────────────────────────────
+      "jplgfhpmjnbigmhklmmbgecoobifkmpa" = {
         installation_mode = "allowed";
       };
       # ────────────────────────────────────────────────────────────────────────

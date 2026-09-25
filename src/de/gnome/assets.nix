@@ -18,17 +18,24 @@
 }:
 let
   cfg = config.cypher-os.de.gnome;
+  userAvatar = cypherOsConstants.userAvatar;
+  wallpaperSrcPath = cypherOsConstants.defaultWallpaper.sourcePath;
+  wallpaperTgtPath = cypherOsConstants.defaultWallpaper.targetPath;
 in
 {
   imports = [ ./options.nix ];
 
   config = lib.mkIf cfg.enable {
-    home.file.".local/share/backgrounds/default-gnome-bg.jpg" = {
-      source = cypherOsConstants.defaultWallpaper;
+    home.file.${wallpaperTgtPath} = {
+      source = wallpaperSrcPath;
     };
 
     home.file.".face" = {
-      source = cypherOsConstants.userAvatar;
+      source = userAvatar;
     };
   };
 }
+
+# ──────────────────────────────────────────────────────────────────────────────
+# RFC: ADD ASSERTIONS TO ENSURE ASSETS EXIST AND ARE VALID.
+# ──────────────────────────────────────────────────────────────────────────────

@@ -16,7 +16,7 @@ in
 
   config = lib.mkIf (cfg.enable && cfg.antigravity.enable) {
     home.packages = with pkgs; [
-      antigravity
+      antigravity-ide
       #antigravity-fhs
     ];
   };

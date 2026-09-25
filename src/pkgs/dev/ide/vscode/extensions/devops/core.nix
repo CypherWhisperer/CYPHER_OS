@@ -17,7 +17,7 @@ in
   imports = [ ../../options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.extensions.devops.core.enable) {
-    programs.vscode.extensions =
+    programs.vscode.profiles.default.extensions =
       with pkgs.vscode-extensions;
       [
         # ──────────────────────────────────────────────────────────────────────

@@ -13,6 +13,8 @@
     nmap.enable = lib.mkEnableOption "Nmap FOSS utility for network discovery.";
     tcpdump.enable = lib.mkEnableOption "TCPdump network sniffer.";
     gobuster.enable = lib.mkEnableOption "Gobuster Networking tool.";
+    tshark.enable = lib.mkEnableOption "Tshark (Wireshark CLI) Network Protocol Analyzer Networking tool.";
+    inetutils.enable = lib.mkEnableOption "A collection of common network programs.";
 
     gui = {
       enable = lib.mkEnableOption "CypherOS Metworking related GUI (Graphical User Interface) Packages suite.";

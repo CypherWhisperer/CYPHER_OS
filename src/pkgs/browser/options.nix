@@ -14,6 +14,11 @@
     firefox.enable = lib.mkEnableOption "Firefox web browser (hardened + Arkenfox)";
     librewolf.enable = lib.mkEnableOption "LibreWolf — privacy-first Firefox fork";
     mullvad.enable = lib.mkEnableOption "Mullvad Browser — fingerprint-uniform clearnet browser";
-    tor.enable = lib.mkEnableOption "Tor Browser — anonymity-grade browser";
+
+    tor = {
+      enable = lib.mkEnableOption "Tor Browser — anonymity-grade browser";
+
+      daemon.enable = lib.mkEnableOption "Tor Daemon";
+    };
   };
 }

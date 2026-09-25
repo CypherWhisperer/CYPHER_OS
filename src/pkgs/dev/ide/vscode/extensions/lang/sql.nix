@@ -17,7 +17,7 @@ in
   imports = [ ../../options.nix ];
 
   config = lib.mkIf (cfg.enable && cfg.extensions.lang.sql.enable) {
-    programs.vscode.extensions =
+    programs.vscode.profiles.default.extensions =
       with pkgs.vscode-extensions;
       [
         # ──────────────────────────────────────────────────────────────────────
@@ -43,7 +43,7 @@ in
       # $XDG_CONFIG_HOME/Code/User/settings.json under "sqltools.connections"
       # once you add one via the UI.
       # ────────────────────────────────────────────────────────────────────────
-      "sqltools.useNodeRuntime" = true;
+      "sqltools.useNodeRuntime" = false;
       "sqltools.autoOpenSessionFiles" = false;
     };
   };

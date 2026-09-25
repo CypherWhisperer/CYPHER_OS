@@ -10,12 +10,15 @@
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
-  config,
   lib,
+  config,
+  cypherOsConstants,
   ...
 }:
 let
   cfg = config.cypher-os.de.gnome;
+  homeDirectory = cypherOsConstants.homeDirectory;
+  wallpaperTgtPath = cypherOsConstants.defaultWallpaper.targetPath;
 in
 {
   imports = [ ./options.nix ];
@@ -148,8 +151,8 @@ in
       # Wallpaper
       # ────────────────────────────────────────────────────────────────────────
       "org/gnome/desktop/background" = {
-        picture-uri = "file:///home/cypher-whisperer/.local/share/backgrounds/default-gnome-bg.jpg";
-        picture-uri-dark = "file:///home/cypher-whisperer/.local/share/backgrounds/default-gnome-bg.jpg";
+        picture-uri = "file://${homeDirectory}/${wallpaperTgtPath}";
+        picture-uri-dark = "file://${homeDirectory}/${wallpaperTgtPath}";
         picture-options = "zoom";
         color-shading-type = "solid";
         primary-color = "#000000000000";
@@ -157,7 +160,7 @@ in
       };
 
       "org/gnome/desktop/screensaver" = {
-        picture-uri = "file:///home/cypher-whisperer/.local/share/backgrounds/default-gnome-bg.jpg";
+        picture-uri = "file://${homeDirectory}/${wallpaperTgtPath}";
         picture-options = "zoom";
         color-shading-type = "solid";
         primary-color = "#000000000000";
@@ -202,7 +205,7 @@ in
           # development
           # ────────────────────────────────────────────────────────────────────
           "code.desktop"
-          "antigravity.desktop"
+          "antigravity-ide.desktop"
           "cursor.desktop"
           "webstorm.desktop"
           "android-studio.desktop"

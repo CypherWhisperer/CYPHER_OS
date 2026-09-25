@@ -21,6 +21,8 @@ in
     cypher-os.pkgs.browser.enable = lib.mkDefault (cypherOsProfile == "desktop");
 
     cypher-os.pkgs.browser.tor.enable = lib.mkDefault cfg.enable;
+    cypher-os.pkgs.browser.tor.daemon.enable = lib.mkDefault false; # overriden
+
     cypher-os.pkgs.browser.brave.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.browser.firefox.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.browser.mullvad.enable = lib.mkDefault cfg.enable;
@@ -41,6 +43,12 @@ in
         assertion = cfg.tor.enable -> cfg.enable;
         message = ''
           cypher-os.pkgs.browser.tor.enable requires cypher-os.pkgs.browser.enable.
+        '';
+      }
+      {
+        assertion = cfg.tor.daemon.enable -> cfg.enable;
+        message = ''
+          cypher-os.pkgs.browser.tor.daemon.enable requires cypher-os.pkgs.browser.enable.
         '';
       }
       {

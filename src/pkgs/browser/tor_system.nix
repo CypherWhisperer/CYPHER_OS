@@ -15,7 +15,7 @@ in
 {
   imports = [ ./options.nix ];
 
-  config = lib.mkIf (cfg.enable && cfg.tor.enable) {
+  config = lib.mkIf (cfg.enable && cfg.tor.daemon.enable) {
     # ──────────────────────────────────────────────────────────────────────────
     # SYS-LEVEL TOR DAEMON (optional but recommended).
     # ──────────────────────────────────────────────────────────────────────────

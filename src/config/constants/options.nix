@@ -111,14 +111,22 @@
 
     userAvatar = lib.mkOption {
       type = lib.types.path;
-      default = "${self}/src/de/assets/default-gnome-avatar.jpg";
+      default = "${self}/src/de/assets/images/default_avatar.jpg";
       description = "Default user avatar image, sourced from the repo's assets directory.";
     };
 
-    defaultWallpaper = lib.mkOption {
-      type = lib.types.path;
-      default = "${self}/src/de/assets/default-gnome-bg.jpg";
-      description = "Default desktop wallpaper image, sourced from the repo's assets directory.";
+    defaultWallpaper = {
+      sourcePath = lib.mkOption {
+        type = lib.types.path;
+        default = "${self}/src/de/assets/images/default_bg.jpg";
+        description = "In-Repo path to the Default desktop wallpaper image.";
+      };
+
+      targetPath = lib.mkOption {
+        type = lib.types.str;
+        default = ".local/share/backgrounds/default_bg.jpg";
+        description = "Path (relative to $HOME) to the live system's filesystem where the Default desktop wallpaper image is deployed to.";
+      };
     };
 
     zshPowerLevel10kThemeFile = lib.mkOption {

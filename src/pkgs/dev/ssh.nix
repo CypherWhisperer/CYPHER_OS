@@ -93,7 +93,14 @@ in
       # ────────────────────────────────────────────────────────────────────────
       # HOST BLOCKS.
       # ────────────────────────────────────────────────────────────────────────
-      matchBlocks = {
+      # ────────────────────────────────────────────────────────────────────────
+      # instead of the prior loosely-typed `extraOptions = { Foo = "bar"; }`
+      # bag that bypassed the module system, `settings` is a proper freeform
+      # submodule that merges with the typed options, gets type-checked
+      # where possible, and renders using canonical upstream directive
+      # casing.
+      # ────────────────────────────────────────────────────────────────────────
+      settings = {
         # ──────────────────────────────────────────────────────────────────────
         # GITHUB (PRIMARY): CypherWhisperer (cypherOsConstants.gitIdentity.name)
         # ──────────────────────────────────────────────────────────────────────
@@ -113,9 +120,7 @@ in
           # Remove or change to "yes" once you've connected and the key
           # is cached.
           # ────────────────────────────────────────────────────────────────────
-          extraOptions = {
-            StrictHostKeyChecking = "accept-new";
-          };
+          StrictHostKeyChecking = "accept-new";
         };
 
         # ──────────────────────────────────────────────────────────────────────
@@ -145,9 +150,7 @@ in
           hostname = "gitlab.com";
           user = "git";
           identityFile = "~/.ssh/id_ed25519";
-          extraOptions = {
-            StrictHostKeyChecking = "accept-new";
-          };
+          StrictHostKeyChecking = "accept-new";
         };
 
         # ──────────────────────────────────────────────────────────────────────
@@ -190,12 +193,7 @@ in
           forwardX11 = false;
           forwardAgent = false;
 
-          # ────────────────────────────────────────────────────────────────────
-          # HostKeyAlgorithms has no native field — leave in extraOptions:
-          # ────────────────────────────────────────────────────────────────────
-          extraOptions = {
-            HostKeyAlgorithms = "ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
-          };
+          HostKeyAlgorithms = "ssh-ed25519,rsa-sha2-512,rsa-sha2-256";
         };
       };
     };

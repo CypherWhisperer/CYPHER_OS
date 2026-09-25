@@ -36,6 +36,7 @@ in
     # DEFAULTS CONFIGURATION.
     # ──────────────────────────────────────────────────────────────────────────
     {
+      cypher-os.pkgs.cli.enable = lib.mkDefault true;
       cypher-os.pkgs.cli.btop.enable = lib.mkDefault cfg.enable;
       cypher-os.pkgs.cli.htop.enable = lib.mkDefault cfg.enable;
       cypher-os.pkgs.cli.tmux.enable = lib.mkDefault cfg.enable;

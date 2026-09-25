@@ -72,6 +72,21 @@ in
         enable = true;
         createDirectories = false;
 
+        # ──────────────────────────────────────────────────────────────────────
+        # NOTE: SILENCING AN EVALUATION WARNING:
+        # ──────────────────────────────────────────────────────────────────────
+        # The default value of `xdg.userDirs.setSessionVariables` has changed
+        # from `true` to `false`. You are currently using the legacy default
+        # (`true`) because `home.stateVersion` is less than "26.05".
+        #
+        # To silence this warning and keep legacy behavior, set:
+        #   - xdg.userDirs.setSessionVariables = true;
+        #
+        # To adopt the new default behavior, set:
+        #   - xdg.userDirs.setSessionVariables = false;
+        # ──────────────────────────────────────────────────────────────────────
+        setSessionVariables = true;
+
         desktop = dataDirRoot; # no separate Desktop dir — point at root
         templates = dataDirRoot; # same
         publicShare = dataDirRoot; # same
@@ -85,7 +100,12 @@ in
         # extraConfig: non-standard dirs that apps sometimes read
         # ──────────────────────────────────────────────────────────────────────
         extraConfig = {
-          XDG_PROJECTS_DIR = "${dataDirRoot}/PROJECTS";
+          # ────────────────────────────────────────────────────────────────────
+          # evaluation warning: Using `xdg.userDirs.extraConfig` as keys like
+          # `XDG_PROJECTS_DIR` is deprecated and will be removed in a future
+          # release. Please use keys like `PROJECTS` instead.
+          # ────────────────────────────────────────────────────────────────────
+          PROJECTS = "${dataDirRoot}/PROJECTS";
           # XDG_MEGA_DIR = "$HOME/DATA/FILES/MEGA";
         };
       };

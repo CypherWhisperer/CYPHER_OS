@@ -1,3 +1,18 @@
+# ──────────────────────────────────────────────────────────────────────────────
+# src/config/constants/defaults.nix
+# ──────────────────────────────────────────────────────────────────────────────
+# Dependent constants (backupRoot on homeDirectory, obsidianVaultRoot on
+# backupRoot) reference each other via `cfg.*` rather than duplicating —
+# this works because Nix's module system resolves mkDefault values
+# lazily, so referencing a sibling option's eventual value here is safe
+# even though it's also being defined in this same block.
+#
+# Scripts should read the generated file rather than hardcoding these
+# values — see the runbook. Rewriting existing scripts to do so is
+# deferred past this phase's verification gate; track separately so it
+# isn't silently dropped.
+# ──────────────────────────────────────────────────────────────────────────────
+
 {
   lib,
   config,
