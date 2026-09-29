@@ -98,10 +98,13 @@ in
       cypher-os.pkgs.dev.ide.gui.vscode.extensions.lang.kotlin.enable = lib.mkDefault cfg.vscode.enable;
       cypher-os.pkgs.dev.ide.gui.vscode.extensions.lang.python.enable = lib.mkDefault cfg.vscode.enable;
       cypher-os.pkgs.dev.ide.gui.vscode.extensions.lang.arduino.enable = lib.mkDefault cfg.vscode.enable;
+      cypher-os.pkgs.dev.ide.gui.vscode.extensions.lang.csharp.enable = lib.mkDefault cfg.vscode.enable;
 
       cypher-os.pkgs.dev.ide.gui.vscode.extensions.devops.docker.enable = lib.mkDefault cfg.vscode.enable;
       cypher-os.pkgs.dev.ide.gui.vscode.extensions.devops.k8s.enable = lib.mkDefault cfg.vscode.enable;
       cypher-os.pkgs.dev.ide.gui.vscode.extensions.devops.core.enable = lib.mkDefault cfg.vscode.enable;
+
+      cypher-os.pkgs.dev.ide.gui.vscode.extensions.gameDev.unity.enable = lib.mkDefault cfg.vscode.enable;
     }
 
     # ──────────────────────────────────────────────────────────────────────────
@@ -200,6 +203,12 @@ in
             cypher-os.pkgs.dev.ide.gui.vscode.extensions.lang.arduino.enable requires cypher-os.pkgs.dev.ide.gui.vscode.enable.
           '';
         }
+        {
+          assertion = cfg.vscode.extensions.lang.csharp.enable -> cfg.vscode.enable;
+          message = ''
+            cypher-os.pkgs.dev.ide.gui.vscode.extensions.lang.csharp.enable requires cypher-os.pkgs.dev.ide.gui.vscode.enable.
+          '';
+        }
 
         {
           assertion = cfg.vscode.extensions.devops.core.enable -> cfg.vscode.enable;
@@ -217,6 +226,13 @@ in
           assertion = cfg.vscode.extensions.devops.k8s.enable -> cfg.vscode.enable;
           message = ''
             cypher-os.pkgs.dev.ide.gui.vscode.extensions.devops.k8s.enable requires cypher-os.pkgs.dev.ide.gui.vscode.enable.
+          '';
+        }
+
+        {
+          assertion = cfg.vscode.extensions.gameDev.unity.enable -> cfg.vscode.enable;
+          message = ''
+            cypher-os.pkgs.dev.ide.gui.vscode.extensions.gameDev.unity.enable requires cypher-os.pkgs.dev.ide.gui.vscode.enable.
           '';
         }
       ];

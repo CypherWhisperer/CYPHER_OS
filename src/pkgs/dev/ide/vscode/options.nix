@@ -4,7 +4,7 @@
 
 {
   lib,
-   ...
+  ...
 }:
 {
   options.cypher-os.pkgs.dev.ide.gui.vscode = {
@@ -32,7 +32,10 @@
         kotlin.enable = lib.mkEnableOption "Kotlin support in VSCode";
         python.enable = lib.mkEnableOption "Python support in VSCode";
         arduino.enable = lib.mkEnableOption "Arduino support in VSCode";
+        csharp.enable = lib.mkEnableOption "C# support (C# Dev Kit, CSharpier)";
       };
+
+      gameDev.unity.enable = lib.mkEnableOption "Unity support (Microsoft Unity extension)";
 
       devops = {
         docker.enable = lib.mkEnableOption "Docker support in VSCOde";

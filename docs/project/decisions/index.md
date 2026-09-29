@@ -34,6 +34,9 @@ Each ADR is a permanent record. Once accepted, an ADR is not deleted — it may 
 | [ADR_022](ADR_022_2026_08_21_lsp_settings_flat_key_convention)                                   | 2026_08_21 | Accepted | LSP settings' configuration use a flat-key *(over dotted)* as a ***convention.**                                                   |
 | [ADR_023](ADR_023_2026_08_22_cypher-os_namespace_and_profile_redesign.md)                        | 2026_08_22 | Accepted | Redesigning the Namespace tree and Profile management.                                                                             |
 | [ADR_024](ADR_024_2026_08_22_cross-context_single_source_of_truth_via_osConfig.md)               | 2026_08_22 | Accepted | The mechanism for a single source of truth for cross context scenarios; `osConfig`                                                 |
+| [ADR_025](ADR_025_2026_09_29_unity_6000.3_lts_editor_pin.md)                                     | 2026_09_29 | Proposed | Pinning Unity Editor's version for deterministic behavior. Some are confirmed to malfunction.                                      |
+| [ADR_026](ADR_026_2026_09_29_share_roslyn_ls_and_csharpier_across_vscode_and_neovim.md)          | 2026_09_29 | Proposed | Sharing Roslyn LS and CShapier across VSCode and Neovim IDEs.                                                                      |
+| [ADR_027](ADR_027_2026_09_29_use_separate_debuggers_for_plain_Csharp_and_unity.md)               | 2026_09_29 | Proposed | Using separate debuggers for C# and Unity.                                                                                         |
 
 ---
 

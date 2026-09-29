@@ -21,6 +21,7 @@ Step-by-step operational guides for common and critical tasks — things you wan
 | [Adding or updating a constant](RBK_013_adding_or_updating_a_constant.md)                                                           | 2026_08_22     | Working with CypherOS constants.                                                                                                         |
 | [Onboarding a new host or lens](RBK_014_onboarding_a_new_host_or_lens.md)                                                           | 2026_08_22     | Bringing in a new lens (Distro)                                                                                                          |
 | [Profile Status Documentation](RBK_015_auditing_profile_&_lens_default_membership.md)                                               | 2026_09_04     | Auditing Profile & Lens Default Membership                                                                                               |
+| [17 Setting up a new Unity project](RBK_017_setting_up_a_new_unity_project.md)                                                      | 2026_09_29     | Working with a new Unity project.                                                                                                        |
 
 ## Template
 

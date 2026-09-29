@@ -27,6 +27,7 @@ in
     ./ide/hm.nix
     ./languages/hm.nix
     ./arduino/hm.nix
+    ./game_dev/hm.nix
   ];
 
   config = lib.mkMerge [
