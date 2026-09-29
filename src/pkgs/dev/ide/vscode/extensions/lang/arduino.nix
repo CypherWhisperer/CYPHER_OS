@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/pkgs/editor/vscode/extensions/lang/arduino.nix
+# src/pkgs/dev/ide/vscode/extensions/lang/arduino.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {

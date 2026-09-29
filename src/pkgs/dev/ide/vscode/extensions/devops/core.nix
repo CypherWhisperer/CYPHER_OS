@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/pkgs/editor/vscode/extensions/devops/core.nix
+# src/pkgs/dev/ide/vscode/extensions/devops/core.nix
 # ──────────────────────────────────────────────────────────────────────────────
 
 {
