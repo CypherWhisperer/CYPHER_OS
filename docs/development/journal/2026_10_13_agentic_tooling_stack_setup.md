@@ -113,6 +113,6 @@ Not in an ADR yet:
 ---
 
 <!--
-Commit range (fill in after session): 
-CypherOS: [short hash] → [short hash]
+Commit range: 
+CypherOS: 3b104d9 → ea1eb2d
 -->
