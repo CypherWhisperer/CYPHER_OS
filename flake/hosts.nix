@@ -60,6 +60,8 @@ in
       # ────────────────────────────────────────────────────────────────────────
       ../hosts/nixos/configuration.nix
 
+      inputs.hermes-agent.nixosModules.default
+
       # ────────────────────────────────────────────────────────────────────────
       # Integrate Home Manager into NixOS; Making `nixos-rebuild switch`
       # also apply the Home Manager config. No separate `home-manager switch`
@@ -110,6 +112,7 @@ in
             imports = [
               ./../src/home/default.nix
               inputs.catppuccin.homeModules.catppuccin
+              inputs.hermes-agent.homeManagerModules.default
             ];
 
             # ──────────────────────────────────────────────────────────────────

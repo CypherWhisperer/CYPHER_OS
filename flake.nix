@@ -122,6 +122,11 @@
       url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    hermes-agent = {
+      url = "github:NousResearch/hermes-agent";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
   # ────────────────────────────────────────────────────────────────────────────
@@ -143,6 +148,7 @@
       catppuccin,
       devenv,
       nur,
+      hermes-agent,
       ...
     }@inputs:
     import ./flake { inherit inputs; };

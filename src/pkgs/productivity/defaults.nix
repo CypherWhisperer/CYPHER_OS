@@ -26,7 +26,6 @@ in
     cypher-os.pkgs.productivity.enable = lib.mkDefault (cypherOsProfile == "desktop");
 
     cypher-os.pkgs.productivity.obs.enable = lib.mkDefault cfg.enable;
-    cypher-os.pkgs.productivity.claude.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.productivity.zathura.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.productivity.logseq.enable = lib.mkDefault cfg.enable;
     cypher-os.pkgs.productivity.affine.enable = lib.mkDefault cfg.enable;
@@ -52,12 +51,6 @@ in
         assertion = cfg.obs.enable -> cfg.enable;
         message = ''
           cypher-os.pkgs.productivity.obs.enable requires cypher-os.pkgs.productivity.enable.
-        '';
-      }
-      {
-        assertion = cfg.claude.enable -> cfg.enable;
-        message = ''
-          cypher-os.pkgs.productivity.claude.enable requires cypher-os.pkgs.productivity.enable.
         '';
       }
       {

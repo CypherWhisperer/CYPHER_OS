@@ -11,7 +11,6 @@
     enable = lib.mkEnableOption "CypherOS Productivity Applications";
 
     obs.enable = lib.mkEnableOption "LibreOffice Suite";
-    claude.enable = lib.mkEnableOption "Claude Desktop";
     zathura.enable = lib.mkEnableOption "Zathura PDF reader";
     logseq.enable = lib.mkEnableOption "Logseq knowledge base";
     affine.enable = lib.mkEnableOption "AFFiNE knowledge base";

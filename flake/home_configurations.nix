@@ -123,6 +123,8 @@ in
       #
       # ────────────────────────────────────────────────────────────────────────
 
+      inputs.hermes-agent.homeManagerModules.default
+
       {
         home.username = primaryUsername;
         home.homeDirectory = homeDirectory;

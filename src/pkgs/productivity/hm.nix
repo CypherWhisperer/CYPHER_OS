@@ -12,7 +12,6 @@
 
     ./affine_hm.nix
     ./anydesk.nix
-    ./claude.nix
     ./drawio.nix
     ./libreoffice.nix
     ./logseq.nix

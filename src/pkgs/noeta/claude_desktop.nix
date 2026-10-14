@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────────────────────
-# src/pkgs/productivity/claude.nix
+# src/pkgs/noeta/claude_desktop.nix
 # ──────────────────────────────────────────────────────────────────────────────
 # IMPORTANT: This module handles only the user-space side.
 # The overlay that makes pkgs.claude-desktop available MUST BE (and IS)
@@ -13,19 +13,19 @@
   ...
 }:
 let
-  cfg = config.cypher-os.pkgs.productivity;
+  cfg = config.cypher-os.pkgs.noeta;
 in
 {
   imports = [ ./options.nix ];
 
-  config = lib.mkIf (cfg.enable && cfg.claude.enable) {
+  config = lib.mkIf (cfg.gui.enable && cfg.gui.claudeDesktop.enable) {
     # ──────────────────────────────────────────────────────────────────────────
     # ── Package:
     # ──────────────────────────────────────────────────────────────────────────
     # The package is injected into pkgs by the system-level overlay.
     # Home Manager installs it into the user profile from there.
     # ──────────────────────────────────────────────────────────────────────────
-    home.packages = [ pkgs.claude-desktop ];
+    home.packages = with pkgs; [ claude-desktop ];
 
     # ──────────────────────────────────────────────────────────────────────────
     # ── Wayland / display server environment:
