@@ -35,7 +35,17 @@ in
     # DESKTOP ONLY, GUI PACKAGE(S).
     # ──────────────────────────────────────────────────────────────────────────
     (lib.mkIf (cfg.enable && cfg.unity.enable) {
-      home.packages = [ pkgs.unityhub ];
+      home.packages = [
+        (pkgs.unityhub.override {
+          # ────────────────────────────────────────────────────────────────────
+          # The editor's UnityShaderCompiler links against libtinfo.so.6, which
+          # the stock FHS environment does not provide. Without it, the shader
+          # compiler fails to start and the editor aborts during the initial
+          # asset import (NixOS/nixpkgs#561247). `ncurses` ships libtinfo.so.6.
+          # ────────────────────────────────────────────────────────────────────
+          extraLibs = pkgs': [ pkgs'.ncurses ];
+        })
+      ];
     })
   ];
 }
