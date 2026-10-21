@@ -69,7 +69,7 @@
 ## Open Questions
 
 - Unverified:
-    1. `DOTNET_ROOT` value,
+    1. [-] `DOTNET_ROOT` value: `/nix/store/2bzh2lsx2w2b1v9n4gppxa1xml4il5iy-dotnet-sdk-wrapped-9.0.317/share/dotnet`
     2. `dotnetAcquisitionExtension.existingDotnetPath` setting name,
     3. CSharpier extension attribute path and binary discovery.
        
