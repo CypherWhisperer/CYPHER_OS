@@ -394,6 +394,13 @@ let
       "dcojpbnpjbknpmhbkgmbbejidlhbnocp" = {
         installation_mode = "allowed";
       };
+      # ────────────────────────────────────────────────────────────────────────
+      # Zotero Connector
+      # ID: ekhagklcjbdpajgpjgmbionohlpdbjgc
+      # ────────────────────────────────────────────────────────────────────────
+      "ekhagklcjbdpajgpjgmbionohlpdbjgc" = {
+        installation_mode = "allowed";
+      };
     };
   };
 
