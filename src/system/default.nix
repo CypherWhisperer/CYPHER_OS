@@ -30,6 +30,8 @@
     ../shell/system.nix
     ../fonts/system.nix
     ../users/system.nix
+
+    ../pkgs/_temp/system.nix
     ../pkgs/gaming/system.nix
     ../pkgs/mail/system.nix
     ../pkgs/dev/system.nix

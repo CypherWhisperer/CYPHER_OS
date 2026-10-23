@@ -30,6 +30,7 @@ in
     ../privacy/hm.nix
     ../security/hm.nix
 
+    ../pkgs/_temp/hm.nix
     ../pkgs/utils/hm.nix
     ../pkgs/networking/hm.nix
     ../pkgs/cli/hm.nix
