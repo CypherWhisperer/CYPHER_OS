@@ -3,7 +3,7 @@
 # ──────────────────────────────────────────────────────────────────────────────
 # Single source of truth for overlays and nixpkgs.config.
 # Consumed by BOTH flake/hosts.nix (nixosConfigurations) and
-# flake/home-configurations.nix (standalone homeConfigurations) —
+# flake/home_configurations.nix (standalone homeConfigurations) —
 # this is what makes pkgs.claude-desktop (and other overlays) resolve
 # identically in both:
 #
