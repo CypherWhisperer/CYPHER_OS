@@ -222,8 +222,8 @@ in
           "obsidian.desktop"
           "affine.desktop"
           "org.gnome.TextEditor.desktop"
-          "base.desktop"
-          "writr.desktop"
+          # "base.desktop"               # LibreOffice Databases
+          "writer.desktop"
           "zotero.desktop"
           
           # ────────────────────────────────────────────────────────────────────
