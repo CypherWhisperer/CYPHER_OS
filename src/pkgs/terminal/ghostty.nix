@@ -69,7 +69,7 @@ in
         # Ghostty will find this from the fonts installed by Home Manager.
         # ──────────────────────────────────────────────────────────────────────
         font-family = terminalFontDisplayName;
-        font-size = 13;
+        font-size = 10;
 
         # ── Window ────────────────────────────────────────────────────────────
         window-padding-x = 1;

@@ -188,57 +188,66 @@ in
           # ────────────────────────────────────────────────────────────────────
           "brave-browser.desktop"
           "librewolf.desktop"
-          "firefox.desktop"
-          "mullvad-browser.desktop"
-          "torbrowser.desktop"
+          #"firefox.desktop"
+          #"mullvad-browser.desktop"
+          #"torbrowser.desktop"
 
           # ────────────────────────────────────────────────────────────────────
           # communication
           # ────────────────────────────────────────────────────────────────────
           "thunderbird.desktop"
-          "discord.desktop"
           "io.github.tobagin.karere.desktop"
-          "org.telegram.desktop.desktop"
-          "signal.desktop"
+          #"discord.desktop"
+          #"org.telegram.desktop.desktop"
+          #"signal.desktop"
 
           # ────────────────────────────────────────────────────────────────────
           # development
           # ────────────────────────────────────────────────────────────────────
           "code.desktop"
-          "antigravity-ide.desktop"
-          "cursor.desktop"
-          "webstorm.desktop"
-          "android-studio.desktop"
+          #"antigravity-ide.desktop"
+          #"cursor.desktop"
+          #"webstorm.desktop"
+          #"android-studio.desktop"
 
           # ────────────────────────────────────────────────────────────────────
           # terminal
           # ────────────────────────────────────────────────────────────────────
           "com.mitchellh.ghostty.desktop"
-          "kitty.desktop"
+          #"kitty.desktop"
 
           # ────────────────────────────────────────────────────────────────────
           # productivity
           # ────────────────────────────────────────────────────────────────────
           "obsidian.desktop"
-          "org.gnome.TextEditor.desktop"
           "affine.desktop"
+          "org.gnome.TextEditor.desktop"
+          "base.desktop"
+          "writr.desktop"
+          "zotero.desktop"
+          
+          # ────────────────────────────────────────────────────────────────────
+          # AI/Agentic Tools
+          # ────────────────────────────────────────────────────────────────────
+          "com.anthropic.Claude.desktop" 
+          "com.jeffser.Alpaca.desktop"
+          "com.nousresearch.hermes.desktop"
 
           # ────────────────────────────────────────────────────────────────────
           # creative
           # ────────────────────────────────────────────────────────────────────
-          "claude-desktop.desktop"
           "blender.desktop"
-          "gimp.desktop"
-          "org.inkscape.Inkscape.desktop"
-          "org.kde.krita.desktop"
-          "Penpot.desktop"
-          "com.obsproject.Studio.desktop"
+          "Penpot.desktop" 
+          #"gimp.desktop"
+          #"org.inkscape.Inkscape.desktop"
+          #"org.kde.krita.desktop"
+          #"com.obsproject.Studio.desktop"
 
           # ────────────────────────────────────────────────────────────────────
           # ...
           # ────────────────────────────────────────────────────────────────────
           "org.gnome.Nautilus.desktop"
-          "megasync.desktop"
+          #"megasync.desktop"
           "org.gnome.SystemMonitor.desktop"
 
           # ────────────────────────────────────────────────────────────────────
