@@ -73,6 +73,11 @@
       description = "Root directory for personal, backup-able data. Defaults relative to homeDirectory.";
     };
 
+    hmBackupRoot = lib.mkOption {
+      type = lib.types.str;
+      description = "Root directory to where Home Manager backed up files are deployed by flake/hosts.nix.";
+    };
+
     obsidianVaultRoot = lib.mkOption {
       type = lib.types.str;
       description = ''

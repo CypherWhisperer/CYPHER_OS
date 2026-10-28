@@ -10,8 +10,7 @@
 }:
 let
   values = import ../src/config/constants/values.nix;
-  activeHostName = values.activeHostName;
-  username = values.username;
+  inherit (values) activeHostName username;
 in
 {
   # ────────────────────────────────────────────────────────────────────────────
@@ -69,6 +68,9 @@ in
       # ────────────────────────────────────────────────────────────────────────
       inputs.home-manager.nixosModules.home-manager
 
+      # ────────────────────────────────────────────────────────────────────────
+      # HOME MANAGER INTEGRATION SETTINGS
+      # ────────────────────────────────────────────────────────────────────────
       {
         # ──────────────────────────────────────────────────────────────────────
         # useGlobalPkgs: Home Manager uses the same nixpkgs instance as the
@@ -105,9 +107,6 @@ in
             config,
             ...
           }:
-          let
-            values = import ../src/config/constants/values.nix;
-          in
           {
             imports = [
               ./../src/home/default.nix
@@ -141,27 +140,6 @@ in
             #cypher-os.profile.desktop.enable = true;
             # ──────────────────────────────────────────────────────────────────
           };
-
-        # ──────────────────────────────────────────────────────────────────────
-        # This tells HM to rename any conflicting existing files to .hm-bak
-        # instead of refusing to proceed.
-        # ──────────────────────────────────────────────────────────────────────
-        # ──────────────────────────────────────────────────────────────────────
-        # home-manager.backupCommand = "${pkgs.trash-cli}/bin/trash";
-        # Alternative to backupFileExtension: instead of renaming conflicting
-        # files to `<file>.hm-bak` in place, runs this command on each one.
-        # Mutually exclusive in practice with backupFileExtension — pick one.
-        #
-        # Worth considering given a prev issue with ~/.config/gtk-4.0/assets:
-        # trash-cli moves the file to a real trash can instead of leaving a
-        # `.hm-bak` sibling that can itself go stale and cause the clobber loop
-        # that's just been fixed.
-        # Trade-off: one more package pulled in, and "undo" means digging
-        # through trash instead of finding a `.hm-bak` right next to the
-        # original.
-        # ──────────────────────────────────────────────────────────────────────
-        home-manager.backupFileExtension = "hm-bak";
-
         # ──────────────────────────────────────────────────────────────────────
         # Prints more detail during activation (each activation script's
         # internal steps, not just the top-level "Activating X").
@@ -186,7 +164,57 @@ in
         # so it's a "when you need it" option rather than an immediate win.
         # ──────────────────────────────────────────────────────────────────────
         #home-manager.sharedModules = [ inputs.catppuccin.homeModules.catppuccin ];
-      }
+
+        }
+        
+        # ──────────────────────────────────────────────────────────────────────
+        # instead of refusing to proceed, this script:
+        #  1. moves any colliding file to a dedicated directory
+        #  2. Registers the backed up files in a dedicated JSON file
+        #  3. Creates the dedicated directory if not already present
+        # ──────────────────────────────────────────────────────────────────────
+        (
+          { 
+            pkgs,
+            ...
+          }:
+          let
+            inherit (values) homeDirectory hmBackupRoot;
+          in
+          {
+            home-manager.backupCommand =
+              let
+                hmBackup = pkgs.writeShellScript "hm_backup" ''
+                  set -eu
+                  # Owner-only permissions for everything this script creates.
+                  umask 077
+
+                  src="$1"
+                  root="${hmBackupRoot}"
+                  ts="$(${pkgs.coreutils}/bin/date +%Y_%m_%d_%H%M%S)"
+                  rel="''${src#"${homeDirectory}/"}"
+                  dest="$root/$ts/$rel"
+
+                  if [ ! -d "$root" ]; then
+                    ${pkgs.coreutils}/bin/mkdir -p "$root"
+                    echo "hm_backup: backup root '$root' did not exist; created it" >&2
+                  fi
+
+                  # Mirror the original path under a timestamped dir so nothing collides
+                  # and the origin is recoverable from the path alone.
+                  ${pkgs.coreutils}/bin/mkdir -p "$(${pkgs.coreutils}/bin/dirname "$dest")"
+                  ${pkgs.coreutils}/bin/mv -- "$src" "$dest"
+                  echo "hm_backup: moved '$src' -> '$dest'" >&2
+
+                  # Append-only manifest (JSON Lines): one record per backup.
+                  ${pkgs.jq}/bin/jq -nc \
+                    --arg ts "$ts" --arg source "$src" --arg backup "$dest" \
+                    '{ts: $ts, source: $source, backup: $backup}' >> "$root/manifest.jsonl"
+                '';
+              in
+              "${hmBackup}";
+          }
+        )
     ];
   };
 }

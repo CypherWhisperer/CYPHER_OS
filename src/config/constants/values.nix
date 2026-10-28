@@ -10,11 +10,18 @@
 # never from each other.
 # ──────────────────────────────────────────────────────────────────────────────
 
+let
+  homeDirectory = "/home/cypher-whisperer";
+  backupRoot = "${homeDirectory}/DATA/FILES";
+  hmBackupRoot = "${backupRoot}/BACKUPS/hm_backups";
+in
 {
   username = "cypher_whisperer";
-  homeDirectory = "/home/cypher-whisperer";
   primaryDisk = "/dev/sda";
 
+  # inherit copies the let-bound names to this attrset under the same name.
+  inherit homeDirectory backupRoot hmBackupRoot;
+ 
   # Needed to ensure flake's HM configuration is aligned to active profile
   activeProfile = "desktop";
 

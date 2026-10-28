@@ -34,7 +34,8 @@ in
     primaryDisk = lib.mkDefault values.primaryDisk;
     activeHostName = lib.mkDefault values.activeHostName;
 
-    backupRoot = lib.mkDefault "${cfg.homeDirectory}/DATA/FILES";
+    backupRoot = lib.mkDefault values.backupRoot;
+    hmBackupRoot = lib.mkDefault values.hmBackupRoot;
     obsidianVaultRoot = lib.mkDefault "${cfg.backupRoot}/PROJECTS/PRIVATE/OBSIDIAN_NOTES";
 
     gamingFiles = {
